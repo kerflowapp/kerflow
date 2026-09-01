@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Confirmez votre inscription</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body style="background-color: #f2f2f2; font-family: sans-serif; padding: 40px 0;">
+<div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; padding: 32px;">
+	<div th:insert="header"></div>
+
+	<h1 style="font-size: 24px; font-weight: bold; color: #193255; margin-bottom: 16px; text-align: center;">
+		Confirmez votre inscription
+	</h1>
+
+	<p style="font-size: 16px; line-height: 24px; color: #193255; margin-bottom: 24px;">
+		Merci de vous être inscrit sur Kerflow. Entrez le code de vérification ci-dessous pour finaliser votre
+		inscription.
+	</p>
+
+	<div style="text-align: center; margin-bottom: 32px;">
+		<div style="display: inline-block; background-color: #f2f2f2; border-radius: 8px; padding: 16px 32px;">
+			<span th:text="${otp_code}"
+			      style="font-size: 36px; font-weight: bold; color: #4F46E5; letter-spacing: 8px; font-family: monospace;"></span>
+		</div>
+	</div>
+
+	<p style="font-size: 14px; line-height: 20px; color: #193255; margin-bottom: 24px; text-align: center;">
+		Ce code est valable pendant <strong>15 minutes</strong>.
+	</p>
+
+	<p style="font-size: 14px; line-height: 20px; color: #193255; margin-bottom: 24px;">
+		Si vous n'êtes pas à l'origine de cette inscription, vous pouvez ignorer cet email.
+	</p>
+
+	<div th:insert="footer.html"></div>
+</div>
+</body>
+</html>

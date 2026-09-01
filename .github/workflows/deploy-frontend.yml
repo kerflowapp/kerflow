@@ -1,0 +1,73 @@
+name: Deploy frontend
+
+# Tag the commit `frontend-<version>` (e.g. frontend-1.4.0) to ship the web client.
+# The backend has its own `backend-*` tags and its own workflow.
+on:
+  push:
+    tags:
+      - 'frontend-*'
+
+jobs:
+  build:
+    name: Build and push image
+    # Forks never get the repository secrets, but stopping here means a fork that
+    # pushes a `frontend-*` tag does not even show a red run.
+    if: github.repository == 'kerflowapp/kerflow'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}/frontend
+          # frontend-1.4.0 -> 1.4.0
+          tags: |
+            type=match,pattern=frontend-(.*),group=1
+            type=raw,value=latest
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          # Vite inlines these into the bundle at build time, so they cannot be
+          # set on the container afterwards. An undefined var resolves to an
+          # empty string and simply falls back to the Dockerfile default.
+          # Everything here ends up readable in the shipped JavaScript: never
+          # put an actual secret behind a VITE_* name.
+          build-args: |
+            VITE_BACKEND_URL=${{ vars.VITE_BACKEND_URL }}
+            VITE_BACKEND_PORT=${{ vars.VITE_BACKEND_PORT }}
+            VITE_POSTHOG_ENABLED=${{ vars.VITE_POSTHOG_ENABLED }}
+            VITE_POSTHOG_HOST=${{ vars.VITE_POSTHOG_HOST }}
+            VITE_TERMS_URL=${{ vars.VITE_TERMS_URL }}
+            VITE_POSTHOG_KEY=${{ secrets.VITE_POSTHOG_KEY }}
+
+  deploy:
+    name: Trigger Coolify
+    needs: build
+    if: github.repository == 'kerflowapp/kerflow'
+    runs-on: ubuntu-latest
+    environment: coolify
+
+    steps:
+      - name: Call deployment webhook
+        run: |
+          curl --fail --silent --show-error \
+            --request GET '${{ secrets.COOLIFY_FRONTEND_WEBHOOK }}' \
+            --header 'Authorization: Bearer ${{ secrets.WEBHOOK_TOKEN }}'

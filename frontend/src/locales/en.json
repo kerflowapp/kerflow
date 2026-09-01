@@ -1,0 +1,692 @@
+{
+	"app-name": "Kerflow",
+	"auth": {
+		"session-expired": "Your session has expired, please sign in again",
+		"email-step": {
+			"title": "Welcome to Kerflow",
+			"subtitle": "Enter your email to continue",
+			"submit": "Continue"
+		},
+		"signin": {
+			"title": "Sign In",
+			"welcome-back": "Welcome back!",
+			"back": "Back",
+			"email": "Email",
+			"password": "Password",
+			"submit": "Sign In",
+			"forgot-password": "Forgot password?",
+			"no-account": "Don't have an account?",
+			"signup-link": "Create account",
+			"account-confirmed": "Account confirmed, please sign in."
+		},
+		"signup": {
+			"title": "Create Account",
+			"new-account": "Create your account",
+			"back": "Back",
+			"email": "Email",
+			"password": "Password",
+			"confirm-password": "Confirm password",
+			"first-name": "First name",
+			"last-name": "Last name",
+			"phone": "Phone",
+			"submit": "Sign Up",
+			"already-account": "Already have an account?",
+			"signin-link": "Sign in"
+		},
+		"email-rules": {
+			"required": "Email is required",
+			"no-spaces": "The email must not contain spaces",
+			"ascii-only": "Invalid email format"
+		},
+		"reset-password": {
+			"title": "Reset Password",
+			"email": "Email",
+			"code": "Verification code",
+			"new-password": "New password",
+			"submit": "Reset"
+		},
+		"verify": {
+			"title": "Verify Your Account",
+			"code": "Verification code",
+			"submit": "Verify",
+			"resend": "Resend code",
+			"resend-success": "A new code has been sent",
+			"otp-sent-pending": "A verification code was sent.",
+			"no-code-received": "No code received? Check your spam or resend the code.",
+			"resend-code-in": "Resend code in "
+		},
+		"phone-number-rules": {
+			"french-only": "French phone numbers only"
+		},
+		"errors": {
+			"check-email-failed": "Unable to verify email. Please try again.",
+			"signin-failed": "Incorrect email or password.",
+			"signup-failed": "Error creating account. Please try again.",
+			"otp-failed": "Incorrect code. Please try again.",
+			"resend-failed": "Unable to resend code. Please try again."
+		},
+		"impersonate-email-label": "Impersonate (admin)",
+		"impersonate-email-hint": "Email d'un utilisateur à impersonifier",
+		"impersonation": {
+			"active": "Impersonnation active — connecté en tant que {email}",
+			"stop": "Arrêter l'impersonnation"
+		},
+		"impersonate": {
+			"label": "Se connecter en tant que (email)",
+			"hint": "SuperAdmin uniquement — se connecter en tant que cet utilisateur",
+			"not-allowed": "Vous n'êtes pas autorisé à impersonner des utilisateurs",
+			"user-not-found": "Aucun utilisateur trouvé avec cet email"
+		},
+		"password-checklist": {
+			"title": "Password must contain:",
+			"min-length": "At least 8 characters",
+			"uppercase": "At least 1 uppercase letter",
+			"lowercase": "At least 1 lowercase letter",
+			"number": "At least 1 number",
+			"special": "At least 1 special character",
+			"no-spaces": "No spaces",
+			"match": "Passwords must match"
+		},
+		"login-error": "Invalid credentials",
+		"account-confirmed-signin": "Account confirmed. Sign in with your password.",
+		"individual": {
+			"features": {
+				"landing-text-1": "Find your next customers nearby",
+				"landing-text-2": "Kerflow finds, enriches and scores local businesses, then moves them along your pipeline."
+			}
+		},
+		"invitation": {
+			"invalid": "Invalid or expired invitation code."
+		},
+		"otp-sent-for-pending": "A verification code has just been sent to you.",
+		"password-rules": {
+			"required": "This field is required",
+			"no-spaces": "The password must not contain spaces.",
+			"match": "Passwords do not match.",
+			"complex": "The password must be at least 8 characters long and contain an uppercase letter, a lowercase letter, a digit and a special character."
+		},
+		"signup-error": "Could not create the account. Please try again.",
+		"user-already-exists": "An account already exists with this email.",
+		"user-pending-confirmation": "This account is not confirmed yet. Enter the code sent to your email.",
+		"unified": {
+			"email-step": "Sign in or create an account",
+			"signin-step": "Enter your password",
+			"signup-step": "Create your account",
+			"otp-step": "Verify your email",
+			"otp-description": "We sent a 6-digit code to {email}. Enter it below to activate your account.",
+			"use-different-email": "Use a different email address"
+		},
+		"confirm-password": "Confirm password"
+	},
+	"common": {
+		"password": "Password",
+		"email": "Email",
+		"continue": "Continue",
+		"login": "Sign In",
+		"signup": "Sign Up",
+		"language": "Language",
+		"logout": "Sign Out",
+		"save": "Save",
+		"cancel": "Cancel",
+		"edit": "Edit",
+		"delete": "Delete",
+		"add": "Add",
+		"close": "Close",
+		"confirm": "Confirm",
+		"loading": "Loading...",
+		"sandbox-enabled": "Sandbox mode enabled",
+		"button": {
+			"signup": "Sign up",
+			"close": "Close",
+			"add": "Add",
+			"back-to-home": "Back to home",
+			"back-to-dashboard": "Back to dashboard"
+		},
+		"errors": {
+			"unknown": "Something went wrong. Please try again."
+		},
+		"page-not-found": {
+			"title": "Page not found",
+			"text": "The page you are looking for doesn't exist."
+		}
+	},
+	"navigation": {
+		"dashboard": "Dashboard",
+		"search": "Search",
+		"prospects": "Prospects",
+		"settings": "Settings",
+		"new-search": "New search"
+	},
+	"home": {
+		"nav": {
+			"home": "Home",
+			"get-started": "Get Started"
+		},
+		"hero": {
+			"title": "Find your clients locally",
+			"subtitle": "The local prospecting tool for freelancers and micro-entrepreneurs. Search, select, and manage your prospects in one place.",
+			"cta-primary": "Get started for free",
+			"cta-secondary": "Sign in"
+		},
+		"value": {
+			"title": "How does it work?",
+			"subtitle": "Three simple steps to grow your local client base",
+			"step-1-title": "Search",
+			"step-1-description": "Type a keyword and a city. We find matching local businesses with all their contact details.",
+			"step-2-title": "Select",
+			"step-2-description": "Browse results and add interesting prospects to your CRM with a single click.",
+			"step-3-title": "Manage",
+			"step-3-description": "Track your prospects in an intuitive Kanban board. From first contact to conversion."
+		},
+		"cta": {
+			"title": "Ready to find your next clients?",
+			"description": "Join hundreds of freelancers who use Kerflow to grow their business.",
+			"button": "Create my account"
+		}
+	},
+	"dashboard": {
+		"title": "Dashboard",
+		"subtitle": "Overview of your prospecting activity",
+		"metrics": {
+			"total-prospects": "Total prospects",
+			"new-prospects": "New",
+			"won-prospects": "Converted",
+			"conversion-rate": "Conversion rate"
+		},
+		"recent-prospects": "Recent prospects",
+		"no-prospects": "No prospects yet. Start a search to get going!",
+		"quick-actions": "Quick actions",
+		"actions": {
+			"new-search": "New search",
+			"new-search-description": "Find new local prospects",
+			"view-prospects": "View prospects",
+			"view-prospects-description": "Manage your prospecting pipeline",
+			"import-csv": "Import CSV",
+			"import-csv-description": "Import prospects from a file"
+		}
+	},
+	"search": {
+		"title": "Prospect Search",
+		"description": "Search for local businesses by keyword and location. Results include contact details and social media links.",
+		"keywords-label": "Keywords",
+		"keywords-placeholder": "e.g. restaurant, hairdresser, plumber...",
+		"city-label": "City",
+		"city-placeholder": "e.g. Paris, Lyon, Marseille...",
+		"radius-label": "Radius: {km} km",
+		"search-button": "Search",
+		"results-count": "{count} result(s) found",
+		"no-results-title": "No results",
+		"no-results-description": "Try different keywords or increase the search radius.",
+		"add-to-prospects": "Add to prospects",
+		"view-list": "List",
+		"view-map": "Map",
+		"detail": {
+			"opening-hours": "Opening hours",
+			"open-now": "Open",
+			"closed": "Closed",
+			"reviews": "Reviews",
+			"no-reviews": "No reviews available",
+			"view-on-google-maps": "View on Google Maps",
+			"social-links": "Social media",
+			"contact": "Contact",
+			"business-info": "Information"
+		}
+	},
+	"prospects": {
+		"title": "Prospects",
+		"import-csv": "Import CSV",
+		"add-manually": "Add manually",
+		"view": {
+			"board": "Board",
+			"map": "Map"
+		},
+		"filter-placeholder": "Filter by name, email, phone or tag...",
+		"edit": "Edit",
+		"delete": "Delete",
+		"edit-prospect": "Edit prospect",
+		"prospect-details": "Prospect details",
+		"details": {
+			"empty": "Not provided",
+			"no-notes": "No notes",
+			"copy-success": "Copied to clipboard",
+			"sections": {
+				"contact": "Contact",
+				"address": "Address",
+				"links": "Links",
+				"notes": "Notes"
+			},
+			"actions": {
+				"edit": "Edit",
+				"open-website": "Open website",
+				"copy-contact": "Copy info",
+				"open-maps": "Open in Maps",
+				"delete": "Delete"
+			},
+			"delete": {
+				"title": "Delete prospect",
+				"description": "This action can’t be undone. Do you really want to delete this prospect?"
+			}
+		},
+		"fields": {
+			"name": "Name",
+			"address": "Address",
+			"phone": "Phone",
+			"email": "Email",
+			"website": "Website",
+			"social-links": "Social links",
+			"instagram": "Instagram",
+			"facebook": "Facebook",
+			"linkedin": "LinkedIn",
+			"notes": "Notes",
+			"tags": "Tags"
+		}
+	},
+	"kanban": {
+		"empty-column": "No prospects in this column",
+		"manage-columns": "Manage columns",
+		"column-name": "Column name",
+		"delete-rule": "You can’t delete a column that contains prospects.",
+		"columns": {
+			"new": "New",
+			"contacted": "Contacted",
+			"in-discussion": "In Discussion",
+			"won": "Won",
+			"lost": "Lost"
+		}
+	},
+	"score": {
+		"title": "Qualification score",
+		"why": "Why?",
+		"empty": "Enrich this prospect to get a score",
+		"points": "{points} pts"
+	},
+	"business": {
+		"title": "Activity",
+		"empty": "Enrich this prospect to detect its activity",
+		"google-summary": "According to Google:",
+		"sources": {
+			"NAF": "Source: official French company registry (INSEE)",
+			"GOOGLE_TYPES": "Source: Google category, unconfirmed"
+		},
+		"categories": {
+			"TAXI_VTC": "Taxi / private hire",
+			"AMBULANCE": "Ambulance / medical transport",
+			"ROAD_FREIGHT": "Road freight transport",
+			"PASSENGER_TRANSPORT": "Passenger transport",
+			"VEHICLE_RENTAL": "Vehicle rental",
+			"AUTO_SERVICES": "Garage / car services",
+			"DRIVING_SCHOOL": "Driving school",
+			"CONSTRUCTION": "Construction / public works",
+			"LANDSCAPING": "Landscaping / green spaces",
+			"CLEANING": "Cleaning services",
+			"OTHER": "Uncategorised activity"
+		},
+		"facts": {
+			"ACTIVITY_NAF": "Declared activity: {activity} (NAF code {nafCode}).",
+			"ACTIVITY_NAF_UNMAPPED": "Activity declared in the registry under NAF code {nafCode}, not categorised by Kerflow.",
+			"ACTIVITY_GOOGLE": "Activity inferred from the Google listing ({googleType}): {activity}. Not confirmed by the registry.",
+			"COMPANY_AGE": "In business for {years} years (founded in {year}).",
+			"COMPANY_RECENT": "Young company, founded in {year}.",
+			"LIKELY_FLEET": "Likely operates a fleet of vehicles.",
+			"LEGAL_FORM_INDIVIDUAL": "Sole trader: the owner is the direct decision maker.",
+			"LEGAL_FORM_ASSOCIATION": "Non-profit structure: specific budget and decision cycle."
+		}
+	},
+	"size": {
+		"title": "Estimated size",
+		"unknown": "Size unknown",
+		"buckets": {
+			"SOLO": "Sole trader",
+			"FROM_2_TO_5": "2 to 5 people",
+			"FROM_6_TO_9": "6 to 9 people",
+			"FROM_10_TO_19": "10 to 19 people",
+			"FROM_20_TO_49": "20 to 49 people",
+			"FIFTY_PLUS": "50 people and more"
+		},
+		"confidence": {
+			"HIGH": "High confidence",
+			"MEDIUM": "Medium confidence",
+			"LOW": "Low confidence"
+		},
+		"confidence-explanation": {
+			"HIGH": "Based on the workforce bracket declared in the official company registry.",
+			"MEDIUM": "Based on an outdated declaration or on several converging hints.",
+			"LOW": "Estimate inferred from hints: to be confirmed."
+		},
+		"reasons": {
+			"SIRENE_WORKFORCE_BRACKET": "Workforce bracket {bracket} declared in the registry ({year} data).",
+			"SIRENE_NON_EMPLOYER": "No employee declared in the registry and no hint of a larger structure.",
+			"HEURISTIC_RECRUITING": "The website mentions recruitment.",
+			"HEURISTIC_FLEET": "The website mentions a fleet of vehicles.",
+			"HEURISTIC_MANY_REVIEWS": "High volume of Google reviews.",
+			"HEURISTIC_MULTI_ESTABLISHMENT": "{count} establishments open in the registry."
+		}
+	},
+	"analysis": {
+		"title": "Agent analysis",
+		"empty": "No agent analysis yet. Ask Claude to analyse this prospect over MCP.",
+		"needs": "Detected needs",
+		"approach": "Suggested approach",
+		"generated-by": "Generated by {by} · {date}"
+	},
+	"sheet": {
+		"title": "Profile sheet",
+		"empty": "No profile sheet yet. Ask Claude to generate one over MCP.",
+		"generated-by": "Generated by {by} · {date}"
+	},
+	"messages": {
+		"title": "Messages",
+		"empty": "No exchanges yet. Add one, or ask Claude to draft an email over MCP.",
+		"status": {
+			"draft": "Draft",
+			"sent": "Sent",
+			"reply": "Reply"
+		},
+		"direction": {
+			"inbound": "Received",
+			"outbound": "Sent"
+		},
+		"channel": {
+			"email": "Email",
+			"phone": "Call",
+			"sms": "SMS",
+			"linkedin": "LinkedIn",
+			"meeting": "Meeting",
+			"other": "Other"
+		},
+		"generated-by": "Generated by {by}",
+		"show-more": "Show more",
+		"show-less": "Show less",
+		"mark-sent": "Mark as sent",
+		"add-exchange": "Add an exchange",
+		"dialog": {
+			"title": "Add an exchange",
+			"channel": "Channel",
+			"date": "Date",
+			"subject": "Subject (optional)",
+			"body": "Content",
+			"already-sent": "Already sent",
+			"already-sent-hint": "Uncheck to keep it as a draft to send later."
+		},
+		"delete": {
+			"title": "Delete message",
+			"description": "This message will be permanently removed from the thread."
+		}
+	},
+	"signals": {
+		"title": "Detected signals",
+		"empty": "No signals detected",
+		"enrich": "Enrich",
+		"types": {
+			"MANY_REVIEWS": {
+				"label": "Many reviews",
+				"explanation": "{count} Google reviews: highly visible business that cares about its online reputation."
+			},
+			"MOBILE_ONLY_PHONE": {
+				"label": "Mobile phone",
+				"explanation": "Only a mobile number is listed: likely a small business where the decision-maker answers directly."
+			},
+			"NO_WEBSITE": {
+				"label": "No website",
+				"explanation": "No website listed: ideal opportunity to pitch a website or online visibility services."
+			},
+			"NO_HTTPS": {
+				"label": "Insecure website",
+				"explanation": "The website does not use HTTPS: sign of an aging site, a good opener for a redesign."
+			},
+			"WORDPRESS": {
+				"label": "WordPress",
+				"explanation": "Website built with WordPress: easy to pitch maintenance, redesign or optimization."
+			},
+			"PRO_EMAIL": {
+				"label": "Pro email",
+				"explanation": "Professional email found ({email}): direct contact on the company's own domain."
+			},
+			"GENERIC_EMAIL": {
+				"label": "Generic email",
+				"explanation": "Email on a consumer domain ({email}): weakly professionalized online presence."
+			},
+			"RECRUITING_DETECTED": {
+				"label": "Hiring",
+				"explanation": "The website mentions recruiting: the company is growing, good timing to reach out."
+			},
+			"FLEET_DETECTED": {
+				"label": "Fleet detected",
+				"explanation": "The website mentions a vehicle fleet: relevant prospect for a fleet management solution."
+			},
+			"PROFESSIONAL_WEBSITE": {
+				"label": "Professional website",
+				"explanation": "The website is up and served over HTTPS: established business with a maintained online presence."
+			},
+			"ACTIVE_GOOGLE_PRESENCE": {
+				"label": "Active Google presence",
+				"explanation": "Rated {rating}/5 over {count} reviews: the business actively manages its Google listing."
+			},
+			"SOCIAL_MEDIA_PRESENCE": {
+				"label": "Social media",
+				"explanation": "{count} social network(s) linked from the website: the business invests in its communication."
+			},
+			"MULTI_ESTABLISHMENT": {
+				"label": "Multiple locations",
+				"explanation": "{count} establishments open in the official registry: multi-site structure, broader budget and needs."
+			},
+			"COMPANY_MATURE": {
+				"label": "Established company",
+				"explanation": "Founded {years} years ago: sustained activity, stable point of contact."
+			}
+		}
+	},
+	"csv-import": {
+		"title": "Import prospects",
+		"select-file": "Select a CSV file",
+		"format-hint": "The file must be in CSV format with columns such as: name, email, phone, address, website.",
+		"rows": "rows",
+		"change-file": "Change file",
+		"showing-preview": "Showing first {shown} rows of {total}",
+		"import-button": "Import {count} prospects"
+	},
+	"settings": {
+		"title": "Settings",
+		"profile": {
+			"title": "Profile",
+			"personal-info": "Personal information",
+			"first-name": "First name",
+			"last-name": "Last name",
+			"phone-number": "Phone number",
+			"email": "Email",
+			"required": "This field is required"
+		},
+		"security": {
+			"title": "Security",
+			"password-change": "Change password",
+			"current-password": "Current password",
+			"new-password": "New password",
+			"confirm-password": "Confirm password",
+			"update-password": "Update",
+			"password-match": "Passwords do not match",
+			"two-factor-auth": "Two-factor authentication",
+			"two-factor-status": "2FA Status",
+			"two-factor-desc": "Add an extra layer of security",
+			"setup-two-factor": "Set up 2FA",
+			"scan-qr-code": "Scan this QR code",
+			"scan-qr-code-desc": "Use your authenticator app",
+			"verification-code": "Verification code",
+			"verify-and-enable": "Verify and enable",
+			"active-sessions": "Active sessions",
+			"active-sessions-desc": "Manage your login sessions",
+			"current-device": "Current device",
+			"terminate-session": "Terminate",
+			"terminate-all-sessions": "Terminate all sessions",
+			"cancel": "Cancel",
+			"confirm": "Confirm"
+		},
+		"api-tokens": {
+			"title": "API & MCP",
+			"tokens-title": "API access tokens",
+			"description": "Tokens let AI agents (Claude, ChatGPT…) and external tools access your Kerflow account through MCP. A token grants access to your prospects: keep it secret.",
+			"revoked": "Revoked",
+			"created-on": "Created on {date}",
+			"last-used": "Last used on {date}",
+			"never-used": "Never used",
+			"empty-title": "No tokens",
+			"empty-text": "Create a token to connect Claude or another agent to Kerflow.",
+			"create-button": "Create a token",
+			"create-dialog-title": "New token",
+			"name-label": "Token name",
+			"name-required": "Name is required",
+			"created-dialog-title": "Token created",
+			"one-time-warning": "Copy this token now: it will never be shown again.",
+			"copied": "Copied to clipboard",
+			"revoke-button": "Revoke",
+			"revoke-confirm-title": "Revoke this token?",
+			"revoke-confirm-message": "The token \"{name}\" will be permanently revoked. Any agent or tool using it will immediately lose access to your account.",
+			"connect-claude-title": "Connect Claude",
+			"connect-claude-description": "Once connected, you chat with Claude and it drives Kerflow for you: searching businesses, analyzing, saving prospects. The connection uses MCP, an open standard.",
+			"connect-web-title": "On Claude.ai",
+			"connect-web-description": "In Claude.ai: Settings → Connectors → Add custom connector, then paste this URL:",
+			"connect-web-oauth-hint": "Leave the Client ID and Client Secret fields empty. Claude will redirect you to Kerflow to ask for your authorization: no token to create.",
+			"connect-cli-title": "With Claude Code",
+			"connect-claude-step-token": "Create a token above and copy it.",
+			"connect-claude-step-command": "Paste this command in a terminal (with Claude Code installed), replacing kf_YOUR_TOKEN with your token:",
+			"copy": "Copy"
+		},
+		"billing": {
+			"title": "Subscription",
+			"current-plan": "My subscription",
+			"plan-name": "Kerflow Pro",
+			"checkout-cancelled": "Checkout cancelled. You can try again whenever you like.",
+			"trial-remaining": "{count} day left in your free trial | {count} days left in your free trial",
+			"renews-on": "Next renewal on {date}",
+			"manage-subscription": "Manage my subscription",
+			"status": {
+				"trialing": "Free trial",
+				"active": "Active",
+				"past-due": "Payment overdue",
+				"cancelled": "Cancelled",
+				"inactive": "Inactive"
+			}
+		}
+	},
+	"oauth": {
+		"consent": {
+			"title": "{clientName} is requesting access to Kerflow",
+			"connected-as": "Signed in as {email}",
+			"description": "If you authorize it, {clientName} will be able to act on your Kerflow account on your behalf:",
+			"scopes": {
+				"mcp": "View and manage your prospects, and search for businesses"
+			},
+			"revoke-hint": "You can revoke this access at any time from Settings → API & MCP.",
+			"approve": "Authorize",
+			"deny": "Deny",
+			"expired-title": "Request expired",
+			"expired-text": "This authorization request is no longer valid. Start the connection again from Claude.",
+			"back-to-app": "Back to Kerflow"
+		}
+	},
+	"validation": {
+		"required": "This field is required"
+	},
+	"errors": {
+		"clipboard-failed": "Could not copy to clipboard.",
+		"fetch-api-tokens-failed": "Failed to load tokens.",
+		"create-api-token-failed": "Failed to create token.",
+		"revoke-api-token-failed": "Failed to revoke token.",
+		"oauth-consent-failed": "Could not complete the authorization. Start the connection again from the app.",
+		"search-failed": "Search failed. Please try again.",
+		"fetch-prospects-failed": "Failed to load prospects.",
+		"create-prospect-failed": "Failed to create prospect.",
+		"update-prospect-failed": "Failed to update prospect.",
+		"reorder-prospects-failed": "Failed to reorder prospects.",
+		"delete-prospect-failed": "Failed to delete prospect.",
+		"enrich-prospect-failed": "Failed to enrich prospect.",
+		"fetch-messages-failed": "Failed to load messages.",
+		"create-message-failed": "Failed to save message.",
+		"mark-sent-failed": "Failed to mark message as sent.",
+		"delete-message-failed": "Failed to delete message.",
+		"csv-parse-failed": "Failed to read CSV file.",
+		"csv-import-failed": "Failed to import CSV file.",
+		"update-profile-failed": "Failed to update profile."
+	},
+	"success": {
+		"prospect-created": "Prospect added successfully",
+		"prospect-updated": "Prospect updated",
+		"prospect-deleted": "Prospect deleted",
+		"prospect-enriched": "Prospect enriched",
+		"message-recorded": "Exchange recorded",
+		"message-marked-sent": "Message marked as sent",
+		"message-deleted": "Message deleted",
+		"csv-imported": "{count} prospect(s) imported successfully",
+		"profile-updated": "Profile updated",
+		"api-token-created": "Token created",
+		"api-token-revoked": "Token revoked"
+	},
+	"beta": {
+		"mode": "Beta mode",
+		"enabled": "Beta mode enabled"
+	},
+	"notifications": {
+		"title": "Notifications",
+		"unread": "Unread",
+		"read": "Read",
+		"mark-all-as-read": "Mark all as read",
+		"mark-as-read": "Mark as read",
+		"mark-as-unread": "Mark as unread",
+		"no-unread-notifications": "No unread notifications",
+		"no-read-notifications": "No read notifications"
+	},
+	"footer": {
+		"rights": "All rights reserved",
+		"terms": "Terms of Service"
+	},
+	"billing": {
+		"paywall": {
+			"title": "Upgrade to Kerflow Pro",
+			"subtitle": "Your free trial has ended. Subscribe to keep using Kerflow.",
+			"price": "€19.90",
+			"per-month": " / month",
+			"price-annual": "€199",
+			"per-year": " / year",
+			"interval-monthly": "Monthly",
+			"interval-annual": "Annual",
+			"savings-badge": "2 months free",
+			"subscribe": "Subscribe",
+			"features": {
+				"prospects": "Unlimited prospect management",
+				"pipeline": "Customizable prospecting pipeline",
+				"search": "Prospect search and import",
+				"cancel-anytime": "No commitment, cancel anytime"
+			}
+		},
+		"checkout": {
+			"confirming": "Confirming your payment…",
+			"success-title": "Payment confirmed, welcome!",
+			"error-title": "Could not confirm your payment",
+			"error-subtitle": "Your payment may have gone through. Retry or contact support.",
+			"retry": "Retry"
+		},
+		"trial-banner": {
+			"days-remaining": "{count} day left in your free trial | {count} days left in your free trial",
+			"past-due": "Your last payment failed. Please update your payment method."
+		},
+		"trial-expired": {
+			"title": "Your free trial has ended",
+			"message": "You can still view your prospects, but adding or editing them requires an active subscription.",
+			"cta": "Subscribe to Kerflow Pro"
+		},
+		"errors": {
+			"checkout-failed": "Could not start checkout. Please try again.",
+			"sync-failed": "Could not verify the payment. Please try again.",
+			"portal-failed": "Could not open the billing portal. Please try again."
+		}
+	},
+	"early-access": {
+		"description": "Kerflow is in early access: this email is not allowed to create an account yet."
+	},
+	"verify": {
+		"invalid-code": "Wrong code. Please try again.",
+		"code-expired": "The code has expired. Request a new one.",
+		"code-resent": "A new code has been sent to you.",
+		"resend-error": "Could not resend the code. Please try again.",
+		"verify-error": "Verification failed. Please try again."
+	}
+}

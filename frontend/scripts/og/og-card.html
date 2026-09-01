@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<!-- Source de l'image Open Graph du site vitrine (1200x630).
+     Rendu en PNG par scripts/og/generate-og.sh (Chrome headless).
+     ?lang=fr bascule les textes ; anglais par défaut.
+     CSS écrit à la main volontairement : pas de Tailwind CDN, dont le JIT
+     rendrait la capture non déterministe. -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Kerflow — OG card</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet"/>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-50: #EEF2FF;
+            --primary-100: #E0E7FF;
+            --accent: #F59E0B;
+            --success: #10B981;
+            --slate-900: #0F172A;
+            --slate-600: #475569;
+            --slate-500: #64748B;
+            --slate-400: #94A3B8;
+            --slate-200: #E2E8F0;
+            --grid: #EEF2F6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 1200px;
+            height: 630px;
+            overflow: hidden;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--slate-900);
+            background: #FAFAFA;
+        }
+
+        /* fond : grille facon carte + halo indigo, meme langage visuel que le hero */
+        .bg {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(0deg, var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        .glow {
+            position: absolute;
+            width: 900px;
+            height: 900px;
+            top: -420px;
+            left: -260px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(79, 70, 229, .16) 0%, rgba(79, 70, 229, 0) 65%);
+        }
+
+        .glow--accent {
+            top: auto;
+            left: auto;
+            right: -380px;
+            bottom: -460px;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(245, 158, 11, .13) 0%, rgba(245, 158, 11, 0) 65%);
+        }
+
+        .page {
+            position: relative;
+            height: 100%;
+            padding: 56px 64px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- lockup logo (identique a la nav du site) --- */
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-mark {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            border-radius: 15px;
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 10px 40px -12px rgba(79, 70, 229, .55);
+        }
+
+        .brand-mark svg {
+            width: 29px;
+            height: 29px;
+        }
+
+        .brand-name {
+            font-size: 34px;
+            font-weight: 800;
+            letter-spacing: -.02em;
+            color: var(--primary);
+        }
+
+        /* --- colonnes --- */
+        .cols {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 48px;
+            padding-top: 24px;
+        }
+
+        .left {
+            width: 600px;
+            flex-shrink: 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 9px 18px;
+            border-radius: 999px;
+            background: var(--primary-50);
+            border: 1px solid var(--primary-100);
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        h1 {
+            margin-top: 22px;
+            font-size: 62px;
+            line-height: 1.05;
+            font-weight: 800;
+            letter-spacing: -.03em;
+        }
+
+        h1 em {
+            font-style: normal;
+            color: var(--primary);
+        }
+
+        .sub {
+            margin-top: 20px;
+            font-size: 23px;
+            line-height: 1.45;
+            color: var(--slate-600);
+            max-width: 560px;
+        }
+
+        /* --- mockup a droite --- */
+        .right {
+            position: relative;
+            flex: 1;
+            height: 400px;
+        }
+
+        .map {
+            position: absolute;
+            inset: 0 0 68px 0;
+            border-radius: 20px;
+            border: 1px solid var(--slate-200);
+            background:
+                linear-gradient(0deg, #E6EBF2 1px, transparent 1px),
+                linear-gradient(90deg, #E6EBF2 1px, transparent 1px),
+                #F1F5F9;
+            background-size: 40px 40px;
+            box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .28);
+            overflow: hidden;
+        }
+
+        /* quelques axes pour evoquer des rues plutot qu'une grille nue */
+        .map::before,
+        .map::after {
+            content: '';
+            position: absolute;
+            background: #DDE5EE;
+        }
+
+        .map::before {
+            left: -10%;
+            right: -10%;
+            top: 44%;
+            height: 10px;
+            transform: rotate(-7deg);
+        }
+
+        .map::after {
+            top: -10%;
+            bottom: -10%;
+            left: 62%;
+            width: 10px;
+            transform: rotate(11deg);
+        }
+
+        .pin {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            border: 3px solid #fff;
+            box-shadow: 0 3px 10px rgba(15, 23, 42, .3);
+        }
+
+        .pin--accent {
+            width: 42px;
+            height: 42px;
+            font-size: 17px;
+            background: var(--accent);
+        }
+
+        /* --- carte prospect en surimpression --- */
+        .card {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 400px;
+            padding: 18px 20px;
+            border-radius: 18px;
+            background: #fff;
+            border: 1px solid var(--slate-200);
+            box-shadow: 0 20px 50px -18px rgba(15, 23, 42, .35);
+        }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .card-rank {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .card-name {
+            font-size: 19px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .pill {
+            padding: 3px 9px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .pill--score {
+            background: rgba(16, 185, 129, .12);
+            color: var(--success);
+        }
+
+        .pill--rating {
+            background: rgba(245, 158, 11, .12);
+            color: var(--accent);
+            margin-left: auto;
+        }
+
+        .card-addr {
+            margin-top: 10px;
+            font-size: 15px;
+            color: var(--slate-500);
+        }
+
+        .card-phone {
+            margin-top: 2px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        .foot {
+            display: flex;
+            justify-content: flex-end;
+            font-size: 19px;
+            font-weight: 600;
+            color: var(--slate-400);
+        }
+    </style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="glow"></div>
+<div class="glow glow--accent"></div>
+
+<div class="page">
+    <div class="brand">
+        <span class="brand-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/>
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M12 12 20 8"/>
+            </svg>
+        </span>
+        <span class="brand-name">Kerflow</span>
+    </div>
+
+    <div class="cols">
+        <div class="left">
+            <span class="badge" id="badge"></span>
+            <h1><span id="h1-lead"></span> <em id="h1-accent"></em></h1>
+            <p class="sub" id="sub"></p>
+        </div>
+
+        <div class="right">
+            <div class="map">
+                <span class="pin" style="left: 12%; top: 18%;">1</span>
+                <span class="pin" style="left: 62%; top: 11%;">4</span>
+                <span class="pin" style="left: 78%; top: 46%;">10</span>
+                <span class="pin" style="left: 30%; top: 62%;">7</span>
+                <span class="pin pin--accent" style="left: 42%; top: 30%;">2</span>
+            </div>
+
+            <div class="card">
+                <div class="card-top">
+                    <span class="card-rank">1</span>
+                    <span class="card-name">Le Comptoir du Marais</span>
+                    <span class="pill pill--score">89/100</span>
+                    <span class="pill pill--rating">★ 4.6</span>
+                </div>
+                <p class="card-addr">42 rue de Bretagne, 75003 Paris</p>
+                <p class="card-phone">01 99 00 12 34</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="foot">kerflowapp.com</div>
+</div>
+
+<script>
+    var COPY = {
+        en: {
+            badge: 'Effortless local prospecting',
+            lead: 'Find your clients',
+            accent: 'locally',
+            sub: 'Search, select and manage your prospects — all in one place.'
+        },
+        fr: {
+            badge: 'Prospection locale, sans effort',
+            lead: 'Trouvez vos clients',
+            accent: 'localement',
+            sub: 'Recherchez, sélectionnez et gérez vos prospects en un seul endroit.'
+        }
+    };
+
+    var lang = new URLSearchParams(location.search).get('lang') === 'fr' ? 'fr' : 'en';
+    var c = COPY[lang];
+    document.documentElement.lang = lang;
+    document.getElementById('badge').textContent = c.badge;
+    document.getElementById('h1-lead').textContent = c.lead;
+    document.getElementById('h1-accent').textContent = c.accent;
+    document.getElementById('sub').textContent = c.sub;
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+# Environment: never commit these, document variables in .env.example instead
+.env
+.env.*
+!.env.example
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.cursor
+.junie
+*.iml
+*.swp
+
+# Agent tooling
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Logs
+*.log

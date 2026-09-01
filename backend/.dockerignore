@@ -1,0 +1,15 @@
+# The image only needs the fat jar produced by `./gradlew bootJar`.
+.git
+.github
+.gradle
+.idea
+.claude
+compose_data
+bin
+src
+docs
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store

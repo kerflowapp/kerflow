@@ -1,0 +1,10 @@
+# Kerflow Robots.txt
+# https://kerflowapp.com
+
+User-agent: *
+
+# Allow public pages
+Allow: /
+
+# Sitemap location
+Sitemap: https://kerflowapp.com/sitemap.xml

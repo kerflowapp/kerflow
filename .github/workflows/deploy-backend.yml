@@ -1,0 +1,74 @@
+name: Deploy backend
+
+# Tag the commit `backend-<version>` (e.g. backend-1.4.0) to ship the backend.
+# The frontend has its own `frontend-*` tags and its own workflow.
+on:
+  push:
+    tags:
+      - 'backend-*'
+
+jobs:
+  build:
+    name: Build and push image
+    # Forks never get the repository secrets, but stopping here means a fork that
+    # pushes a `backend-*` tag does not even show a red run.
+    if: github.repository == 'kerflowapp/kerflow'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      - name: Build jar
+        run: ./gradlew clean bootJar --no-daemon
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}/backend
+          # backend-1.4.0 -> 1.4.0
+          tags: |
+            type=match,pattern=backend-(.*),group=1
+            type=raw,value=latest
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  deploy:
+    name: Trigger Coolify
+    needs: build
+    if: github.repository == 'kerflowapp/kerflow'
+    runs-on: ubuntu-latest
+    environment: coolify
+
+    steps:
+      - name: Call deployment webhook
+        run: |
+          curl --fail --silent --show-error \
+            --request GET '${{ secrets.COOLIFY_BACKEND_WEBHOOK }}' \
+            --header 'Authorization: Bearer ${{ secrets.WEBHOOK_TOKEN }}'

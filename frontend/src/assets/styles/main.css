@@ -1,0 +1,43 @@
+/* Filter Components Styling */
+.filter-card {
+	border-radius: 8px;
+	background-color: #ffffff;
+	transition: box-shadow 0.3s ease;
+}
+
+.filter-card:hover {
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.filter-input {
+	border-radius: 6px;
+}
+
+.filter-slider {
+	margin-top: 8px;
+}
+
+.filter-section-label {
+	font-weight: 500;
+	color: var(--v-primary-base);
+	display: flex;
+	align-items: center;
+}
+
+.filter-chips {
+	flex-wrap: wrap;
+}
+
+.filter-chip {
+	margin: 2px;
+	transition: all 0.2s ease;
+}
+
+.filter-chip:hover {
+	transform: translateY(-1px);
+}
+
+.view-toggle {
+	border-radius: 8px;
+	overflow: hidden;
+}

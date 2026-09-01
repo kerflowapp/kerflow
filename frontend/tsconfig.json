@@ -1,0 +1,46 @@
+{
+	//  "allowJs": true,
+	//  "files": [],
+	//  "references": [
+	//    {
+	//      "path": "./tsconfig.node.json"
+	//    },
+	//    {
+	//      "path": "./tsconfig.app.json"
+	//    },
+	//    {
+	//      "path": "./tsconfig.vitest.json"
+	//    }
+	//  ],
+	"include": ["shims.d.ts", "src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "vite-env.d.ts", "env.d.ts", "src/**/*"],
+	"compilerOptions": {
+		"target": "es2022",
+		"module": "esnext",
+		"lib": ["DOM", "ESNext", "DOM.Iterable"],
+		"skipLibCheck": true,
+		"resolveJsonModule": true,
+		// prevent lodash missing default export in single function module
+		"allowSyntheticDefaultImports": true,
+		/* path aliasing */
+		"baseUrl": ".",
+		"paths": {
+			"~/*": ["src/*"],
+			"tests/": ["tests/*"]
+		},
+		/* types */
+		"types": ["vite/client"],
+		/* bundler mode */
+		"moduleResolution": "node",
+		"allowImportingTsExtensions": true,
+		"isolatedModules": true,
+		"moduleDetection": "force",
+		"noEmit": true,
+		"jsx": "preserve",
+		/* linting */
+		"strict": false,
+		"noUnusedLocals": true,
+		"noUnusedParameters": false,
+		"noFallthroughCasesInSwitch": true,
+		"forceConsistentCasingInFileNames": true
+	}
+}

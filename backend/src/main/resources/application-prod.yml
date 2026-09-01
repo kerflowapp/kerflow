@@ -1,0 +1,35 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://cognito-idp.${aws.region}.amazonaws.com/${aws.cognito.pool-id}
+allowed-origin: ${ALLOWED_ORIGIN}
+aws:
+  region: ${AWS_REGION}
+  access-key: ${AWS_ACCESS_KEY_ID}
+  secret-key: ${AWS_ACCESS_KEY_SECRET}
+  cognito:
+    pool-id: ${SPRING_COGNITO_USER_POOL_ID}
+    client-id: ${SPRING_COGNITO_CLIENT_ID}
+
+google:
+  places:
+    api-key: ${GOOGLE_PLACES_API_KEY:}
+
+commons:
+  # The SPA and the API live on different hosts. The OAuth authorization endpoint redirects
+  # to web-url for consent, and every OAuth metadata document is derived from backend-url,
+  # so these two must stay accurate or Claude.ai's connector flow breaks.
+  web-url: ${WEB_URL:https://app.kerflowapp.com}
+  backend-url: ${BACKEND_URL:https://api.kerflowapp.com}
+
+sentry:
+  enabled: false
+  environment: prod
+
+resend:
+  enabled: true

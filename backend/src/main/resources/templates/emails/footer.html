@@ -1,0 +1,15 @@
+<div style="border-top: 1px solid #d9d9d9; padding-top: 24px; margin-top: 24px; text-align: center;">
+	<p style="font-size: 12px; line-height: 16px; color: #193255; margin: 0;">
+		&copy; <span th:text="${year}">2026</span> Kerflow. Tous droits réservés.
+	</p>
+	<p th:if="${!#strings.isEmpty(postal_address)}"
+	   style="font-size: 12px; line-height: 16px; color: #193255; margin: 0;"
+	   th:text="${postal_address}">
+	</p>
+	<p style="font-size: 12px; line-height: 16px; margin-top: 8px;">
+		<a th:href="'mailto:' + ${support_email}" href="mailto:hello@kerflowapp.com"
+		   style="color: #4F46E5; text-decoration: underline;">
+			Se désabonner
+		</a>
+	</p>
+</div>

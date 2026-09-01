@@ -1,0 +1,31 @@
+{
+	"arrowParens": "avoid",
+	"endOfLine": "auto",
+	"overrides": [
+		{
+			"files": "*.html",
+			"options": {
+				"printWidth": 140,
+				"tabWidth": 2,
+				"useTabs": false
+			}
+		},
+		{
+			"files": "*.md",
+			"options": {
+				"printWidth": 140,
+				"tabWidth": 2,
+				"useTabs": false
+			}
+		}
+	],
+	"printWidth": 140,
+	"singleQuote": true,
+	"tabWidth": 4,
+	"trailingComma": "none",
+	"useTabs": true,
+	"plugins": ["@trivago/prettier-plugin-sort-imports"],
+	"importOrder": ["<THIRD_PARTY_MODULES>", "(^@kerflow(.*)$)|^~/(.*)$", "^(\\./|\\.\\./)(.*)$", "\\.css$"],
+	"importOrderSeparation": true,
+	"importOrderSortSpecifiers": true
+}

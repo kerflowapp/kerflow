@@ -1,0 +1,692 @@
+{
+	"app-name": "Kerflow",
+	"auth": {
+		"unified": {
+			"email-step": "Connectez-vous ou créez un compte",
+			"signin-step": "Saisissez votre mot de passe",
+			"signup-step": "Créez votre compte",
+			"otp-step": "Vérifiez votre email",
+			"otp-description": "Nous avons envoyé un code à 6 chiffres à {email}. Saisissez-le ci-dessous pour activer votre compte.",
+			"use-different-email": "Utiliser une autre adresse email"
+		},
+		"session-expired": "Votre session a expiré, veuillez vous reconnecter",
+		"email-step": {
+			"title": "Bienvenue sur Kerflow",
+			"subtitle": "Entrez votre email pour continuer",
+			"submit": "Continuer"
+		},
+		"password-checklist": {
+			"title": "Le mot de passe doit contenir :",
+			"min-length": "Au moins 8 caractères",
+			"uppercase": "Au moins 1 lettre majuscule",
+			"lowercase": "Au moins 1 lettre minuscule",
+			"number": "Au moins 1 chiffre",
+			"special": "Au moins 1 caractère spécial",
+			"no-spaces": "Pas d'espaces",
+			"match": "Les mots de passe doivent correspondre"
+		},
+		"email-rules": {
+			"required": "L'email est requis",
+			"no-spaces": "L'email ne doit pas contenir d'espaces",
+			"ascii-only": "Format d'email invalide"
+		},
+		"signin": {
+			"title": "Connexion",
+			"welcome-back": "Bon retour !",
+			"back": "Retour",
+			"email": "Email",
+			"password": "Mot de passe",
+			"submit": "Se connecter",
+			"forgot-password": "Mot de passe oublié ?",
+			"no-account": "Pas encore de compte ?",
+			"signup-link": "Créer un compte",
+			"account-confirmed": "Compte confirmé, connectez-vous."
+		},
+		"confirm-password": "Confirmer le mot de passe",
+		"signup": {
+			"title": "Créer un compte",
+			"new-account": "Créez votre compte",
+			"back": "Retour",
+			"email": "Email",
+			"password": "Mot de passe",
+			"confirm-password": "Confirmer le mot de passe",
+			"first-name": "Prénom",
+			"last-name": "Nom",
+			"phone": "Téléphone",
+			"submit": "S'inscrire",
+			"already-account": "Déjà un compte ?",
+			"signin-link": "Se connecter"
+		},
+		"reset-password": {
+			"title": "Réinitialiser le mot de passe",
+			"email": "Email",
+			"code": "Code de vérification",
+			"new-password": "Nouveau mot de passe",
+			"submit": "Réinitialiser"
+		},
+		"verify": {
+			"title": "Vérifier votre compte",
+			"code": "Code de vérification",
+			"submit": "Vérifier",
+			"resend": "Renvoyer le code",
+			"resend-success": "Un nouveau code a été envoyé",
+			"otp-sent-pending": "Un code de vérification a été envoyé.",
+			"no-code-received": "Aucun code reçu ? Vérifiez vos spams ou renvoyez le code.",
+			"resend-code-in": "Renvoyer le code dans "
+		},
+		"phone-number-rules": {
+			"french-only": "Numéro de téléphone français uniquement"
+		},
+		"errors": {
+			"check-email-failed": "Impossible de vérifier l'email. Veuillez réessayer.",
+			"signin-failed": "Email ou mot de passe incorrect.",
+			"signup-failed": "Erreur lors de la création du compte. Veuillez réessayer.",
+			"otp-failed": "Code incorrect. Veuillez réessayer.",
+			"resend-failed": "Impossible de renvoyer le code. Veuillez réessayer."
+		},
+		"impersonate-email-label": "Impersonate (admin)",
+		"impersonate-email-hint": "Email d'un utilisateur à impersonifier",
+		"impersonation": {
+			"active": "Impersonnation active — connecté en tant que {email}",
+			"stop": "Arrêter l'impersonnation"
+		},
+		"impersonate": {
+			"label": "Se connecter en tant que (email)",
+			"hint": "SuperAdmin uniquement — se connecter en tant que cet utilisateur",
+			"not-allowed": "Vous n'êtes pas autorisé à impersonner des utilisateurs",
+			"user-not-found": "Aucun utilisateur trouvé avec cet email"
+		},
+		"login-error": "Identifiants invalides",
+		"account-confirmed-signin": "Compte confirmé. Connectez-vous avec votre mot de passe.",
+		"individual": {
+			"features": {
+				"landing-text-1": "Trouvez vos prochains clients près de chez vous",
+				"landing-text-2": "Kerflow recherche, enrichit et score les entreprises locales, puis les fait avancer dans votre pipeline."
+			}
+		},
+		"invitation": {
+			"invalid": "Code d'invitation invalide ou expiré."
+		},
+		"otp-sent-for-pending": "Un code de vérification vient de vous être envoyé.",
+		"password-rules": {
+			"required": "Ce champ est requis",
+			"no-spaces": "Le mot de passe ne doit pas contenir d'espaces.",
+			"match": "Les mots de passe ne correspondent pas.",
+			"complex": "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial."
+		},
+		"signup-error": "Erreur lors de la création du compte. Veuillez réessayer.",
+		"user-already-exists": "Un compte existe déjà avec cet email.",
+		"user-pending-confirmation": "Ce compte n'est pas encore confirmé. Saisissez le code reçu par email."
+	},
+	"common": {
+		"password": "Mot de passe",
+		"email": "Email",
+		"continue": "Continuer",
+		"login": "Connexion",
+		"signup": "Inscription",
+		"language": "Langue",
+		"logout": "Déconnexion",
+		"save": "Enregistrer",
+		"cancel": "Annuler",
+		"edit": "Modifier",
+		"delete": "Supprimer",
+		"add": "Ajouter",
+		"close": "Fermer",
+		"confirm": "Confirmer",
+		"loading": "Chargement...",
+		"sandbox-enabled": "Mode sandbox activé",
+		"button": {
+			"signup": "S'inscrire",
+			"close": "Fermer",
+			"add": "Ajouter",
+			"back-to-home": "Retour à l'accueil",
+			"back-to-dashboard": "Retour au tableau de bord"
+		},
+		"errors": {
+			"unknown": "Une erreur est survenue. Veuillez réessayer."
+		},
+		"page-not-found": {
+			"title": "Page introuvable",
+			"text": "La page que vous cherchez n'existe pas."
+		}
+	},
+	"navigation": {
+		"dashboard": "Tableau de bord",
+		"search": "Recherche",
+		"prospects": "Prospects",
+		"settings": "Paramètres",
+		"new-search": "Nouvelle recherche"
+	},
+	"home": {
+		"nav": {
+			"home": "Accueil",
+			"get-started": "Commencer"
+		},
+		"hero": {
+			"title": "Trouvez vos clients localement",
+			"subtitle": "L'outil de prospection locale pour freelances et micro-entrepreneurs. Recherchez, sélectionnez et gérez vos prospects en un seul endroit.",
+			"cta-primary": "Commencer gratuitement",
+			"cta-secondary": "Se connecter"
+		},
+		"value": {
+			"title": "Comment ça marche ?",
+			"subtitle": "Trois étapes simples pour développer votre clientèle locale",
+			"step-1-title": "Recherchez",
+			"step-1-description": "Tapez un mot-clé et une ville. Nous trouvons les entreprises locales correspondantes avec toutes leurs coordonnées.",
+			"step-2-title": "Sélectionnez",
+			"step-2-description": "Parcourez les résultats et ajoutez les prospects intéressants à votre CRM en un clic.",
+			"step-3-title": "Gérez",
+			"step-3-description": "Suivez vos prospects dans un tableau Kanban intuitif. De la prise de contact à la conversion."
+		},
+		"cta": {
+			"title": "Prêt à trouver vos prochains clients ?",
+			"description": "Rejoignez des centaines de freelances qui utilisent Kerflow pour développer leur activité.",
+			"button": "Créer mon compte"
+		}
+	},
+	"dashboard": {
+		"title": "Tableau de bord",
+		"subtitle": "Vue d'ensemble de votre activité de prospection",
+		"metrics": {
+			"total-prospects": "Total prospects",
+			"new-prospects": "Nouveaux",
+			"won-prospects": "Convertis",
+			"conversion-rate": "Taux de conversion"
+		},
+		"recent-prospects": "Prospects récents",
+		"no-prospects": "Aucun prospect pour le moment. Lancez une recherche pour commencer !",
+		"quick-actions": "Actions rapides",
+		"actions": {
+			"new-search": "Nouvelle recherche",
+			"new-search-description": "Trouver de nouveaux prospects locaux",
+			"view-prospects": "Voir les prospects",
+			"view-prospects-description": "Gérer votre pipeline de prospection",
+			"import-csv": "Importer un CSV",
+			"import-csv-description": "Importer des prospects depuis un fichier"
+		}
+	},
+	"search": {
+		"title": "Recherche de prospects",
+		"description": "Recherchez des entreprises locales par mot-clé et localisation. Les résultats incluent les coordonnées et les réseaux sociaux.",
+		"keywords-label": "Mots-clés",
+		"keywords-placeholder": "ex: restaurant, coiffeur, plombier...",
+		"city-label": "Ville",
+		"city-placeholder": "ex: Paris, Lyon, Marseille...",
+		"radius-label": "Rayon : {km} km",
+		"search-button": "Rechercher",
+		"results-count": "{count} résultat(s) trouvé(s)",
+		"no-results-title": "Aucun résultat",
+		"no-results-description": "Essayez avec d'autres mots-clés ou élargissez le rayon de recherche.",
+		"add-to-prospects": "Ajouter aux prospects",
+		"view-list": "Liste",
+		"view-map": "Carte",
+		"detail": {
+			"opening-hours": "Horaires d'ouverture",
+			"open-now": "Ouvert",
+			"closed": "Fermé",
+			"reviews": "Avis",
+			"no-reviews": "Aucun avis disponible",
+			"view-on-google-maps": "Voir sur Google Maps",
+			"social-links": "Réseaux sociaux",
+			"contact": "Contact",
+			"business-info": "Informations"
+		}
+	},
+	"prospects": {
+		"title": "Prospects",
+		"import-csv": "Importer CSV",
+		"add-manually": "Ajouter manuellement",
+		"view": {
+			"board": "Tableau",
+			"map": "Carte"
+		},
+		"filter-placeholder": "Filtrer par nom, email, téléphone ou tag...",
+		"edit": "Modifier",
+		"delete": "Supprimer",
+		"edit-prospect": "Modifier le prospect",
+		"prospect-details": "Détails du prospect",
+		"details": {
+			"empty": "Non renseigné",
+			"no-notes": "Aucune note",
+			"copy-success": "Copié dans le presse-papiers",
+			"sections": {
+				"contact": "Contact",
+				"address": "Adresse",
+				"links": "Liens",
+				"notes": "Notes"
+			},
+			"actions": {
+				"edit": "Modifier",
+				"open-website": "Ouvrir le site",
+				"copy-contact": "Copier les infos",
+				"open-maps": "Ouvrir dans Maps",
+				"delete": "Supprimer"
+			},
+			"delete": {
+				"title": "Supprimer le prospect",
+				"description": "Cette action est définitive. Voulez-vous vraiment supprimer ce prospect ?"
+			}
+		},
+		"fields": {
+			"name": "Nom",
+			"address": "Adresse",
+			"phone": "Téléphone",
+			"email": "Email",
+			"website": "Site web",
+			"social-links": "Réseaux sociaux",
+			"instagram": "Instagram",
+			"facebook": "Facebook",
+			"linkedin": "LinkedIn",
+			"notes": "Notes",
+			"tags": "Tags"
+		}
+	},
+	"kanban": {
+		"empty-column": "Aucun prospect dans cette colonne",
+		"manage-columns": "Gérer les colonnes",
+		"column-name": "Nom de la colonne",
+		"delete-rule": "Suppression impossible si la colonne contient des prospects.",
+		"columns": {
+			"new": "Nouveau",
+			"contacted": "Contacté",
+			"in-discussion": "En discussion",
+			"won": "Gagné",
+			"lost": "Perdu"
+		}
+	},
+	"score": {
+		"title": "Score de qualification",
+		"why": "Pourquoi ?",
+		"empty": "Enrichissez ce prospect pour obtenir un score",
+		"points": "{points} pts"
+	},
+	"business": {
+		"title": "Activité",
+		"empty": "Enrichissez ce prospect pour détecter son activité",
+		"google-summary": "Selon Google :",
+		"sources": {
+			"NAF": "Source : registre officiel des entreprises (INSEE)",
+			"GOOGLE_TYPES": "Source : catégorie Google, non confirmée"
+		},
+		"categories": {
+			"TAXI_VTC": "Taxi / VTC",
+			"AMBULANCE": "Ambulance / transport sanitaire",
+			"ROAD_FREIGHT": "Transport routier de marchandises",
+			"PASSENGER_TRANSPORT": "Transport de voyageurs",
+			"VEHICLE_RENTAL": "Location de véhicules",
+			"AUTO_SERVICES": "Garage / services automobiles",
+			"DRIVING_SCHOOL": "Auto-école",
+			"CONSTRUCTION": "Bâtiment / travaux publics",
+			"LANDSCAPING": "Paysagiste / espaces verts",
+			"CLEANING": "Nettoyage / propreté",
+			"OTHER": "Activité non catégorisée"
+		},
+		"facts": {
+			"ACTIVITY_NAF": "Activité déclarée : {activity} (code NAF {nafCode}).",
+			"ACTIVITY_NAF_UNMAPPED": "Activité déclarée au registre sous le code NAF {nafCode}, non catégorisée par Kerflow.",
+			"ACTIVITY_GOOGLE": "Activité déduite de la fiche Google ({googleType}) : {activity}. Non confirmée par le registre.",
+			"COMPANY_AGE": "Présente depuis {years} ans (créée en {year}).",
+			"COMPANY_RECENT": "Entreprise récente, créée en {year}.",
+			"LIKELY_FLEET": "Dispose probablement d'une flotte de véhicules.",
+			"LEGAL_FORM_INDIVIDUAL": "Entrepreneur individuel : le dirigeant est le décideur direct.",
+			"LEGAL_FORM_ASSOCIATION": "Structure associative : budget et cycle de décision spécifiques."
+		}
+	},
+	"size": {
+		"title": "Taille estimée",
+		"unknown": "Taille inconnue",
+		"buckets": {
+			"SOLO": "Entreprise individuelle",
+			"FROM_2_TO_5": "2 à 5 personnes",
+			"FROM_6_TO_9": "6 à 9 personnes",
+			"FROM_10_TO_19": "10 à 19 personnes",
+			"FROM_20_TO_49": "20 à 49 personnes",
+			"FIFTY_PLUS": "50 personnes et plus"
+		},
+		"confidence": {
+			"HIGH": "Confiance élevée",
+			"MEDIUM": "Confiance moyenne",
+			"LOW": "Confiance faible"
+		},
+		"confidence-explanation": {
+			"HIGH": "Basée sur la tranche d'effectif déclarée au registre officiel des entreprises.",
+			"MEDIUM": "Basée sur une déclaration ancienne ou sur plusieurs indices concordants.",
+			"LOW": "Estimation déduite d'indices : à confirmer."
+		},
+		"reasons": {
+			"SIRENE_WORKFORCE_BRACKET": "Tranche d'effectif {bracket} déclarée au registre (données {year}).",
+			"SIRENE_NON_EMPLOYER": "Aucun salarié déclaré au registre et aucun indice de structure plus grande.",
+			"HEURISTIC_RECRUITING": "Le site mentionne du recrutement.",
+			"HEURISTIC_FLEET": "Le site mentionne une flotte de véhicules.",
+			"HEURISTIC_MANY_REVIEWS": "Volume d'avis Google élevé.",
+			"HEURISTIC_MULTI_ESTABLISHMENT": "{count} établissements ouverts au registre."
+		}
+	},
+	"analysis": {
+		"title": "Analyse de l'agent",
+		"empty": "Aucune analyse d'agent. Demandez à Claude d'analyser ce prospect via MCP.",
+		"needs": "Besoins détectés",
+		"approach": "Approche suggérée",
+		"generated-by": "Généré par {by} · {date}"
+	},
+	"sheet": {
+		"title": "Fiche profil",
+		"empty": "Aucune fiche profil. Demandez à Claude de générer une fiche via MCP.",
+		"generated-by": "Générée par {by} · {date}"
+	},
+	"messages": {
+		"title": "Messages",
+		"empty": "Aucun échange. Ajoutez-en un, ou demandez à Claude de rédiger un email via MCP.",
+		"status": {
+			"draft": "Brouillon",
+			"sent": "Envoyé",
+			"reply": "Réponse"
+		},
+		"direction": {
+			"inbound": "Reçu",
+			"outbound": "Envoyé"
+		},
+		"channel": {
+			"email": "Email",
+			"phone": "Appel",
+			"sms": "SMS",
+			"linkedin": "LinkedIn",
+			"meeting": "Rendez-vous",
+			"other": "Autre"
+		},
+		"generated-by": "Généré par {by}",
+		"show-more": "Voir plus",
+		"show-less": "Voir moins",
+		"mark-sent": "Marquer envoyé",
+		"add-exchange": "Ajouter un échange",
+		"dialog": {
+			"title": "Ajouter un échange",
+			"channel": "Canal",
+			"date": "Date",
+			"subject": "Sujet (optionnel)",
+			"body": "Contenu",
+			"already-sent": "Déjà envoyé",
+			"already-sent-hint": "Décochez pour garder un brouillon à envoyer plus tard."
+		},
+		"delete": {
+			"title": "Supprimer le message",
+			"description": "Ce message sera définitivement supprimé du fil."
+		}
+	},
+	"signals": {
+		"title": "Signaux détectés",
+		"empty": "Aucun signal détecté",
+		"enrich": "Enrichir",
+		"types": {
+			"MANY_REVIEWS": {
+				"label": "Avis nombreux",
+				"explanation": "{count} avis Google : établissement très visible, soucieux de sa réputation en ligne."
+			},
+			"MOBILE_ONLY_PHONE": {
+				"label": "Téléphone mobile",
+				"explanation": "Seul un numéro de mobile est affiché : structure probablement petite, décideur directement joignable."
+			},
+			"NO_WEBSITE": {
+				"label": "Pas de site web",
+				"explanation": "Aucun site web renseigné : opportunité idéale pour proposer une création de site ou de la visibilité en ligne."
+			},
+			"NO_HTTPS": {
+				"label": "Site non sécurisé",
+				"explanation": "Le site n'utilise pas HTTPS : signe d'un site vieillissant, bon argument pour une refonte."
+			},
+			"WORDPRESS": {
+				"label": "WordPress",
+				"explanation": "Site construit avec WordPress : maintenance, refonte ou optimisation faciles à proposer."
+			},
+			"PRO_EMAIL": {
+				"label": "Email pro",
+				"explanation": "Email professionnel trouvé ({email}) : contact direct sur le domaine de l'entreprise."
+			},
+			"GENERIC_EMAIL": {
+				"label": "Email générique",
+				"explanation": "Email sur un domaine grand public ({email}) : présence numérique peu professionnalisée."
+			},
+			"RECRUITING_DETECTED": {
+				"label": "Recrute",
+				"explanation": "Le site mentionne du recrutement : l'entreprise est en croissance, bon moment pour la contacter."
+			},
+			"FLEET_DETECTED": {
+				"label": "Flotte détectée",
+				"explanation": "Le site mentionne une flotte de véhicules : prospect pertinent pour une solution de gestion de flotte."
+			},
+			"PROFESSIONAL_WEBSITE": {
+				"label": "Site professionnel",
+				"explanation": "Site accessible et servi en HTTPS : entreprise établie qui entretient sa présence en ligne."
+			},
+			"ACTIVE_GOOGLE_PRESENCE": {
+				"label": "Présence Google active",
+				"explanation": "Note de {rating}/5 sur {count} avis : l'entreprise soigne activement sa fiche Google."
+			},
+			"SOCIAL_MEDIA_PRESENCE": {
+				"label": "Réseaux sociaux",
+				"explanation": "{count} réseau(x) social(aux) lié(s) depuis le site : l'entreprise investit dans sa communication."
+			},
+			"MULTI_ESTABLISHMENT": {
+				"label": "Plusieurs établissements",
+				"explanation": "{count} établissements ouverts au registre officiel : structure multi-sites, budget et besoins plus larges."
+			},
+			"COMPANY_MATURE": {
+				"label": "Entreprise établie",
+				"explanation": "Créée il y a {years} ans : activité pérenne, interlocuteur stable."
+			}
+		}
+	},
+	"csv-import": {
+		"title": "Importer des prospects",
+		"select-file": "Sélectionner un fichier CSV",
+		"format-hint": "Le fichier doit être au format CSV avec des colonnes telles que : nom, email, téléphone, adresse, site web.",
+		"rows": "lignes",
+		"change-file": "Changer de fichier",
+		"showing-preview": "Aperçu des {shown} premières lignes sur {total}",
+		"import-button": "Importer {count} prospects"
+	},
+	"settings": {
+		"title": "Paramètres",
+		"profile": {
+			"title": "Profil",
+			"personal-info": "Informations personnelles",
+			"first-name": "Prénom",
+			"last-name": "Nom",
+			"phone-number": "Téléphone",
+			"email": "Email",
+			"required": "Ce champ est requis"
+		},
+		"security": {
+			"title": "Sécurité",
+			"password-change": "Changer le mot de passe",
+			"current-password": "Mot de passe actuel",
+			"new-password": "Nouveau mot de passe",
+			"confirm-password": "Confirmer le mot de passe",
+			"update-password": "Mettre à jour",
+			"password-match": "Les mots de passe ne correspondent pas",
+			"two-factor-auth": "Authentification à deux facteurs",
+			"two-factor-status": "Statut 2FA",
+			"two-factor-desc": "Ajoutez une couche de sécurité supplémentaire",
+			"setup-two-factor": "Configurer 2FA",
+			"scan-qr-code": "Scannez ce QR code",
+			"scan-qr-code-desc": "Utilisez votre application d'authentification",
+			"verification-code": "Code de vérification",
+			"verify-and-enable": "Vérifier et activer",
+			"active-sessions": "Sessions actives",
+			"active-sessions-desc": "Gérez vos sessions de connexion",
+			"current-device": "Appareil actuel",
+			"terminate-session": "Fermer",
+			"terminate-all-sessions": "Fermer toutes les sessions",
+			"cancel": "Annuler",
+			"confirm": "Confirmer"
+		},
+		"api-tokens": {
+			"title": "API & MCP",
+			"tokens-title": "Tokens d'accès API",
+			"description": "Les tokens permettent aux agents IA (Claude, ChatGPT…) et aux outils externes d'accéder à votre compte Kerflow via MCP. Un token donne accès à vos prospects : gardez-le secret.",
+			"revoked": "Révoqué",
+			"created-on": "Créé le {date}",
+			"last-used": "Dernière utilisation le {date}",
+			"never-used": "Jamais utilisé",
+			"empty-title": "Aucun token",
+			"empty-text": "Créez un token pour connecter Claude ou un autre agent à Kerflow.",
+			"create-button": "Créer un token",
+			"create-dialog-title": "Nouveau token",
+			"name-label": "Nom du token",
+			"name-required": "Le nom est requis",
+			"created-dialog-title": "Token créé",
+			"one-time-warning": "Copiez ce token maintenant : il ne sera plus jamais affiché.",
+			"copied": "Copié dans le presse-papiers",
+			"revoke-button": "Révoquer",
+			"revoke-confirm-title": "Révoquer le token ?",
+			"revoke-confirm-message": "Le token « {name} » sera définitivement révoqué. Les agents ou outils qui l'utilisent perdront immédiatement l'accès à votre compte.",
+			"connect-claude-title": "Connecter Claude",
+			"connect-claude-description": "Une fois connecté, vous discutez avec Claude et c'est lui qui pilote Kerflow pour vous : recherche d'entreprises, analyse, enregistrement de prospects. La connexion utilise MCP, un standard ouvert.",
+			"connect-web-title": "Sur Claude.ai",
+			"connect-web-description": "Dans Claude.ai : Paramètres → Connecteurs → Ajouter un connecteur personnalisé, puis collez cette URL :",
+			"connect-web-oauth-hint": "Laissez les champs Client ID et Client Secret vides. Claude vous redirigera vers Kerflow pour vous demander votre autorisation : aucun token à créer.",
+			"connect-cli-title": "Avec Claude Code",
+			"connect-claude-step-token": "Créez un token ci-dessus et copiez-le.",
+			"connect-claude-step-command": "Collez cette commande dans un terminal (Claude Code installé), en remplaçant kf_YOUR_TOKEN par votre token :",
+			"copy": "Copier"
+		},
+		"billing": {
+			"title": "Abonnement",
+			"current-plan": "Mon abonnement",
+			"plan-name": "Kerflow Pro",
+			"checkout-cancelled": "Paiement annulé. Vous pouvez réessayer quand vous le souhaitez.",
+			"trial-remaining": "Votre période d'essai est terminée | Il reste {count} jours d'essai gratuit",
+			"renews-on": "Prochain renouvellement le {date}",
+			"manage-subscription": "Gérer mon abonnement",
+			"status": {
+				"trialing": "Période d'essai",
+				"active": "Actif",
+				"past-due": "Paiement en retard",
+				"cancelled": "Annulé",
+				"inactive": "Inactif"
+			}
+		}
+	},
+	"oauth": {
+		"consent": {
+			"title": "{clientName} demande l'accès à Kerflow",
+			"connected-as": "Connecté en tant que {email}",
+			"description": "En autorisant, {clientName} pourra agir sur votre compte Kerflow en votre nom :",
+			"scopes": {
+				"mcp": "Consulter et gérer vos prospects, et rechercher des entreprises"
+			},
+			"revoke-hint": "Vous pourrez révoquer cet accès à tout moment depuis Paramètres → API & MCP.",
+			"approve": "Autoriser",
+			"deny": "Refuser",
+			"expired-title": "Demande expirée",
+			"expired-text": "Cette demande d'autorisation n'est plus valide. Relancez la connexion depuis Claude.",
+			"back-to-app": "Retour à Kerflow"
+		}
+	},
+	"validation": {
+		"required": "Ce champ est requis"
+	},
+	"errors": {
+		"clipboard-failed": "Impossible de copier dans le presse-papiers.",
+		"fetch-api-tokens-failed": "Erreur lors du chargement des tokens.",
+		"create-api-token-failed": "Erreur lors de la création du token.",
+		"revoke-api-token-failed": "Erreur lors de la révocation du token.",
+		"oauth-consent-failed": "Impossible de finaliser l'autorisation. Relancez la connexion depuis l'application.",
+		"search-failed": "Erreur lors de la recherche. Veuillez réessayer.",
+		"fetch-prospects-failed": "Erreur lors du chargement des prospects.",
+		"create-prospect-failed": "Erreur lors de la création du prospect.",
+		"update-prospect-failed": "Erreur lors de la mise à jour du prospect.",
+		"reorder-prospects-failed": "Erreur lors du réordonnancement des prospects.",
+		"delete-prospect-failed": "Erreur lors de la suppression du prospect.",
+		"enrich-prospect-failed": "Erreur lors de l'enrichissement du prospect.",
+		"fetch-messages-failed": "Erreur lors du chargement des messages.",
+		"create-message-failed": "Erreur lors de l'enregistrement du message.",
+		"mark-sent-failed": "Erreur lors du marquage du message.",
+		"delete-message-failed": "Erreur lors de la suppression du message.",
+		"csv-parse-failed": "Erreur lors de la lecture du fichier CSV.",
+		"csv-import-failed": "Erreur lors de l'import du fichier CSV.",
+		"update-profile-failed": "Erreur lors de la mise à jour du profil."
+	},
+	"success": {
+		"prospect-created": "Prospect ajouté avec succès",
+		"prospect-updated": "Prospect mis à jour",
+		"prospect-deleted": "Prospect supprimé",
+		"prospect-enriched": "Prospect enrichi",
+		"message-recorded": "Échange enregistré",
+		"message-marked-sent": "Message marqué comme envoyé",
+		"message-deleted": "Message supprimé",
+		"csv-imported": "{count} prospect(s) importé(s) avec succès",
+		"profile-updated": "Profil mis à jour",
+		"api-token-created": "Token créé",
+		"api-token-revoked": "Token révoqué"
+	},
+	"beta": {
+		"mode": "Mode beta",
+		"enabled": "Mode beta activé"
+	},
+	"notifications": {
+		"title": "Notifications",
+		"unread": "Non lues",
+		"read": "Lues",
+		"mark-all-as-read": "Tout marquer comme lu",
+		"mark-as-read": "Marquer comme lu",
+		"mark-as-unread": "Marquer comme non lu",
+		"no-unread-notifications": "Aucune notification non lue",
+		"no-read-notifications": "Aucune notification lue"
+	},
+	"footer": {
+		"rights": "Tous droits réservés",
+		"terms": "Conditions d'utilisation"
+	},
+	"billing": {
+		"paywall": {
+			"title": "Passez à Kerflow Pro",
+			"subtitle": "Votre période d'essai est terminée. Abonnez-vous pour continuer à utiliser Kerflow.",
+			"price": "19,90 €",
+			"per-month": " / mois",
+			"price-annual": "199 €",
+			"per-year": " / an",
+			"interval-monthly": "Mensuel",
+			"interval-annual": "Annuel",
+			"savings-badge": "2 mois offerts",
+			"subscribe": "S'abonner",
+			"features": {
+				"prospects": "Gestion illimitée de vos prospects",
+				"pipeline": "Pipeline de prospection personnalisable",
+				"search": "Recherche et import de prospects",
+				"cancel-anytime": "Sans engagement, annulable à tout moment"
+			}
+		},
+		"checkout": {
+			"confirming": "Confirmation de votre paiement…",
+			"success-title": "Paiement confirmé, bienvenue !",
+			"error-title": "Impossible de confirmer le paiement",
+			"error-subtitle": "Votre paiement a peut-être été accepté. Réessayez ou contactez le support.",
+			"retry": "Réessayer"
+		},
+		"trial-banner": {
+			"days-remaining": "Votre période d'essai est terminée | Il reste {count} jours d'essai gratuit",
+			"past-due": "Votre dernier paiement a échoué. Mettez à jour votre moyen de paiement."
+		},
+		"trial-expired": {
+			"title": "Votre période d'essai est terminée",
+			"message": "Vous pouvez toujours consulter vos prospects, mais l'ajout et la modification nécessitent un abonnement actif.",
+			"cta": "S'abonner à Kerflow Pro"
+		},
+		"errors": {
+			"checkout-failed": "Impossible de démarrer le paiement. Réessayez.",
+			"sync-failed": "Impossible de vérifier le paiement. Réessayez.",
+			"portal-failed": "Impossible d'ouvrir le portail de facturation. Réessayez."
+		}
+	},
+	"early-access": {
+		"description": "Kerflow est en accès anticipé : cet email n'est pas encore autorisé à créer un compte."
+	},
+	"verify": {
+		"invalid-code": "Code incorrect. Veuillez réessayer.",
+		"code-expired": "Le code a expiré. Demandez-en un nouveau.",
+		"code-resent": "Un nouveau code vous a été envoyé.",
+		"resend-error": "Impossible de renvoyer le code. Veuillez réessayer.",
+		"verify-error": "La vérification a échoué. Veuillez réessayer."
+	}
+}

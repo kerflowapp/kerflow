@@ -1,0 +1,97 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: kerflow-backend
+  ai:
+    mcp:
+      server:
+        name: kerflow
+        version: 0.1.0
+        type: SYNC
+        protocol: STATELESS
+        annotation-scanner:
+          enabled: false
+        streamable-http:
+          mcp-endpoint: /mcp
+        capabilities:
+          tool: true
+          resource: false
+          prompt: false
+          completion: false
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  web:
+    resources:
+      static-locations: classpath:/static/
+      add-mappings: true
+  mvc:
+    static-path-pattern: /static/**
+aws:
+  region:
+  access-key:
+  secret-key:
+
+google:
+  places:
+    api-key: ${GOOGLE_PLACES_API_KEY:}
+
+sirene:
+  recherche-entreprises:
+    # French government open API: free, no key, no auth, 7 req/s.
+    base-url: ${RECHERCHE_ENTREPRISES_BASE_URL:https://recherche-entreprises.api.gouv.fr}
+
+resend:
+  enabled: false
+  api-key: ${RESEND_API_KEY:}
+
+stripe:
+  api-key: ${STRIPE_API_KEY:}
+  price-id: ${STRIPE_PRICE_ID:}
+  price-id-annual: ${STRIPE_PRICE_ID_ANNUAL:}
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+commons:
+  account-confirmation-url: ${commons.backend-url}/v1/authentication/signup-confirmation
+  reset-password-confirmation-url: ${commons.web-url}/reset-password
+  signup-confirmation-succeed-url: ${commons.web-url}/signin?confirmation=success
+  from-mail: ${MAIL_FROM:Kerflow <hello@kerflowapp.com>}
+  # Printed in the email footer. Whoever operates the instance fills in their own;
+  # empty means the line is not rendered at all.
+  postal-address: ${MAIL_POSTAL_ADDRESS:}
+  discord:
+    enabled: false
+    bot-token: ${DISCORD_BOT_TOKEN:}
+    guild-id: ${DISCORD_GUILD_ID:}
+    channel-prefix: ""
+
+sentry:
+  dsn: ${SENTRY_DSN:}
+  send-default-pii: true
+  logs:
+    enabled: true
+
+kerflow:
+  super-admin-emails: ${SUPER_ADMIN_EMAILS:}
