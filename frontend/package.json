@@ -54,7 +54,7 @@
 		"vue": "^3.5.11",
 		"vue-echarts": "^7.0.3",
 		"vue-i18n": "^11.1.10",
-		"vue-router": "^4.4.5",
+		"vue-router": "^5.3.0",
 		"vuedraggable": "^4.1.0",
 		"vuetify": "^3.7.6",
 		"vuetify-sonner": "^0.3.21"
