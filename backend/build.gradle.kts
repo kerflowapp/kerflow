@@ -52,7 +52,7 @@ dependencies {
     implementation("software.amazon.awssdk:cognitoidentityprovider")
 
     // Email
-    implementation("com.resend:resend-java:4.6.0")
+    implementation("com.resend:resend-java:4.22.0")
 
     // Stripe
     implementation("com.stripe:stripe-java:33.1.0")
