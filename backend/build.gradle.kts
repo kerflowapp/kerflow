@@ -47,7 +47,7 @@ dependencies {
     implementation("org.postgresql:postgresql")
 
     // Cognito
-    implementation(platform("software.amazon.awssdk:bom:2.31.6"))
+    implementation(platform("software.amazon.awssdk:bom:2.54.7"))
     implementation("software.amazon.awssdk:cognitoidentity")
     implementation("software.amazon.awssdk:cognitoidentityprovider")
 
