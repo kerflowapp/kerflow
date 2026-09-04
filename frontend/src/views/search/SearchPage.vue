@@ -22,7 +22,7 @@
 		</div>
 
 		<!-- Desktop: side-by-side -->
-		<v-row v-if="hasSearched" class="search-content" no-gutters>
+		<v-row v-if="hasSearched" class="search-content" :class="{ 'is-stacked': smAndDown }" no-gutters>
 			<v-col class="results-panel" :class="{ 'd-none d-md-block': mobileView === 'map' }" cols="12" md="4">
 				<SearchResultsList
 					:has-searched="hasSearched"
@@ -75,26 +75,25 @@
 	padding-left: 8px;
 }
 
-@media (max-width: 959px) {
-	.results-panel {
-		max-height: none;
-		overflow-y: visible;
-		padding-right: 0;
-	}
+.search-content.is-stacked .results-panel {
+	max-height: none;
+	overflow-y: visible;
+	padding-right: 0;
+}
 
-	.map-panel {
-		position: relative;
-		top: auto;
-		height: calc(100vh - 340px);
-		min-height: 350px;
-		padding-left: 0;
-	}
+.search-content.is-stacked .map-panel {
+	position: relative;
+	top: auto;
+	height: calc(100vh - 340px);
+	min-height: 350px;
+	padding-left: 0;
 }
 </style>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useDisplay } from 'vuetify';
 
 import type { SearchResultDto } from '~/api/dtos/search.dto';
 import SearchBar from '~/components/search/SearchBar.vue';
@@ -105,6 +104,7 @@ import { useProspects } from '~/composables/useProspects';
 import { useSearch } from '~/composables/useSearch';
 
 const { t } = useI18n();
+const { smAndDown } = useDisplay();
 const { searchResults, isSearching, hasSearched, searchPlaces } = useSearch();
 const { addFromSearchResult, isCreating } = useProspects();
 

@@ -1,12 +1,11 @@
 <template>
 	<div class="d-flex flex-column align-center justify-content-center">
 		<div>
-			<v-img
-				alt="404 Illustration"
-				class="not-found-image mb-6"
-				:fallback-src="`https://placehold.co/280x280/EFEFEF/AAAAAA?text=404`"
-				src="/404_illustration.svg"
-			></v-img>
+			<v-img alt="404 Illustration" class="not-found-image mb-6" src="/404_illustration.svg">
+				<template #error>
+					<v-img alt="404 Illustration" src="https://placehold.co/280x280/EFEFEF/AAAAAA?text=404" />
+				</template>
+			</v-img>
 		</div>
 		<div>
 			<h1 class="text-h3 font-weight-bold text-primary mb-2">
@@ -30,13 +29,6 @@
 <style scoped>
 .not-found-image {
 	margin: 0 auto;
-}
-
-@media (max-width: 600px) {
-	.not-found-container {
-		padding: 1rem;
-		min-height: 70vh;
-	}
 }
 </style>
 

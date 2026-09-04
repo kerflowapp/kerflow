@@ -22,15 +22,14 @@
 		// prevent lodash missing default export in single function module
 		"allowSyntheticDefaultImports": true,
 		/* path aliasing */
-		"baseUrl": ".",
 		"paths": {
-			"~/*": ["src/*"],
-			"tests/": ["tests/*"]
+			"~/*": ["./src/*"],
+			"tests/": ["./tests/*"]
 		},
 		/* types */
 		"types": ["vite/client"],
 		/* bundler mode */
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"allowImportingTsExtensions": true,
 		"isolatedModules": true,
 		"moduleDetection": "force",

@@ -9,7 +9,7 @@ For anything larger than a bug fix, open an issue first so we can agree on the a
 
 ## Local setup
 
-**Prerequisites:** JDK 21, Node 20.19+, Docker.
+**Prerequisites:** JDK 21, Node 24+, Docker.
 
 ```bash
 # Backend — PostgreSQL on localhost:5490, API on localhost:8090

@@ -16,8 +16,6 @@ import i18n from './plugin/i18n';
 import posthogPlugin from './plugin/posthog';
 import router from './router';
 
-import 'vuetify/styles/main.css';
-
 const savedTheme = 'light';
 
 const app = createApp(App);
@@ -31,7 +29,7 @@ const vuetify = createVuetify({
 	components: {
 		...components,
 		...labsComponents,
-		...VFileUpload
+		VFileUpload
 	},
 	date: {
 		adapter: DateFnsAdapter,

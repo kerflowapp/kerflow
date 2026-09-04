@@ -34,7 +34,7 @@ Both projects are self-contained: open the repository root in your IDE, or open
 
 ## Getting started
 
-**Prerequisites:** JDK 21, Node 20.19+, Docker.
+**Prerequisites:** JDK 21, Node 24+, Docker.
 
 ```bash
 git clone https://github.com/kerflowapp/kerflow.git
