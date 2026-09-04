@@ -1,6 +1,6 @@
 import type { Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { toast } from 'vuetify-sonner';
+import { toast } from '~/composables/useToast';
 
 import type { CreateProspectDto, ProspectDto, UpdateProspectDto } from '~/api/dtos/prospect.dto';
 import { ProspectSource } from '~/api/dtos/prospect.dto';

@@ -1,22 +1,21 @@
 <template>
 	<v-app>
 		<router-view></router-view>
-		<VSonner :duration="3000" position="bottom-right" :visible-toasts="5"></VSonner>
+		<v-snackbar-queue v-model="messages" location="bottom right" :timeout="3000" :total-visible="5"></v-snackbar-queue>
 	</v-app>
 </template>
 
 <script setup lang="ts">
 import { onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { VSonner, toast } from 'vuetify-sonner';
 
 import { useBetaMode } from '~/composables/useBetaMode';
 import { useSandboxMode } from '~/composables/useSandboxMode';
-
-import 'vuetify-sonner/style.css';
+import { useToast } from '~/composables/useToast';
 
 const { isBetaEnabled, initBetaMode } = useBetaMode();
 const { isSandboxEnabled, initSandboxMode } = useSandboxMode();
+const { messages, toast } = useToast();
 const { t } = useI18n();
 
 watch(isBetaEnabled, newValue => {

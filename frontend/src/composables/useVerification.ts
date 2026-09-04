@@ -2,7 +2,7 @@ import { of } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { toast } from 'vuetify-sonner';
+import { toast } from '~/composables/useToast';
 
 import { resendVerificationCode$, verifyAccount$ } from '~/api/auth.api';
 

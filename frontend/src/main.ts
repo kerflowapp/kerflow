@@ -7,7 +7,6 @@ import { createVuetify } from 'vuetify';
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
 import { aliases, mdi } from 'vuetify/iconsets/mdi';
-import { VFileUpload } from 'vuetify/labs/VFileUpload';
 import * as labsComponents from 'vuetify/labs/components';
 import 'vuetify/styles';
 
@@ -21,15 +20,9 @@ const savedTheme = 'light';
 const app = createApp(App);
 
 const vuetify = createVuetify({
-	defaults: {
-		VBtn: {
-			class: 'text-none'
-		}
-	},
 	components: {
 		...components,
-		...labsComponents,
-		VFileUpload
+		...labsComponents
 	},
 	date: {
 		adapter: DateFnsAdapter,

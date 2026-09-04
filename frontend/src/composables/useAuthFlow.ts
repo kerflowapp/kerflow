@@ -1,7 +1,7 @@
 import { onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
-import { toast } from 'vuetify-sonner';
+import { toast } from '~/composables/useToast';
 
 import { checkEmail$, resendVerificationCode$, signup$, verifyAccount$ } from '~/api/auth.api';
 import { useAuthStore } from '~/stores/auth.store';

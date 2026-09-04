@@ -188,7 +188,7 @@ import { computed, onBeforeUnmount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
-import { toast } from 'vuetify-sonner';
+import { toast } from '~/composables/useToast';
 
 import { checkEmail$, resendVerificationCode$, verifyAccount$ } from '~/api/auth.api';
 import { useBetaMode } from '~/composables/useBetaMode';

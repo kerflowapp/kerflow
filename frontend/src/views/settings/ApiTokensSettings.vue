@@ -126,7 +126,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { toast } from 'vuetify-sonner';
+import { toast } from '~/composables/useToast';
 
 import type { ApiTokenDto, CreatedApiTokenDto } from '~/api/dtos/api-token.dto';
 import ConfirmationDialog from '~/components/ConfirmationDialog.vue';

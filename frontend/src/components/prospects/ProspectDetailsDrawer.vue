@@ -307,7 +307,7 @@ import { LIcon, LMap, LMarker, LTileLayer } from '@vue-leaflet/vue-leaflet';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
-import { toast } from 'vuetify-sonner';
+import { toast } from '~/composables/useToast';
 
 import type { CreateProspectMessageDto } from '~/api/dtos/prospect-message.dto';
 import type { ProspectDto } from '~/api/dtos/prospect.dto';

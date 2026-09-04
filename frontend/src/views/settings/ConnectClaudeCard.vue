@@ -60,7 +60,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { toast } from 'vuetify-sonner';
+import { toast } from '~/composables/useToast';
 
 import { getBackendUrl } from '~/utils/urlUtils';
 

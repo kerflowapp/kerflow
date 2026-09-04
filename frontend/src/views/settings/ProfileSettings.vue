@@ -63,7 +63,7 @@
 import { watchImmediate } from '@vueuse/core';
 import { computed, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { toast } from 'vuetify-sonner';
+import { toast } from '~/composables/useToast';
 
 import { updateUser$ } from '~/api/users.api';
 import { useAuth } from '~/composables/useAuth';

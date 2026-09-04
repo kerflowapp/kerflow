@@ -86,7 +86,7 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
-import { toast } from 'vuetify-sonner';
+import { toast } from '~/composables/useToast';
 
 import { UpdatePasswordAction } from '~/api/dtos/auth.dto';
 import { useTrigger } from '~/composables/useTrigger';

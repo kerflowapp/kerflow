@@ -1,7 +1,7 @@
 import type { Ref } from 'vue';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { toast } from 'vuetify-sonner';
+import { toast } from '~/composables/useToast';
 
 import { createApiToken$, getApiTokens$, revokeApiToken$ } from '~/api/api-tokens.api';
 import type { ApiTokenDto, CreatedApiTokenDto } from '~/api/dtos/api-token.dto';

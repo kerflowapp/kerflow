@@ -108,7 +108,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { toast } from 'vuetify-sonner';
+import { toast } from '~/composables/useToast';
 
 import type { CreateProspectMessageDto, ProspectMessageDto } from '~/api/dtos/prospect-message.dto';
 import ProspectMessageDialog from '~/components/prospects/ProspectMessageDialog.vue';
