@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.kerflowapp.kerflow.api.authentication.AuthenticationController.*;
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+import static org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher.pathPattern;
 
 @Configuration
 @EnableWebSecurity
@@ -110,7 +110,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
             .cors(cors -> cors.configurationSource(corsConfigurationSource))
             .authorizeHttpRequests(auth ->
-                unsecuredPaths.forEach(path -> auth.requestMatchers(antMatcher(path)).permitAll())
+                unsecuredPaths.forEach(path -> auth.requestMatchers(pathPattern(path)).permitAll())
             )
             .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
             .oauth2ResourceServer(w -> w

@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+import static org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher.pathPattern;
 
 @Slf4j
 @Component
@@ -43,7 +43,7 @@ public class CustomBearerTokenResolver implements BearerTokenResolver {
             return Optional.empty();
         }
 
-        if (unsecuredPaths.stream().anyMatch(path -> antMatcher(path).matches(request))) {
+        if (unsecuredPaths.stream().anyMatch(path -> pathPattern(path).matches(request))) {
             return Optional.empty();
         }
 

@@ -1,20 +1,20 @@
 package com.kerflowapp.kerflow.mcp;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kerflowapp.kerflow.mcp.auth.McpApiTokenFilter;
 import com.kerflowapp.kerflow.mcp.tools.AnalysisTools;
 import com.kerflowapp.kerflow.mcp.tools.OutreachTools;
 import com.kerflowapp.kerflow.mcp.tools.ProspectTools;
 import com.kerflowapp.kerflow.mcp.tools.SearchTools;
 import io.modelcontextprotocol.common.McpTransportContext;
-import io.modelcontextprotocol.json.jackson2.JacksonMcpJsonMapper;
-import io.modelcontextprotocol.server.transport.WebMvcStatelessServerTransport;
+import io.modelcontextprotocol.json.jackson3.JacksonMcpJsonMapper;
 import org.springframework.ai.mcp.server.common.autoconfigure.properties.McpServerStreamableHttpProperties;
+import org.springframework.ai.mcp.server.webmvc.transport.WebMvcStatelessServerTransport;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.tool.method.MethodToolCallbackProvider;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.Map;
 
@@ -29,10 +29,10 @@ public class McpServerConfig {
      */
     @Bean
     public WebMvcStatelessServerTransport webMvcStatelessServerTransport(
-        ObjectMapper objectMapper,
+        JsonMapper jsonMapper,
         McpServerStreamableHttpProperties properties) {
         return WebMvcStatelessServerTransport.builder()
-            .jsonMapper(new JacksonMcpJsonMapper(objectMapper))
+            .jsonMapper(new JacksonMcpJsonMapper(jsonMapper))
             .messageEndpoint(properties.getMcpEndpoint())
             .contextExtractor(request -> {
                 Object user = request.servletRequest().getAttribute(McpApiTokenFilter.MCP_USER_ATTRIBUTE);

@@ -1,22 +1,25 @@
 package com.kerflowapp.kerflow.configuration;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.boot.jackson.autoconfigure.JsonMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.cfg.DateTimeFeature;
 
 @Configuration
 public class JacksonConfig {
 
+    /**
+     * Customises the JsonMapper Spring Boot auto-configures instead of defining a mapper
+     * of our own: since Jackson 3 the mapper is immutable and built from a builder, and
+     * this way the web layer and every injected mapper share the same configuration.
+     */
     @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper()
-            .registerModule(new JavaTimeModule())
-            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+    public JsonMapperBuilderCustomizer kerflowJsonMapperBuilderCustomizer() {
+        return builder -> builder
+            .changeDefaultPropertyInclusion(value -> value.withValueInclusion(JsonInclude.Include.NON_NULL))
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            .disable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
 }
