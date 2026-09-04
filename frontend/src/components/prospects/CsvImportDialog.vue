@@ -63,7 +63,7 @@
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useCsvImport } from '~/composables';
+import { useCsvImport } from '~/composables/useCsvImport';
 
 const modelValue = defineModel<boolean>();
 const { t } = useI18n();

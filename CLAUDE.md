@@ -38,11 +38,14 @@ api/*.api.ts  →  composables/use*.ts  →  components/, views/
 
 - **`api/`** — HTTP only. Every function returns an `AxiosObservable<T>`, is named with a
   `$` suffix, and gets its instance from `useHttp()`. Types live in `api/dtos/*.dto.ts`.
-- **`composables/`** — business logic and local state, one responsibility each, exported from `composables/index.ts`.
+- **`composables/`** — business logic and local state, one responsibility each.
   Use `useTrigger()` for the loading flag, the RxJS subscription, the unsubscribe on unmount and the 401 handling — do
   not hand-roll it.
 - **`components/`, `views/`** — UI and user events only. No API call, no heavy logic. Split a component before it
   reaches ~300 lines.
+- **No barrel files.** Import the module that defines the symbol — `~/composables/useTrigger`,
+  `~/api/dtos/prospect.dto`, `~/utils/tokenStorage` — never a directory. Do not add a re-exporting `index.ts`
+  (`src/router/index.ts` is the router itself, not a barrel).
 
 Rules that are easy to break:
 

@@ -3,10 +3,10 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { toast } from 'vuetify-sonner';
 
-import type { BillingInterval } from '~/api';
-import { createCheckoutSession$, createPortalSession$, syncCheckoutSession$ } from '~/api';
+import type { BillingInterval } from '~/api/billing.api';
+import { createCheckoutSession$, createPortalSession$, syncCheckoutSession$ } from '~/api/billing.api';
 import type { SubscriptionDto } from '~/api/dtos/users.dto';
-import { useAuthStore } from '~/stores';
+import { useAuthStore } from '~/stores/auth.store';
 
 import { useTrigger } from './useTrigger';
 

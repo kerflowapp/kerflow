@@ -318,7 +318,7 @@ import ProspectSheetCard from '~/components/prospects/ProspectSheetCard.vue';
 import ProspectScoreCard from '~/components/signals/ProspectScoreCard.vue';
 import SignalsList from '~/components/signals/SignalsList.vue';
 import SizeEstimateCard from '~/components/signals/SizeEstimateCard.vue';
-import { useProspectMessages } from '~/composables';
+import { useProspectMessages } from '~/composables/useProspectMessages';
 
 import 'leaflet/dist/leaflet.css';
 

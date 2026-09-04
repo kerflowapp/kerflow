@@ -88,9 +88,10 @@ import { useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
 import { toast } from 'vuetify-sonner';
 
-import { UpdatePasswordAction } from '~/api/dtos';
-import { useTrigger, useUrlParams } from '~/composables';
-import { useAuthStore } from '~/stores';
+import { UpdatePasswordAction } from '~/api/dtos/auth.dto';
+import { useTrigger } from '~/composables/useTrigger';
+import { useUrlParams } from '~/composables/useUrlParams';
+import { useAuthStore } from '~/stores/auth.store';
 
 import '@/assets/styles/signin.css';
 

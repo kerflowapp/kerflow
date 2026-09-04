@@ -3,8 +3,8 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { toast } from 'vuetify-sonner';
 
-import { checkEmail$, resendVerificationCode$, signup$, verifyAccount$ } from '~/api';
-import { useAuthStore } from '~/stores';
+import { checkEmail$, resendVerificationCode$, signup$, verifyAccount$ } from '~/api/auth.api';
+import { useAuthStore } from '~/stores/auth.store';
 
 import { useTrigger } from './useTrigger';
 

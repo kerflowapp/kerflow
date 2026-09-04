@@ -73,8 +73,8 @@ import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
-import { useOAuthConsent } from '~/composables';
-import { useAuthStore } from '~/stores';
+import { useOAuthConsent } from '~/composables/useOAuthConsent';
+import { useAuthStore } from '~/stores/auth.store';
 
 const { t, te } = useI18n();
 const route = useRoute();

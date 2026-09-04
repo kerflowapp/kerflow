@@ -15,7 +15,7 @@ import {
 	reorderProspectPipelineColumns$,
 	updateProspectPipelineColumn$
 } from '~/api/prospects.api';
-import { useProspectsStore } from '~/stores';
+import { useProspectsStore } from '~/stores/prospects.store';
 
 import { useTrigger } from './useTrigger';
 

@@ -1,6 +1,6 @@
 import type { AxiosObservable } from 'axios-observable';
 
-import { useHttp } from '~/composables';
+import { useHttp } from '~/composables/useHttp';
 
 const { axiosInstance } = useHttp();
 

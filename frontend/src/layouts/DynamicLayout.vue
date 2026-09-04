@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue';
 
-import { useAuth } from '~/composables';
+import { useAuth } from '~/composables/useAuth';
 
 const FullLayout = defineAsyncComponent(() => import('./FullLayout.vue'));
 

@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { useLanguage } from '~/composables';
+import { useLanguage } from '~/composables/useLanguage';
 
 const { currentLocale, localeNames, setLocale } = useLanguage();
 </script>

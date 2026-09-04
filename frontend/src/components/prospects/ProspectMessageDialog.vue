@@ -62,7 +62,7 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { CreateProspectMessageDto, MessageChannel, MessageDirection } from '~/api/dtos/prospect-message.dto';
-import { MESSAGE_CHANNELS, channelIcon, channelLabelKey } from '~/utils';
+import { MESSAGE_CHANNELS, channelIcon, channelLabelKey } from '~/utils/message-channel';
 
 interface Props {
 	modelValue: boolean;

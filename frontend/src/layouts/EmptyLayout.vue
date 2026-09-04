@@ -25,7 +25,7 @@
 <script lang="ts" setup>
 import { RouterView } from 'vue-router';
 
-import { useBetaMode } from '~/composables';
+import { useBetaMode } from '~/composables/useBetaMode';
 
 const { isBetaEnabled, toggleBeta } = useBetaMode();
 </script>

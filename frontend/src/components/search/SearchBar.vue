@@ -71,7 +71,7 @@
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { getDepartmentCodeFromPostcode, getDepartmentName, useNominatim } from '~/composables';
+import { getDepartmentCodeFromPostcode, getDepartmentName, useNominatim } from '~/composables/useNominatim';
 import type { NominatimResult } from '~/composables/useNominatim';
 
 interface Emits {

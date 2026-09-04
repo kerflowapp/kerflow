@@ -228,8 +228,8 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
 
-import { useAuthFlow } from '~/composables';
-import { getTermsUrl } from '~/utils';
+import { useAuthFlow } from '~/composables/useAuthFlow';
+import { getTermsUrl } from '~/utils/urlUtils';
 
 import '@/assets/styles/signin.css';
 

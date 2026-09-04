@@ -66,7 +66,8 @@ import { useI18n } from 'vue-i18n';
 import { toast } from 'vuetify-sonner';
 
 import { updateUser$ } from '~/api/users.api';
-import { useAuth, useTrigger } from '~/composables';
+import { useAuth } from '~/composables/useAuth';
+import { useTrigger } from '~/composables/useTrigger';
 
 const { t } = useI18n();
 const { user } = useAuth();

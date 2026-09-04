@@ -191,9 +191,10 @@ import { useDisplay } from 'vuetify';
 import { toast } from 'vuetify-sonner';
 
 import { checkEmail$, resendVerificationCode$, verifyAccount$ } from '~/api/auth.api';
-import { useBetaMode, useTrigger } from '~/composables';
-import { useAuthStore } from '~/stores';
-import { getApiErrorCode } from '~/utils';
+import { useBetaMode } from '~/composables/useBetaMode';
+import { useTrigger } from '~/composables/useTrigger';
+import { useAuthStore } from '~/stores/auth.store';
+import { getApiErrorCode } from '~/utils/errorUtils';
 
 import '@/assets/styles/signin.css';
 

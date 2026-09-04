@@ -1,7 +1,7 @@
 import type { AxiosObservable } from 'axios-observable';
 
-import type { ApiTokenDto, CreatedApiTokenDto } from '~/api/dtos';
-import { useHttp } from '~/composables';
+import type { ApiTokenDto, CreatedApiTokenDto } from '~/api/dtos/api-token.dto';
+import { useHttp } from '~/composables/useHttp';
 
 const { axiosInstance } = useHttp();
 

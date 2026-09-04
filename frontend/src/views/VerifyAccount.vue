@@ -55,7 +55,7 @@ import { computed, onBeforeUnmount, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
 
-import { useVerification } from '~/composables';
+import { useVerification } from '~/composables/useVerification';
 
 import '@/assets/styles/signin.css';
 

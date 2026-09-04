@@ -78,7 +78,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
 import type { BillingInterval } from '~/api/billing.api';
-import { useSubscription } from '~/composables';
+import { useSubscription } from '~/composables/useSubscription';
 
 const { t, locale } = useI18n();
 const route = useRoute();

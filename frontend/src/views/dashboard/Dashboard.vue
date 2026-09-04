@@ -112,8 +112,8 @@ import { useI18n } from 'vue-i18n';
 
 import { KanbanStatus } from '~/api/dtos/prospect.dto';
 import DashboardMetricCard from '~/components/dashboard/DashboardMetricCard.vue';
-import { useProspects } from '~/composables';
-import { useProspectsStore } from '~/stores';
+import { useProspects } from '~/composables/useProspects';
+import { useProspectsStore } from '~/stores/prospects.store';
 
 const { t } = useI18n();
 const store = useProspectsStore();

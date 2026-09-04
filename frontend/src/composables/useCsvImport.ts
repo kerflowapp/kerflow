@@ -5,7 +5,7 @@ import { toast } from 'vuetify-sonner';
 
 import type { ProspectDto } from '~/api/dtos/prospect.dto';
 import { importProspectsCsv$ } from '~/api/prospects.api';
-import { useProspectsStore } from '~/stores';
+import { useProspectsStore } from '~/stores/prospects.store';
 
 import { useTrigger } from './useTrigger';
 

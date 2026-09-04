@@ -36,7 +36,7 @@
 <script setup lang="ts">
 import { useDisplay } from 'vuetify';
 
-import { useAuth } from '~/composables';
+import { useAuth } from '~/composables/useAuth';
 
 const { mobile } = useDisplay();
 const { logout } = useAuth();

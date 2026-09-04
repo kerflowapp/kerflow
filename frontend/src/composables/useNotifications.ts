@@ -1,6 +1,6 @@
 import { Ref } from 'vue';
 
-import { markAllAsRead$, markAsRead$, markAsUnread$ } from '~/api';
+import { markAllAsRead$, markAsRead$, markAsUnread$ } from '~/api/notifications.api';
 
 import { useTrigger } from './useTrigger';
 

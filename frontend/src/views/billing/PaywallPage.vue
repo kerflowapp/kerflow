@@ -57,7 +57,8 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { BillingInterval } from '~/api/billing.api';
-import { useAuth, useSubscription } from '~/composables';
+import { useAuth } from '~/composables/useAuth';
+import { useSubscription } from '~/composables/useSubscription';
 
 const { t } = useI18n();
 const { logout } = useAuth();

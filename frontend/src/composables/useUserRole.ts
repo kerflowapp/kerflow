@@ -1,6 +1,6 @@
 import { ComputedRef, computed } from 'vue';
 
-import { useAuthStore } from '~/stores';
+import { useAuthStore } from '~/stores/auth.store';
 
 export function useUserRole(): {
 	isAuthenticated: ComputedRef<boolean>;

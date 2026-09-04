@@ -138,8 +138,9 @@ import TrialExpiredDialog from '@/components/TrialExpiredDialog.vue';
 import { computed, ref } from 'vue';
 import { useDisplay } from 'vuetify';
 
-import { useAuth, useSubscription } from '~/composables';
+import { useAuth } from '~/composables/useAuth';
 import { useLanguage } from '~/composables/useLanguage';
+import { useSubscription } from '~/composables/useSubscription';
 
 const { user, isLoggedIn, logout } = useAuth();
 const { isTrialExpired } = useSubscription();

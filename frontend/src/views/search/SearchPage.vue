@@ -101,7 +101,8 @@ import SearchBar from '~/components/search/SearchBar.vue';
 import SearchMap from '~/components/search/SearchMap.vue';
 import SearchResultDetailDrawer from '~/components/search/SearchResultDetailDrawer.vue';
 import SearchResultsList from '~/components/search/SearchResultsList.vue';
-import { useProspects, useSearch } from '~/composables';
+import { useProspects } from '~/composables/useProspects';
+import { useSearch } from '~/composables/useSearch';
 
 const { t } = useI18n();
 const { searchResults, isSearching, hasSearched, searchPlaces } = useSearch();

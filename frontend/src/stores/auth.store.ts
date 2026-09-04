@@ -3,10 +3,10 @@ import { Observable, from, map, switchMap } from 'rxjs';
 import type { Ref } from 'vue';
 import { ref } from 'vue';
 
-import type { UserDto } from '~/api';
-import { getUserInformation$, login$, signup$, updatePassword$, verifyAccount$ } from '~/api';
-import { SignupRequest, UpdatePasswordRequest } from '~/api/dtos';
-import { removeAuthToken, removeRefreshToken, setAuthToken, setRefreshToken } from '~/utils';
+import { getUserInformation$, login$, signup$, updatePassword$, verifyAccount$ } from '~/api/auth.api';
+import { SignupRequest, UpdatePasswordRequest } from '~/api/dtos/auth.dto';
+import type { UserDto } from '~/api/dtos/users.dto';
+import { removeAuthToken, removeRefreshToken, setAuthToken, setRefreshToken } from '~/utils/tokenStorage';
 
 const LOGGED_IN = 'loggedIn';
 

@@ -4,7 +4,7 @@ import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { toast } from 'vuetify-sonner';
 
-import { resendVerificationCode$, verifyAccount$ } from '~/api';
+import { resendVerificationCode$, verifyAccount$ } from '~/api/auth.api';
 
 export function useVerification() {
 	const router = useRouter();

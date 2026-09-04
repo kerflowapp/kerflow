@@ -56,7 +56,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 
-import { getTermsUrl } from '~/utils';
+import { getTermsUrl } from '~/utils/urlUtils';
 
 const { t } = useI18n();
 const currentYear = new Date().getFullYear();

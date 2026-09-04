@@ -10,7 +10,8 @@ import { onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { VSonner, toast } from 'vuetify-sonner';
 
-import { useBetaMode, useSandboxMode } from '~/composables';
+import { useBetaMode } from '~/composables/useBetaMode';
+import { useSandboxMode } from '~/composables/useSandboxMode';
 
 import 'vuetify-sonner/style.css';
 

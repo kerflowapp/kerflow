@@ -1,9 +1,5 @@
 import { ref, watch } from 'vue';
 
-
-
-
-
 // Unlocks work-in-progress UI. Not a security boundary: the sequence is in the
 // bundle, and anything that must stay restricted is enforced by the backend.
 const BETA_CODE = ['b', 'e', 't', 'a', 'm', 'o', 'd', 'e'];

@@ -3,9 +3,9 @@ import { EMPTY, from } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { onUnmounted, ref } from 'vue';
 
-import { refreshToken$ } from '~/api';
-import { useAuthStore } from '~/stores';
-import { getRefreshToken, setAuthToken, setRefreshToken } from '~/utils';
+import { refreshToken$ } from '~/api/auth.api';
+import { useAuthStore } from '~/stores/auth.store';
+import { getRefreshToken, setAuthToken, setRefreshToken } from '~/utils/tokenStorage';
 
 let refreshInProgress: Promise<boolean> | null = null;
 

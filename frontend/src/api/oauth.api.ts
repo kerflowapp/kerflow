@@ -1,6 +1,6 @@
 import type { AxiosObservable } from 'axios-observable';
 
-import { useHttp } from '~/composables';
+import { useHttp } from '~/composables/useHttp';
 
 import type { AuthorizationRequestDto, ConsentDecisionDto } from './dtos/oauth.dto';
 

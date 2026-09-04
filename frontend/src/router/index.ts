@@ -5,9 +5,9 @@ import type { RouteRecordRaw } from 'vue-router';
 import * as VueRouter from 'vue-router';
 import { createWebHistory } from 'vue-router';
 
-import { useBetaMode } from '~/composables';
+import { useBetaMode } from '~/composables/useBetaMode';
 import { getSavedLocale, resolveBrowserLocale, setActiveLocale } from '~/plugin/i18n';
-import { useAuthStore } from '~/stores';
+import { useAuthStore } from '~/stores/auth.store';
 
 import MainRoutes from '../router/main-routes';
 

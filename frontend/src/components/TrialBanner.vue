@@ -19,7 +19,7 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useSubscription } from '~/composables';
+import { useSubscription } from '~/composables/useSubscription';
 
 const { t } = useI18n();
 const { isTrialing, isPastDue, trialDaysRemaining } = useSubscription();

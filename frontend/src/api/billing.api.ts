@@ -1,7 +1,7 @@
 import type { AxiosObservable } from 'axios-observable';
 
-import type { SubscriptionDto } from '~/api/dtos';
-import { useHttp } from '~/composables';
+import type { SubscriptionDto } from '~/api/dtos/users.dto';
+import { useHttp } from '~/composables/useHttp';
 
 const { axiosInstance } = useHttp();
 

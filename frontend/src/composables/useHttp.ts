@@ -1,6 +1,7 @@
 import { Axios } from 'axios-observable';
 
-import { getAuthToken, getBackendUrl } from '~/utils';
+import { getAuthToken } from '~/utils/tokenStorage';
+import { getBackendUrl } from '~/utils/urlUtils';
 
 const baseURL = getBackendUrl();
 

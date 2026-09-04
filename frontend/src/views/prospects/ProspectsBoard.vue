@@ -199,8 +199,10 @@ import { useI18n } from 'vue-i18n';
 
 import type { ProspectDto, ProspectPipelineColumnDto, UpdateProspectDto } from '~/api/dtos/prospect.dto';
 import { ProspectSource } from '~/api/dtos/prospect.dto';
-import { useProspectPipeline, useProspects, useSubscription } from '~/composables';
-import { useProspectsStore } from '~/stores';
+import { useProspectPipeline } from '~/composables/useProspectPipeline';
+import { useProspects } from '~/composables/useProspects';
+import { useSubscription } from '~/composables/useSubscription';
+import { useProspectsStore } from '~/stores/prospects.store';
 
 const CsvImportDialog = defineAsyncComponent(() => import('~/components/prospects/CsvImportDialog.vue'));
 const TrialExpiredDialog = defineAsyncComponent(() => import('~/components/TrialExpiredDialog.vue'));

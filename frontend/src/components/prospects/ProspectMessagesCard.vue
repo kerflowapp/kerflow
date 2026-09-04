@@ -112,7 +112,7 @@ import { toast } from 'vuetify-sonner';
 
 import type { CreateProspectMessageDto, ProspectMessageDto } from '~/api/dtos/prospect-message.dto';
 import ProspectMessageDialog from '~/components/prospects/ProspectMessageDialog.vue';
-import { channelIcon, channelLabelKey } from '~/utils';
+import { channelIcon, channelLabelKey } from '~/utils/message-channel';
 
 const LONG_BODY_LENGTH = 400;
 

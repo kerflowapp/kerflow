@@ -1,9 +1,8 @@
 import type { AxiosObservable } from 'axios-observable';
 
-import type { UserDto } from '~/api/dtos';
-import { useHttp } from '~/composables';
-
-import { CheckEmailResponse, SigninResponse, SignupRequest, UpdatePasswordRequest } from './dtos';
+import { CheckEmailResponse, SigninResponse, SignupRequest, UpdatePasswordRequest } from '~/api/dtos/auth.dto';
+import type { UserDto } from '~/api/dtos/users.dto';
+import { useHttp } from '~/composables/useHttp';
 
 const { axiosInstance } = useHttp();
 

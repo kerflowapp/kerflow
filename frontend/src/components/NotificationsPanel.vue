@@ -112,8 +112,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 
-import { useAuth, useNotifications } from '~/composables';
-import { formatDate } from '~/utils';
+import { useAuth } from '~/composables/useAuth';
+import { useNotifications } from '~/composables/useNotifications';
+import { formatDate } from '~/utils/dateUtils';
 
 /** Component setup *******************************************************************************/
 

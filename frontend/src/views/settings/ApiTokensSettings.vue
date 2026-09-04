@@ -129,8 +129,8 @@ import { useI18n } from 'vue-i18n';
 import { toast } from 'vuetify-sonner';
 
 import type { ApiTokenDto, CreatedApiTokenDto } from '~/api/dtos/api-token.dto';
-import { ConfirmationDialog } from '~/components';
-import { useApiTokens } from '~/composables';
+import ConfirmationDialog from '~/components/ConfirmationDialog.vue';
+import { useApiTokens } from '~/composables/useApiTokens';
 
 import ConnectClaudeCard from './ConnectClaudeCard.vue';
 
