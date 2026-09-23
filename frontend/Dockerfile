@@ -34,22 +34,10 @@ ENV DOCKERIZE_VERSION=v0.7.0
 RUN curl -fSslL https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz | \
     tar xzv -C /usr/local/bin/
 
-RUN opm get knyar/nginx-lua-prometheus
-
 RUN mkdir -p /app
 
 COPY --from=build-stage /app/dist/ /app/
 RUN ls -l /app
-
-# Add the entrypoint script
-COPY ./bin/entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
-ENTRYPOINT [ "/app/entrypoint.sh" ]
-
-# Clean up all existing NGINX configuration
-RUN rm -f /usr/local/openresty/nginx/conf/*
-
-COPY ./nginx /usr/local/openresty/nginx/
 
 VOLUME ["/data"]
 

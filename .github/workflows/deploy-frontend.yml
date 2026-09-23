@@ -2,27 +2,54 @@ name: Deploy frontend
 
 # Tag the commit `frontend-<version>` (e.g. frontend-1.4.0) to ship the web client.
 # The backend has its own `backend-*` tags and its own workflow.
+#
+# Who may deploy is enforced by the repository settings, not by this file:
+# a tag ruleset restricts `frontend-*` to admins, and the `coolify` environment
+# only accepts `backend-*` / `frontend-*` tags and holds the Coolify secrets.
 on:
   push:
     tags:
       - 'frontend-*'
 
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-frontend
+  cancel-in-progress: false
+
 jobs:
   build:
-    name: Build and push image
+    name: Test, build and push image
     # Forks never get the repository secrets, but stopping here means a fork that
     # pushes a `frontend-*` tag does not even show a red run.
     if: github.repository == 'kerflowapp/kerflow'
     runs-on: ubuntu-latest
+    # Publishing `:latest` is as good as deploying, so it sits behind the same gate.
+    environment: coolify
     permissions:
       contents: read
       packages: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Set up Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Type-check and test
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run type-check
+          npm run test
 
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -30,7 +57,7 @@ jobs:
 
       - name: Extract image metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
         with:
           images: ghcr.io/${{ github.repository }}/frontend
           # frontend-1.4.0 -> 1.4.0
@@ -39,7 +66,7 @@ jobs:
             type=raw,value=latest
 
       - name: Build and push image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
         with:
           context: ./frontend
           push: true
@@ -67,7 +94,10 @@ jobs:
 
     steps:
       - name: Call deployment webhook
+        env:
+          WEBHOOK_URL: ${{ secrets.COOLIFY_FRONTEND_WEBHOOK }}
+          WEBHOOK_TOKEN: ${{ secrets.COOLIFY_WEBHOOK_TOKEN }}
         run: |
           curl --fail --silent --show-error \
-            --request GET '${{ secrets.COOLIFY_FRONTEND_WEBHOOK }}' \
-            --header 'Authorization: Bearer ${{ secrets.WEBHOOK_TOKEN }}'
+            --request GET "$WEBHOOK_URL" \
+            --header "Authorization: Bearer $WEBHOOK_TOKEN"
