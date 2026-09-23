@@ -2,6 +2,7 @@ package com.kerflowapp.kerflow.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 
@@ -21,5 +22,5 @@ public record ProspectAnalysis(
     String suggestedApproach,
     String generatedBy,
     Instant analyzedAt
-) {
+) implements Serializable {
 }

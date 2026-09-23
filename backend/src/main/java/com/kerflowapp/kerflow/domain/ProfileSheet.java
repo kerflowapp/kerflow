@@ -2,6 +2,7 @@ package com.kerflowapp.kerflow.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 /**
@@ -14,5 +15,5 @@ public record ProfileSheet(
     String content,
     String generatedBy,
     Instant generatedAt
-) {
+) implements Serializable {
 }

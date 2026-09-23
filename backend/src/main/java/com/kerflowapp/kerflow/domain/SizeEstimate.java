@@ -3,6 +3,7 @@ package com.kerflowapp.kerflow.domain;
 import com.kerflowapp.kerflow.domain.enums.SizeBucket;
 import com.kerflowapp.kerflow.domain.enums.SizeConfidence;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +18,9 @@ public record SizeEstimate(
     SizeConfidence confidence,
     List<Reason> reasons,
     Instant estimatedAt
-) {
+) implements Serializable {
 
-    public record Reason(String key, Map<String, Object> params) {
+    public record Reason(String key, Map<String, Object> params) implements Serializable {
 
         public static Reason of(String key, Map<String, Object> params) {
             return new Reason(key, params);

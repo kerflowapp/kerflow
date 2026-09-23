@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.kerflowapp.kerflow.domain.enums.BusinessCategory;
 import com.kerflowapp.kerflow.domain.enums.BusinessCategorySource;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -25,10 +26,10 @@ public record BusinessProfile(
     List<String> googleTypes,
     List<Fact> facts,
     Instant profiledAt
-) {
+) implements Serializable {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public record Fact(String key, Map<String, Object> params) {
+    public record Fact(String key, Map<String, Object> params) implements Serializable {
 
         public static Fact of(String key, Map<String, Object> params) {
             return new Fact(key, params);
