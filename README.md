@@ -12,8 +12,8 @@ Claude, ChatGPT and any MCP-capable agent drive the same pipeline through the `/
 ## Repository layout
 
 ```
-backend/    Spring Boot 3.4 · Java 21 · PostgreSQL · MCP server
-frontend/   Vue 3 · Vuetify 3 · Vite · RxJS
+backend/    Spring Boot 4.1 · Java 21 · PostgreSQL · MCP server
+frontend/   Vue 4 · Vuetify 4 · Vite · RxJS
 docs/       product roadmap and end-user how-tos
 ```
 
