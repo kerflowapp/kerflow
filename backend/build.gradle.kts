@@ -4,7 +4,7 @@ plugins {
     java
     id("org.springframework.boot") version "4.1.1"
     id("io.spring.dependency-management") version "1.1.7"
-    id("io.sentry.jvm.gradle") version "6.21.0"
+    id("io.sentry.jvm.gradle") version "6.23.0"
 }
 
 group = "com.kerflowapp"
