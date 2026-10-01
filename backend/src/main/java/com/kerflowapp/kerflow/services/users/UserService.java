@@ -100,8 +100,7 @@ public class UserService {
 
         discordService.sendRegistrationNotification(
             "Nouvelle inscription",
-            String.format("**%s %s** (%s)",
-                request.firstName(), request.lastName(), login));
+            String.format("**%s**)", login));
     }
 
     private boolean isCognitoUserConfirmed(String login) {
@@ -124,8 +123,7 @@ public class UserService {
 
                     discordService.sendRegistrationNotification(
                         "Compte confirme",
-                        String.format("**%s %s** (%s) a confirme son compte.",
-                            user.getFirstName(), user.getLastName(), login));
+                        String.format("**%s** a confirme son compte.", login));
                 } else {
                     throw new KerflowException(VERIFICATION_CODE_EXPIRED);
                 }

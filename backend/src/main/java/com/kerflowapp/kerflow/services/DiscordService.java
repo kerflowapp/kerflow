@@ -1,13 +1,13 @@
 package com.kerflowapp.kerflow.services;
 
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.node.ArrayNode;
-import tools.jackson.databind.node.ObjectNode;
 import com.kerflowapp.kerflow.BaseConfiguration.CommonsProperties;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -16,7 +16,9 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -26,6 +28,8 @@ public class DiscordService {
     private static final int GUILD_TEXT = 0;
     private static final int GUILD_CATEGORY = 4;
     private static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(10);
+
+    private static final int MAX_RETRIES = 5;
 
     private static final int COLOR_GREEN = 0x2ECC71;
 
@@ -79,16 +83,16 @@ public class DiscordService {
         JsonNode existingChannels = getGuildChannels(guildId);
 
         // Find or create category
-        String categoryName = prefix() + "kerflow-notifications";
-        String categoryId = findChannelId(existingChannels, categoryName, GUILD_CATEGORY);
+        String categoryName = prefix() + commonsProperties.discord().channel();
+        String categoryId = findCategorylId(existingChannels, categoryName, GUILD_CATEGORY);
         if (categoryId == null) {
             categoryId = createChannel(guildId, categoryName, GUILD_CATEGORY, null);
         }
 
         // Find or create text channels under the category
-        for (String name : new String[]{"registrations"}) {
+        for (String name : new String[]{"accounts"}) {
             String prefixedName = prefix() + name;
-            String id = findChannelId(existingChannels, prefixedName, GUILD_TEXT);
+            String id = findChannelId(existingChannels, prefixedName, categoryId, GUILD_TEXT);
             if (id == null) {
                 id = createChannel(guildId, prefixedName, GUILD_TEXT, categoryId);
             }
@@ -115,13 +119,28 @@ public class DiscordService {
         return objectMapper.createArrayNode();
     }
 
-    private String findChannelId(JsonNode channels, String name, int type) {
+    private String findCategorylId(JsonNode channels, String name, int type) {
         if (channels == null || !channels.isArray()) {
             return null;
         }
         for (JsonNode channel : channels) {
             if (name.equals(channel.path("name").asText())
                 && channel.path("type").asInt() == type) {
+                return channel.path("id").asText();
+            }
+        }
+        return null;
+    }
+
+    private String findChannelId(JsonNode channels, String name, String categoryId, int type) {
+        if (channels == null || !channels.isArray()) {
+            return null;
+        }
+        for (JsonNode channel : channels) {
+            if (name.equals(channel.path("name").asText())
+                && channel.path("type").asInt() == type
+                && categoryId.equals(channel.path("parent_id").asText())
+            ) {
                 return channel.path("id").asText();
             }
         }
@@ -159,7 +178,7 @@ public class DiscordService {
     // ── Public notification methods ─────────────────────────────────────
 
     public void sendRegistrationNotification(String title, String description) {
-        sendEmbed("registrations", title, description, COLOR_GREEN);
+        sendEmbed("accounts", title, description, COLOR_GREEN);
     }
 
     // ── Internal ────────────────────────────────────────────────────────
@@ -187,24 +206,46 @@ public class DiscordService {
             ObjectNode body = objectMapper.createObjectNode();
             body.set("embeds", embeds);
 
-            HttpRequest request = authorizedRequest(DISCORD_API + "/channels/" + channelId + "/messages")
-                .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
-                .build();
-
-            // Fire-and-forget: never block the calling thread
-            httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenAccept(response -> {
-                    if (response.statusCode() != 200) {
-                        LOGGER.error("Failed to send Discord message to #{}: {} {}",
-                            channelName, response.statusCode(), response.body());
-                    }
-                })
-                .exceptionally(e -> {
-                    LOGGER.error("Error sending Discord notification to #{}", channelName, e);
-                    return null;
-                });
+            sendWithRetry(channelId, channelName, body.toString(), 0);
         } catch (Exception e) {
             LOGGER.error("Error building Discord notification for #{}", channelName, e);
+        }
+    }
+
+    private void sendWithRetry(String channelId, String channelName, String bodyStr, int attempt) {
+        HttpRequest request = authorizedRequest(DISCORD_API + "/channels/" + channelId + "/messages")
+            .POST(HttpRequest.BodyPublishers.ofString(bodyStr))
+            .build();
+
+        httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+            .thenAccept(response -> {
+                if (response.statusCode() == 200) {
+                    return;
+                }
+                if (response.statusCode() == 429 && attempt < MAX_RETRIES) {
+                    long delayMs = parseRetryAfterMs(response.body());
+                    LOGGER.warn("Rate limited on #{}, retrying in {}ms (attempt {}/{})",
+                        channelName, delayMs, attempt + 1, MAX_RETRIES);
+                    CompletableFuture.delayedExecutor(delayMs, TimeUnit.MILLISECONDS)
+                        .execute(() -> sendWithRetry(channelId, channelName, bodyStr, attempt + 1));
+                    return;
+                }
+                LOGGER.error("Failed to send Discord message to #{}: {} {}",
+                    channelName, response.statusCode(), response.body());
+            })
+            .exceptionally(e -> {
+                LOGGER.error("Error sending Discord notification to #{}", channelName, e);
+                return null;
+            });
+    }
+
+    private long parseRetryAfterMs(String responseBody) {
+        try {
+            JsonNode node = objectMapper.readTree(responseBody);
+            double retryAfter = node.path("retry_after").asDouble(1.0);
+            return (long) (retryAfter * 1000) + 100;
+        } catch (Exception e) {
+            return 1000;
         }
     }
 

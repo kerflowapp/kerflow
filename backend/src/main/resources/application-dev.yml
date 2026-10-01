@@ -37,6 +37,8 @@ commons:
   backend-url: http://localhost:8090
   discord:
     channel-prefix: "dev-"
+    channel: ${DISCORD_CHANNEL:}
+    enabled: true
 
 management:
   endpoints:

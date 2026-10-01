@@ -63,6 +63,7 @@ public class BaseConfiguration {
         Boolean enabled,
         String botToken,
         String guildId,
+        String channel,
         String channelPrefix
     ) {
 

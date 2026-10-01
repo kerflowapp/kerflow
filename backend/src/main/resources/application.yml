@@ -86,6 +86,7 @@ commons:
     bot-token: ${DISCORD_BOT_TOKEN:}
     guild-id: ${DISCORD_GUILD_ID:}
     channel-prefix: ""
+    channel: ${DISCORD_CHANNEL:}
 
 sentry:
   dsn: ${SENTRY_DSN:}

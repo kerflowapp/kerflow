@@ -26,6 +26,8 @@ commons:
   # so these two must stay accurate or Claude.ai's connector flow breaks.
   web-url: ${WEB_URL:https://app.kerflowapp.com}
   backend-url: ${BACKEND_URL:https://api.kerflowapp.com}
+  discord:
+    enabled: true
 
 sentry:
   enabled: false
@@ -33,3 +35,4 @@ sentry:
 
 resend:
   enabled: true
+
