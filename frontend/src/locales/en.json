@@ -148,7 +148,9 @@
 		"page-not-found": {
 			"title": "Page not found",
 			"text": "The page you are looking for doesn't exist."
-		}
+		},
+		"copy": "Copy",
+		"copied": "Copied to clipboard"
 	},
 	"navigation": {
 		"dashboard": "Dashboard",
@@ -523,32 +525,22 @@
 		"api-tokens": {
 			"title": "API & MCP",
 			"tokens-title": "API access tokens",
-			"description": "Tokens let AI agents (Claude, ChatGPT…) and external tools access your Kerflow account through MCP. A token grants access to your prospects: keep it secret.",
+			"description": "Personal tokens are for command-line tools (Claude Code) and scripts. They never expire and grant access to your prospects: keep them secret. Claude and ChatGPT do not need one, they use OAuth.",
 			"revoked": "Revoked",
 			"created-on": "Created on {date}",
 			"last-used": "Last used on {date}",
 			"never-used": "Never used",
 			"empty-title": "No tokens",
-			"empty-text": "Create a token to connect Claude or another agent to Kerflow.",
+			"empty-text": "Create a token to connect Claude Code or a script to Kerflow.",
 			"create-button": "Create a token",
 			"create-dialog-title": "New token",
 			"name-label": "Token name",
 			"name-required": "Name is required",
 			"created-dialog-title": "Token created",
 			"one-time-warning": "Copy this token now: it will never be shown again.",
-			"copied": "Copied to clipboard",
 			"revoke-button": "Revoke",
 			"revoke-confirm-title": "Revoke this token?",
-			"revoke-confirm-message": "The token \"{name}\" will be permanently revoked. Any agent or tool using it will immediately lose access to your account.",
-			"connect-claude-title": "Connect Claude",
-			"connect-claude-description": "Once connected, you chat with Claude and it drives Kerflow for you: searching businesses, analyzing, saving prospects. The connection uses MCP, an open standard.",
-			"connect-web-title": "On Claude.ai",
-			"connect-web-description": "In Claude.ai: Settings → Connectors → Add custom connector, then paste this URL:",
-			"connect-web-oauth-hint": "Leave the Client ID and Client Secret fields empty. Claude will redirect you to Kerflow to ask for your authorization: no token to create.",
-			"connect-cli-title": "With Claude Code",
-			"connect-claude-step-token": "Create a token above and copy it.",
-			"connect-claude-step-command": "Paste this command in a terminal (with Claude Code installed), replacing kf_YOUR_TOKEN with your token:",
-			"copy": "Copy"
+			"revoke-confirm-message": "The token \"{name}\" will be permanently revoked. Any agent or tool using it will immediately lose access to your account."
 		},
 		"billing": {
 			"title": "Subscription",
@@ -565,6 +557,66 @@
 				"cancelled": "Cancelled",
 				"inactive": "Inactive"
 			}
+		},
+		"mcp-guide": {
+			"title": "Connect an AI agent",
+			"intro": "Kerflow exposes an MCP server, an open standard. Once connected, you chat with Claude or ChatGPT and it drives Kerflow for you: searching businesses, analyzing, saving prospects.",
+			"server-url": "MCP server URL",
+			"oauth-mode-title": "OAuth connection: Claude, ChatGPT",
+			"oauth-mode-text": "Only the URL needs copying. The app redirects you to Kerflow to authorize access. The connection then shows up under \"Connected apps\", where you can revoke it.",
+			"token-mode-title": "Personal token: Claude Code, scripts",
+			"token-mode-text": "For command-line tools. The token never expires: revoke it under \"API access tokens\" as soon as you no longer need it.",
+			"connect-title": "Connect",
+			"revoke-title": "Revoke access",
+			"revoke-in-kerflow": "On this page, under \"Connected apps\", click \"Revoke\": access is cut off immediately.",
+			"tabs": {
+				"claude": "Claude",
+				"chatgpt": "ChatGPT",
+				"claude-code": "Claude Code",
+				"other": "Other MCP client"
+			},
+			"claude": {
+				"connect-step-1": "In Claude (web or Desktop), open Customize → Connectors, click \"+\" then \"Add custom connector\".",
+				"connect-step-2": "Name: Kerflow. URL: the MCP server URL above. Leave Client ID and Client Secret empty in the advanced settings.",
+				"connect-step-3": "Click \"Add\" then \"Connect\": Claude opens Kerflow, sign in and authorize access.",
+				"connect-step-4": "In a conversation, enable Kerflow via \"+\" → Connectors.",
+				"note": "The connector is then available on Claude web, Desktop and mobile. Team and Enterprise plans: an owner must first add it under Organization settings → Connectors, then each member clicks \"Connect\".",
+				"revoke-step-2": "In Claude, open Customize → Connectors → Kerflow and remove the connector."
+			},
+			"chatgpt": {
+				"connect-step-1": "In ChatGPT (web), open Settings → Security and login and turn on Developer mode.",
+				"connect-step-2": "Open Settings → Plugins and click \"+\" to create an app.",
+				"connect-step-3": "Name: Kerflow. MCP server URL: the URL above. Authentication: OAuth, with no Client ID or secret. Confirm.",
+				"connect-step-4": "ChatGPT opens Kerflow: sign in and authorize access.",
+				"connect-step-5": "In a conversation, pick \"Developer mode\" from the \"+\" menu, then select Kerflow.",
+				"note": "Available on the web for Plus, Pro, Business, Enterprise and Education plans. Business and Enterprise plans: an admin must allow developer mode. ChatGPT menus are often renamed: look for \"Developer mode\" in the settings.",
+				"revoke-step-2": "In ChatGPT, open Settings → Plugins → Drafts → Kerflow and delete the app."
+			},
+			"claude-code": {
+				"connect-step-1": "Create a token under \"API access tokens\" below and copy it.",
+				"connect-step-2": "Run this command in a terminal, replacing kf_YOUR_TOKEN with your token:",
+				"note": "Add --scope user to the command to make Kerflow available in all your projects.",
+				"revoke-step-1": "Revoke the token under \"API access tokens\": Claude Code loses access immediately.",
+				"revoke-step-2": "Remove the server from Claude Code:"
+			},
+			"other": {
+				"connect-step-1": "Register the MCP server URL above (streamable HTTP transport).",
+				"connect-step-2": "If the client supports OAuth 2.1 with dynamic registration, let it handle it: it redirects you to Kerflow to authorize access.",
+				"connect-step-3": "Otherwise, create a personal token and send it in this header:",
+				"note": "An OAuth client shows up under \"Connected apps\"; a token-based client uses a token from \"API access tokens\".",
+				"revoke-step-1": "OAuth connection: revoke it under \"Connected apps\".",
+				"revoke-step-2": "Personal token: revoke it under \"API access tokens\"."
+			}
+		},
+		"connected-apps": {
+			"title": "Connected apps",
+			"description": "Apps authorized through OAuth to access your account. Revoking an app cuts its access immediately; it will have to ask for your authorization again.",
+			"last-activity": "Last activity on {date}",
+			"empty-title": "No connected apps",
+			"empty-text": "Apps connected through OAuth (Claude, ChatGPT…) will show up here.",
+			"revoke-button": "Revoke",
+			"revoke-confirm-title": "Revoke this app?",
+			"revoke-confirm-message": "\"{name}\" will immediately lose access to your Kerflow account. To reconnect it, you will have to authorize it again."
 		}
 	},
 	"oauth": {
@@ -605,7 +657,9 @@
 		"delete-message-failed": "Failed to delete message.",
 		"csv-parse-failed": "Failed to read CSV file.",
 		"csv-import-failed": "Failed to import CSV file.",
-		"update-profile-failed": "Failed to update profile."
+		"update-profile-failed": "Failed to update profile.",
+		"fetch-oauth-connections-failed": "Failed to load connected apps.",
+		"revoke-oauth-connection-failed": "Failed to revoke the app."
 	},
 	"success": {
 		"prospect-created": "Prospect added successfully",
@@ -618,7 +672,8 @@
 		"csv-imported": "{count} prospect(s) imported successfully",
 		"profile-updated": "Profile updated",
 		"api-token-created": "Token created",
-		"api-token-revoked": "Token revoked"
+		"api-token-revoked": "Token revoked",
+		"oauth-connection-revoked": "App revoked"
 	},
 	"beta": {
 		"mode": "Beta mode",

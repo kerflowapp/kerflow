@@ -14,6 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * The token endpoint half of the flow. Access tokens are ordinary opaque "kf_" api_tokens
@@ -75,7 +80,7 @@ public class OAuthTokenService {
         if (stored.getConsumedAt() != null) {
             LOGGER.warn("Replayed refresh token for user {} / client '{}': revoking the whole grant",
                 stored.getUser().getId(), client.getClientName());
-            revokeGrant(stored.getUser(), client);
+            revokeGrant(stored.getUser().getId(), client.getId());
             throw OAuthException.invalidGrant("refresh_token already used");
         }
         if (!stored.isUsable(Instant.now())) {
@@ -111,10 +116,34 @@ public class OAuthTokenService {
             .build();
     }
 
-    private void revokeGrant(User user, OAuthClient client) {
-        apiTokenService.revokeOAuthTokens(user.getId(), client.getId());
+    public record OAuthConnection(UUID clientId, String clientName, LocalDateTime lastActivity) {
+    }
+
+    /**
+     * The apps currently holding a grant for this user: one entry per client with a usable
+     * refresh token. Refresh tokens rotate on every use, so the newest one dates the last activity.
+     */
+    @Transactional(readOnly = true)
+    public List<OAuthConnection> getConnections(User user) {
+        Map<UUID, OAuthConnection> connections = new LinkedHashMap<>();
+        refreshTokenRepository.findUsableByUser(user.getId(), Instant.now())
+            .forEach(token -> connections.putIfAbsent(token.getClient().getId(), new OAuthConnection(
+                token.getClient().getId(),
+                token.getClient().getClientName(),
+                token.getCreationDate())));
+        return List.copyOf(connections.values());
+    }
+
+    /**
+     * Revokes every access and refresh token a client holds for a user. Used when the user
+     * disconnects an app, and when a refresh token is replayed. Scoped by user, so a client id
+     * alone never reaches another user's grant.
+     */
+    @Transactional
+    public void revokeGrant(UUID userId, UUID clientId) {
+        apiTokenService.revokeOAuthTokens(userId, clientId);
         Instant now = Instant.now();
-        refreshTokenRepository.findActiveByUserAndClient(user.getId(), client.getId())
+        refreshTokenRepository.findActiveByUserAndClient(userId, clientId)
             .forEach(token -> {
                 token.setRevokedAt(now);
                 refreshTokenRepository.save(token);

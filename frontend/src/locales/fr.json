@@ -148,7 +148,9 @@
 		"page-not-found": {
 			"title": "Page introuvable",
 			"text": "La page que vous cherchez n'existe pas."
-		}
+		},
+		"copy": "Copier",
+		"copied": "Copié dans le presse-papiers"
 	},
 	"navigation": {
 		"dashboard": "Tableau de bord",
@@ -523,32 +525,22 @@
 		"api-tokens": {
 			"title": "API & MCP",
 			"tokens-title": "Tokens d'accès API",
-			"description": "Les tokens permettent aux agents IA (Claude, ChatGPT…) et aux outils externes d'accéder à votre compte Kerflow via MCP. Un token donne accès à vos prospects : gardez-le secret.",
+			"description": "Les tokens personnels servent aux outils en ligne de commande (Claude Code) et aux scripts. Ils n'expirent pas et donnent accès à vos prospects : gardez-les secrets. Claude et ChatGPT n'en ont pas besoin, ils passent par OAuth.",
 			"revoked": "Révoqué",
 			"created-on": "Créé le {date}",
 			"last-used": "Dernière utilisation le {date}",
 			"never-used": "Jamais utilisé",
 			"empty-title": "Aucun token",
-			"empty-text": "Créez un token pour connecter Claude ou un autre agent à Kerflow.",
+			"empty-text": "Créez un token pour connecter Claude Code ou un script à Kerflow.",
 			"create-button": "Créer un token",
 			"create-dialog-title": "Nouveau token",
 			"name-label": "Nom du token",
 			"name-required": "Le nom est requis",
 			"created-dialog-title": "Token créé",
 			"one-time-warning": "Copiez ce token maintenant : il ne sera plus jamais affiché.",
-			"copied": "Copié dans le presse-papiers",
 			"revoke-button": "Révoquer",
 			"revoke-confirm-title": "Révoquer le token ?",
-			"revoke-confirm-message": "Le token « {name} » sera définitivement révoqué. Les agents ou outils qui l'utilisent perdront immédiatement l'accès à votre compte.",
-			"connect-claude-title": "Connecter Claude",
-			"connect-claude-description": "Une fois connecté, vous discutez avec Claude et c'est lui qui pilote Kerflow pour vous : recherche d'entreprises, analyse, enregistrement de prospects. La connexion utilise MCP, un standard ouvert.",
-			"connect-web-title": "Sur Claude.ai",
-			"connect-web-description": "Dans Claude.ai : Paramètres → Connecteurs → Ajouter un connecteur personnalisé, puis collez cette URL :",
-			"connect-web-oauth-hint": "Laissez les champs Client ID et Client Secret vides. Claude vous redirigera vers Kerflow pour vous demander votre autorisation : aucun token à créer.",
-			"connect-cli-title": "Avec Claude Code",
-			"connect-claude-step-token": "Créez un token ci-dessus et copiez-le.",
-			"connect-claude-step-command": "Collez cette commande dans un terminal (Claude Code installé), en remplaçant kf_YOUR_TOKEN par votre token :",
-			"copy": "Copier"
+			"revoke-confirm-message": "Le token « {name} » sera définitivement révoqué. Les agents ou outils qui l'utilisent perdront immédiatement l'accès à votre compte."
 		},
 		"billing": {
 			"title": "Abonnement",
@@ -565,6 +557,66 @@
 				"cancelled": "Annulé",
 				"inactive": "Inactif"
 			}
+		},
+		"mcp-guide": {
+			"title": "Connecter un agent IA",
+			"intro": "Kerflow expose un serveur MCP, un standard ouvert. Une fois connecté, vous discutez avec Claude ou ChatGPT et c'est lui qui pilote Kerflow pour vous : recherche d'entreprises, analyse, enregistrement de prospects.",
+			"server-url": "URL du serveur MCP",
+			"oauth-mode-title": "Connexion OAuth : Claude, ChatGPT",
+			"oauth-mode-text": "Seule l'URL est à copier. L'application vous redirige vers Kerflow pour autoriser l'accès. La connexion apparaît ensuite dans « Applications connectées », d'où vous pouvez la révoquer.",
+			"token-mode-title": "Token personnel : Claude Code, scripts",
+			"token-mode-text": "Pour les outils en ligne de commande. Le token n'expire pas : révoquez-le dans « Tokens d'accès API » dès que vous n'en avez plus besoin.",
+			"connect-title": "Connecter",
+			"revoke-title": "Révoquer l'accès",
+			"revoke-in-kerflow": "Sur cette page, dans « Applications connectées », cliquez sur « Révoquer » : l'accès est coupé immédiatement.",
+			"tabs": {
+				"claude": "Claude",
+				"chatgpt": "ChatGPT",
+				"claude-code": "Claude Code",
+				"other": "Autre client MCP"
+			},
+			"claude": {
+				"connect-step-1": "Dans Claude (web ou Desktop), ouvrez Personnaliser → Connecteurs, cliquez sur « + » puis « Ajouter un connecteur personnalisé ».",
+				"connect-step-2": "Nom : Kerflow. URL : l'URL du serveur MCP ci-dessus. Laissez vides Client ID et Client Secret dans les paramètres avancés.",
+				"connect-step-3": "Cliquez sur « Ajouter » puis « Se connecter » : Claude ouvre Kerflow, connectez-vous et autorisez l'accès.",
+				"connect-step-4": "Dans une conversation, activez Kerflow via « + » → Connecteurs.",
+				"note": "Le connecteur est ensuite disponible sur Claude web, Desktop et mobile. Offres Team et Enterprise : un propriétaire doit d'abord l'ajouter dans Paramètres de l'organisation → Connecteurs, puis chaque membre clique sur « Se connecter ».",
+				"revoke-step-2": "Dans Claude, ouvrez Personnaliser → Connecteurs → Kerflow et supprimez le connecteur."
+			},
+			"chatgpt": {
+				"connect-step-1": "Dans ChatGPT (web), ouvrez Paramètres → Sécurité et connexion et activez le mode développeur.",
+				"connect-step-2": "Ouvrez Paramètres → Plugins et cliquez sur « + » pour créer une app.",
+				"connect-step-3": "Nom : Kerflow. URL du serveur MCP : l'URL ci-dessus. Authentification : OAuth, sans Client ID ni secret. Validez.",
+				"connect-step-4": "ChatGPT ouvre Kerflow : connectez-vous et autorisez l'accès.",
+				"connect-step-5": "Dans une conversation, choisissez « Mode développeur » dans le menu « + », puis sélectionnez Kerflow.",
+				"note": "Disponible sur le web pour les offres Plus, Pro, Business, Enterprise et Education. Offres Business et Enterprise : un administrateur doit autoriser le mode développeur. Les menus de ChatGPT changent souvent de nom : cherchez « mode développeur » dans les paramètres.",
+				"revoke-step-2": "Dans ChatGPT, ouvrez Paramètres → Plugins → Brouillons → Kerflow et supprimez l'app."
+			},
+			"claude-code": {
+				"connect-step-1": "Créez un token dans « Tokens d'accès API » ci-dessous et copiez-le.",
+				"connect-step-2": "Lancez cette commande dans un terminal, en remplaçant kf_YOUR_TOKEN par votre token :",
+				"note": "Ajoutez --scope user à la commande pour rendre Kerflow disponible dans tous vos projets.",
+				"revoke-step-1": "Révoquez le token dans « Tokens d'accès API » : Claude Code perd l'accès immédiatement.",
+				"revoke-step-2": "Retirez le serveur de Claude Code :"
+			},
+			"other": {
+				"connect-step-1": "Déclarez l'URL du serveur MCP ci-dessus (transport HTTP streamable).",
+				"connect-step-2": "Si le client gère OAuth 2.1 avec enregistrement dynamique, laissez-le faire : il vous redirige vers Kerflow pour autoriser l'accès.",
+				"connect-step-3": "Sinon, créez un token personnel et envoyez-le dans cet en-tête :",
+				"note": "Un client OAuth apparaît dans « Applications connectées » ; un client à token utilise un token de « Tokens d'accès API ».",
+				"revoke-step-1": "Connexion OAuth : révoquez-la dans « Applications connectées ».",
+				"revoke-step-2": "Token personnel : révoquez-le dans « Tokens d'accès API »."
+			}
+		},
+		"connected-apps": {
+			"title": "Applications connectées",
+			"description": "Applications autorisées via OAuth à accéder à votre compte. Révoquer une application coupe son accès immédiatement ; elle devra redemander votre autorisation.",
+			"last-activity": "Dernière activité le {date}",
+			"empty-title": "Aucune application connectée",
+			"empty-text": "Les applications connectées via OAuth (Claude, ChatGPT…) apparaîtront ici.",
+			"revoke-button": "Révoquer",
+			"revoke-confirm-title": "Révoquer l'application ?",
+			"revoke-confirm-message": "« {name} » perdra immédiatement l'accès à votre compte Kerflow. Pour la reconnecter, il faudra de nouveau l'autoriser."
 		}
 	},
 	"oauth": {
@@ -605,7 +657,9 @@
 		"delete-message-failed": "Erreur lors de la suppression du message.",
 		"csv-parse-failed": "Erreur lors de la lecture du fichier CSV.",
 		"csv-import-failed": "Erreur lors de l'import du fichier CSV.",
-		"update-profile-failed": "Erreur lors de la mise à jour du profil."
+		"update-profile-failed": "Erreur lors de la mise à jour du profil.",
+		"fetch-oauth-connections-failed": "Erreur lors du chargement des applications connectées.",
+		"revoke-oauth-connection-failed": "Erreur lors de la révocation de l'application."
 	},
 	"success": {
 		"prospect-created": "Prospect ajouté avec succès",
@@ -618,7 +672,8 @@
 		"csv-imported": "{count} prospect(s) importé(s) avec succès",
 		"profile-updated": "Profil mis à jour",
 		"api-token-created": "Token créé",
-		"api-token-revoked": "Token révoqué"
+		"api-token-revoked": "Token révoqué",
+		"oauth-connection-revoked": "Application révoquée"
 	},
 	"beta": {
 		"mode": "Mode beta",

@@ -131,13 +131,20 @@ Base path `/v1`. Bearer token (Cognito JWT, OAuth access token, or personal API 
 | `/v1/search`                     | Local business search                                      |
 | `/v1/users/{user-id}`            | Profile, notifications                                     |
 | `/v1/users/me/api-tokens`        | Personal API tokens for MCP                                |
+| `/v1/users/me/oauth-connections` | Apps connected through OAuth, and their revocation         |
 | `/v1/billing`                    | Stripe checkout, portal, subscription sync                 |
 | `/v1/oauth2/*`, `/.well-known/*` | OAuth 2.1 authorization server for MCP clients             |
 | `/mcp`                           | MCP streamable-HTTP endpoint                               |
 | `/health`, `/actuator/*`         | Health, info, Prometheus metrics                           |
 
-To connect Claude or ChatGPT, follow
-[docs/modops/connecter-claude-chatgpt.md](docs/modops/connecter-claude-chatgpt.md).
+To connect an agent, open **Settings → API & MCP** in the web app: it walks through Claude, ChatGPT, Claude Code and
+any other MCP client, both to connect and to revoke access. In short:
+
+- **Claude, ChatGPT** — add a custom connector pointing at `<backend-url>/mcp`, leave the OAuth client fields empty and
+  authorize Kerflow when redirected. The grant shows up under *Connected apps*; revoking it there cuts access at once.
+- **Claude Code, scripts** — create a personal token, then
+  `claude mcp add --transport http kerflow <backend-url>/mcp --header "Authorization: Bearer kf_..."`. Revoke the token
+  from the same page, then `claude mcp remove kerflow`.
 
 ## Roadmap
 

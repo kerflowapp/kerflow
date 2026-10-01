@@ -1,6 +1,11 @@
 <template>
-	<v-card elevation="0" variant="outlined">
+	<mcp-setup-guide />
+
+	<connected-apps-card class="mt-4" />
+
+	<v-card class="mt-4" elevation="0" variant="outlined">
 		<v-card-title class="bg-grey-lighten-4 d-flex align-center">
+			<v-icon class="mr-2" icon="mdi-key-outline" />
 			{{ t('settings.api-tokens.tokens-title') }}
 			<v-spacer />
 			<v-btn color="primary" prepend-icon="mdi-plus" size="small" variant="flat" @click="openCreateDialog">
@@ -83,10 +88,7 @@
 					<v-alert class="mb-4" density="compact" type="warning" variant="tonal">
 						{{ t('settings.api-tokens.one-time-warning') }}
 					</v-alert>
-					<div class="d-flex align-center token-box pa-3">
-						<code class="token-value">{{ createdToken?.token }}</code>
-						<v-btn icon="mdi-content-copy" size="small" variant="text" @click="copyToken" />
-					</div>
+					<copyable-value v-if="createdToken" :value="createdToken.token" />
 				</v-card-text>
 				<v-card-actions>
 					<v-spacer />
@@ -107,32 +109,19 @@
 			</template>
 		</confirmation-dialog>
 	</v-card>
-
-	<connect-claude-card class="mt-4" />
 </template>
-
-<style scoped>
-.token-box {
-	background-color: rgba(var(--v-theme-on-surface), 0.05);
-	border-radius: 4px;
-}
-
-.token-value {
-	flex: 1;
-	word-break: break-all;
-}
-</style>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { toast } from '~/composables/useToast';
 
 import type { ApiTokenDto, CreatedApiTokenDto } from '~/api/dtos/api-token.dto';
 import ConfirmationDialog from '~/components/ConfirmationDialog.vue';
+import CopyableValue from '~/components/CopyableValue.vue';
 import { useApiTokens } from '~/composables/useApiTokens';
 
-import ConnectClaudeCard from './ConnectClaudeCard.vue';
+import ConnectedAppsCard from './ConnectedAppsCard.vue';
+import McpSetupGuide from './McpSetupGuide.vue';
 
 const { t } = useI18n();
 const { tokens, isFetching, isCreating, isRevoking, fetchTokens, createToken, revokeToken } = useApiTokens();
@@ -162,16 +151,6 @@ const handleCreate = async () => {
 		createdToken.value = created;
 		createdDialog.value = true;
 	});
-};
-
-const copyToken = async () => {
-	if (!createdToken.value) return;
-	try {
-		await navigator.clipboard.writeText(createdToken.value.token);
-		toast.success(t('settings.api-tokens.copied'));
-	} catch {
-		toast.error(t('errors.clipboard-failed'));
-	}
 };
 
 const closeCreatedDialog = () => {

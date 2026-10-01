@@ -26,6 +26,14 @@ public interface OAuthRefreshTokenRepository extends JpaRepository<OAuthRefreshT
     List<OAuthRefreshToken> findActiveByUserAndClient(@Param("userId") UUID userId,
                                                       @Param("clientId") UUID clientId);
 
+    @Query("""
+        select r from OAuthRefreshToken r join fetch r.client
+        where r.user.id = :userId
+          and r.consumedAt is null and r.revokedAt is null and r.expiresAt > :now
+        order by r.creationDate desc
+        """)
+    List<OAuthRefreshToken> findUsableByUser(@Param("userId") UUID userId, @Param("now") Instant now);
+
     @Modifying
     @Query("delete from OAuthRefreshToken r where r.expiresAt < :before")
     int deleteExpired(@Param("before") Instant before);
