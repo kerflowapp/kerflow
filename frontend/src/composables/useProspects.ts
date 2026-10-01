@@ -121,6 +121,9 @@ export function useProspects(): {
 	const moveProspect = (id: string, statusKey: string) => {
 		store.moveProspect(id, statusKey);
 		triggerUpdate(updateProspectStatus$(id, statusKey), {
+			onSuccess: (response: { data: ProspectDto }) => {
+				store.updateProspect(response.data);
+			},
 			onError: () => {
 				toast.error(t('errors.update-prospect-failed'));
 				fetchProspects();

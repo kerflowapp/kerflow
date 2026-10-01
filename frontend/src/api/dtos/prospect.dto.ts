@@ -146,6 +146,8 @@ export interface ProspectDto {
 	searchQuery: string;
 	createdAt: string;
 	updatedAt: string;
+	/** Since when the prospect is waiting for a reply; null when no follow-up applies (closed deal, reply received…) */
+	followUpSince?: string | null;
 }
 
 export interface CreateProspectDto {

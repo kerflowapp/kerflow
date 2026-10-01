@@ -296,6 +296,14 @@
 			"lost": "Perdu"
 		}
 	},
+	"follow-ups": {
+		"filter": "À relancer ({count})",
+		"due": "À relancer · J+{days}",
+		"due-tomorrow": "Relance demain",
+		"due-in": "Relance dans {days} j",
+		"planned-on": "Relance prévue le {date}",
+		"waiting-tooltip": "Sans réponse depuis aujourd'hui | Sans réponse depuis {n} jour | Sans réponse depuis {n} jours"
+	},
 	"score": {
 		"title": "Score de qualification",
 		"why": "Pourquoi ?",
@@ -617,6 +625,14 @@
 			"revoke-button": "Révoquer",
 			"revoke-confirm-title": "Révoquer l'application ?",
 			"revoke-confirm-message": "« {name} » perdra immédiatement l'accès à votre compte Kerflow. Pour la reconnecter, il faudra de nouveau l'autoriser."
+		},
+		"prospecting": {
+			"title": "Prospection",
+			"follow-ups": "Relances",
+			"follow-up-delay": "Délai avant relance",
+			"days-suffix": "jours",
+			"follow-up-delay-hint": "Un lead en « Contacté » ou « En discussion » est signalé à relancer quand il n'a pas répondu depuis ce nombre de jours, à compter du dernier message envoyé, ou à défaut de son arrivée dans la colonne.",
+			"delay-range": "Entre {min} et {max} jours"
 		}
 	},
 	"oauth": {
@@ -659,7 +675,8 @@
 		"csv-import-failed": "Erreur lors de l'import du fichier CSV.",
 		"update-profile-failed": "Erreur lors de la mise à jour du profil.",
 		"fetch-oauth-connections-failed": "Erreur lors du chargement des applications connectées.",
-		"revoke-oauth-connection-failed": "Erreur lors de la révocation de l'application."
+		"revoke-oauth-connection-failed": "Erreur lors de la révocation de l'application.",
+		"update-preferences-failed": "Impossible d'enregistrer les préférences"
 	},
 	"success": {
 		"prospect-created": "Prospect ajouté avec succès",
@@ -673,7 +690,8 @@
 		"profile-updated": "Profil mis à jour",
 		"api-token-created": "Token créé",
 		"api-token-revoked": "Token révoqué",
-		"oauth-connection-revoked": "Application révoquée"
+		"oauth-connection-revoked": "Application révoquée",
+		"preferences-updated": "Préférences enregistrées"
 	},
 	"beta": {
 		"mode": "Mode beta",

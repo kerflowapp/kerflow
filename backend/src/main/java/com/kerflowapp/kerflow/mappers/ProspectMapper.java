@@ -22,6 +22,7 @@ public abstract class ProspectMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "position", ignore = true)
+    @Mapping(target = "statusChangedAt", ignore = true)
     @Mapping(target = "analysis", ignore = true)
     @Mapping(target = "profileSheet", ignore = true)
     @Mapping(target = "siren", ignore = true)
@@ -35,6 +36,7 @@ public abstract class ProspectMapper {
     )
     @Mapping(target = "statusKey", expression = "java(prospect.getStatusKey() != null ? prospect.getStatusKey() : (prospect.getStatus() != null ? prospect.getStatus().name() : null))")
     @Mapping(target = "score", expression = "java(toScoreDto(prospectScoringService.computeScore(prospect.getSignals())))")
+    @Mapping(target = "followUpSince", ignore = true)
     public abstract ProspectDto toDto(Prospect prospect);
 
     public abstract List<ProspectDto> toDtoList(List<Prospect> prospects);
@@ -42,6 +44,7 @@ public abstract class ProspectMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "position", ignore = true)
+    @Mapping(target = "statusChangedAt", ignore = true)
     @Mapping(target = "source", ignore = true)
     @Mapping(target = "searchQuery", ignore = true)
     @Mapping(target = "signals", ignore = true)

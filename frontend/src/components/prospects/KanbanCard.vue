@@ -17,6 +17,8 @@
 				</div>
 			</div>
 
+			<FollowUpChip :prospect="prospect" />
+
 			<div v-if="prospect.score" class="d-flex align-center ga-1 mt-1">
 				<v-rating
 					active-color="warning"
@@ -69,6 +71,7 @@
 import { useI18n } from 'vue-i18n';
 
 import type { ProspectDto } from '~/api/dtos/prospect.dto';
+import FollowUpChip from '~/components/prospects/FollowUpChip.vue';
 
 interface Props {
 	prospect: ProspectDto;

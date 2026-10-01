@@ -3,11 +3,14 @@ package com.kerflowapp.kerflow.api.prospects.domain;
 import com.kerflowapp.kerflow.domain.enums.KanbanStatus;
 import com.kerflowapp.kerflow.domain.enums.ProspectSource;
 import lombok.Builder;
+import lombok.With;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@With
 @Builder
 public record ProspectDto(
     UUID id,
@@ -42,6 +45,8 @@ public record ProspectDto(
     ProspectAnalysisDto analysis,
     ProfileSheetDto profileSheet,
     LocalDateTime creationDate,
-    LocalDateTime lastModificationDate
+    LocalDateTime lastModificationDate,
+    /** Since when the prospect is waiting for a reply; null when no follow-up applies. */
+    Instant followUpSince
 ) {
 }

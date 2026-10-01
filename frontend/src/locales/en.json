@@ -296,6 +296,14 @@
 			"lost": "Lost"
 		}
 	},
+	"follow-ups": {
+		"filter": "To follow up ({count})",
+		"due": "Follow up · D+{days}",
+		"due-tomorrow": "Follow up tomorrow",
+		"due-in": "Follow up in {days} d",
+		"planned-on": "Follow-up planned on {date}",
+		"waiting-tooltip": "No reply since today | No reply for {n} day | No reply for {n} days"
+	},
 	"score": {
 		"title": "Qualification score",
 		"why": "Why?",
@@ -617,6 +625,14 @@
 			"revoke-button": "Revoke",
 			"revoke-confirm-title": "Revoke this app?",
 			"revoke-confirm-message": "\"{name}\" will immediately lose access to your Kerflow account. To reconnect it, you will have to authorize it again."
+		},
+		"prospecting": {
+			"title": "Prospecting",
+			"follow-ups": "Follow-ups",
+			"follow-up-delay": "Delay before following up",
+			"days-suffix": "days",
+			"follow-up-delay-hint": "A lead in \"Contacted\" or \"In discussion\" is flagged for follow-up when it has not replied for this many days, counting from the last message sent, or from when it entered its column if none was logged.",
+			"delay-range": "Between {min} and {max} days"
 		}
 	},
 	"oauth": {
@@ -659,7 +675,8 @@
 		"csv-import-failed": "Failed to import CSV file.",
 		"update-profile-failed": "Failed to update profile.",
 		"fetch-oauth-connections-failed": "Failed to load connected apps.",
-		"revoke-oauth-connection-failed": "Failed to revoke the app."
+		"revoke-oauth-connection-failed": "Failed to revoke the app.",
+		"update-preferences-failed": "Could not save preferences"
 	},
 	"success": {
 		"prospect-created": "Prospect added successfully",
@@ -673,7 +690,8 @@
 		"profile-updated": "Profile updated",
 		"api-token-created": "Token created",
 		"api-token-revoked": "Token revoked",
-		"oauth-connection-revoked": "App revoked"
+		"oauth-connection-revoked": "App revoked",
+		"preferences-updated": "Preferences saved"
 	},
 	"beta": {
 		"mode": "Beta mode",

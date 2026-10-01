@@ -2,9 +2,12 @@ package com.kerflowapp.kerflow.repositories;
 
 import com.kerflowapp.kerflow.domain.ProspectMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,6 +20,14 @@ public interface ProspectMessageRepository extends JpaRepository<ProspectMessage
     Optional<ProspectMessage> findByIdAndProspectId(UUID id, UUID prospectId);
 
     long countByProspectId(UUID prospectId);
+
+    @Query("""
+        select new com.kerflowapp.kerflow.repositories.ProspectContactDates(m.prospect.id, max(m.sentAt), max(m.receivedAt))
+        from ProspectMessage m
+        where m.prospect.id in :prospectIds
+        group by m.prospect.id
+        """)
+    List<ProspectContactDates> findContactDates(@Param("prospectIds") Collection<UUID> prospectIds);
 
     @Transactional
     void deleteAllByProspectId(UUID prospectId);

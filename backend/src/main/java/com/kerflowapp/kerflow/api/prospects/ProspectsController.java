@@ -10,6 +10,7 @@ import com.kerflowapp.kerflow.domain.User;
 import com.kerflowapp.kerflow.mappers.ProspectMapper;
 import com.kerflowapp.kerflow.mappers.ProspectMessageMapper;
 import com.kerflowapp.kerflow.mappers.ProspectPipelineColumnMapper;
+import com.kerflowapp.kerflow.services.prospects.FollowUpService;
 import com.kerflowapp.kerflow.services.prospects.ProspectMessageService;
 import com.kerflowapp.kerflow.services.prospects.ProspectPipelineService;
 import com.kerflowapp.kerflow.services.prospects.ProspectService;
@@ -21,7 +22,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -35,11 +38,12 @@ public class ProspectsController {
     private final ProspectMessageMapper prospectMessageMapper;
     private final ProspectPipelineService pipelineService;
     private final ProspectPipelineColumnMapper pipelineColumnMapper;
+    private final FollowUpService followUpService;
 
     @GetMapping
     public ResponseEntity<List<ProspectDto>> getAllProspects(@CurrentLoggedUser User loggedUser) {
         List<Prospect> prospects = prospectService.getAllProspects(loggedUser);
-        return ResponseEntity.ok(prospectMapper.toDtoList(prospects));
+        return ResponseEntity.ok(toDtos(prospects));
     }
 
     @RequiresSubscription
@@ -48,7 +52,7 @@ public class ProspectsController {
                                                       @RequestBody @Valid CreateProspectRequest request) {
 
         Prospect prospect = prospectService.createProspect(loggedUser, request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(prospectMapper.toDto(prospect));
+        return ResponseEntity.status(HttpStatus.CREATED).body(toDto(prospect));
     }
 
     @RequiresSubscription
@@ -58,7 +62,7 @@ public class ProspectsController {
                                                       @RequestBody @Valid UpdateProspectRequest request) {
 
         Prospect prospect = prospectService.updateProspect(loggedUser, id, request);
-        return ResponseEntity.ok(prospectMapper.toDto(prospect));
+        return ResponseEntity.ok(toDto(prospect));
     }
 
     @RequiresSubscription
@@ -68,7 +72,7 @@ public class ProspectsController {
                                                     @RequestBody @Valid UpdateStatusRequest request
     ) {
         Prospect prospect = prospectService.updateStatus(loggedUser, id, request.statusKey());
-        return ResponseEntity.ok(prospectMapper.toDto(prospect));
+        return ResponseEntity.ok(toDto(prospect));
     }
 
     @RequiresSubscription
@@ -77,7 +81,7 @@ public class ProspectsController {
                                                               @RequestBody @Valid ReorderProspectsRequest request) {
 
         List<Prospect> prospects = prospectService.reorder(loggedUser, request.statusKey(), request.orderedIds());
-        return ResponseEntity.ok(prospectMapper.toDtoList(prospects));
+        return ResponseEntity.ok(toDtos(prospects));
     }
 
     @RequiresSubscription
@@ -86,7 +90,7 @@ public class ProspectsController {
                                                       @PathVariable UUID id) {
 
         Prospect prospect = prospectService.enrichProspect(loggedUser, id);
-        return ResponseEntity.ok(prospectMapper.toDto(prospect));
+        return ResponseEntity.ok(toDto(prospect));
     }
 
     @RequiresSubscription
@@ -104,7 +108,7 @@ public class ProspectsController {
                                                        @RequestPart("file") MultipartFile file) {
 
         List<Prospect> prospects = prospectService.importFromCsv(loggedUser, file);
-        return ResponseEntity.status(HttpStatus.CREATED).body(prospectMapper.toDtoList(prospects));
+        return ResponseEntity.status(HttpStatus.CREATED).body(toDtos(prospects));
     }
 
     @GetMapping("/{id}/messages")
@@ -188,5 +192,17 @@ public class ProspectsController {
 
         pipelineService.deleteColumn(loggedUser, id);
         return ResponseEntity.noContent().build();
+    }
+
+    private ProspectDto toDto(Prospect prospect) {
+        return toDtos(List.of(prospect)).getFirst();
+    }
+
+    /** Maps prospects and fills their follow-up date, which depends on their message thread. */
+    private List<ProspectDto> toDtos(List<Prospect> prospects) {
+        Map<UUID, Instant> followUpSince = followUpService.followUpSince(prospects);
+        return prospectMapper.toDtoList(prospects).stream()
+            .map(dto -> dto.withFollowUpSince(followUpSince.get(dto.id())))
+            .toList();
     }
 }

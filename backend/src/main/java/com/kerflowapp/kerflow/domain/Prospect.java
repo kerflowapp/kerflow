@@ -8,6 +8,7 @@ import lombok.*;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -55,6 +56,12 @@ public class Prospect extends AbstractAuditing {
      */
     @Column(name = "position")
     private Integer position;
+
+    /**
+     * When the prospect last moved to another kanban column. Starts the follow-up countdown when
+     * no message was sent since. Nullable: legacy rows fall back to their last modification date.
+     */
+    private Instant statusChangedAt;
 
     @Enumerated(EnumType.STRING)
     private ProspectSource source;

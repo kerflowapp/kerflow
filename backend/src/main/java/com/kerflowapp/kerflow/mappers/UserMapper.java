@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 public interface UserMapper {
 
     @Mapping(target = "subscription", ignore = true)
+    @Mapping(target = "followUpDelayDays", expression = "java(com.kerflowapp.kerflow.services.prospects.FollowUpService.delayDays(user))")
     UserDto toUserDto(User user);
 
 }

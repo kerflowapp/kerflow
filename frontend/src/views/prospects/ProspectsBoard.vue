@@ -1,30 +1,12 @@
 <template>
 	<div>
-		<div class="d-flex align-center justify-space-between mb-4 flex-wrap ga-2">
-			<h2 class="text-h5 font-weight-bold">{{ t('prospects.title') }}</h2>
-			<div class="d-flex ga-2 flex-wrap">
-				<v-btn prepend-icon="mdi-tune" variant="outlined" @click="openManageColumns">
-					{{ t('kanban.manage-columns') }}
-				</v-btn>
-				<v-btn color="primary" prepend-icon="mdi-file-delimited" variant="outlined" @click="openCsvImport">
-					{{ t('prospects.import-csv') }}
-				</v-btn>
-				<v-btn color="primary" prepend-icon="mdi-plus" variant="flat" @click="openAddDialog">
-					{{ t('prospects.add-manually') }}
-				</v-btn>
-			</div>
-		</div>
-
-		<v-text-field
-			v-model="filterText"
-			class="mb-4"
-			clearable
-			density="compact"
-			hide-details
-			:placeholder="t('prospects.filter-placeholder')"
-			prepend-inner-icon="mdi-magnify"
-			style="max-width: 400px"
-			variant="outlined"
+		<ProspectsBoardToolbar
+			v-model:filter-text="filterText"
+			v-model:follow-ups-only="followUpsOnly"
+			:due-count="dueCount"
+			@add="openAddDialog"
+			@import-csv="openCsvImport"
+			@manage-columns="openManageColumns"
 		/>
 
 		<v-progress-linear v-if="isFetching" class="mb-4" color="primary" indeterminate />
@@ -46,7 +28,7 @@
 			<div v-for="column in columns" :key="column.key" class="kanban-col">
 				<KanbanColumn
 					:color="column.color || 'primary'"
-					:drag-disabled="!!filterText"
+					:drag-disabled="isFiltering"
 					:icon="column.icon || 'mdi-view-column'"
 					:prospects="listForColumn(column.key)"
 					:readonly="isTrialExpired"
@@ -199,6 +181,8 @@ import { useI18n } from 'vue-i18n';
 
 import type { ProspectDto, ProspectPipelineColumnDto, UpdateProspectDto } from '~/api/dtos/prospect.dto';
 import { ProspectSource } from '~/api/dtos/prospect.dto';
+import ProspectsBoardToolbar from '~/components/prospects/ProspectsBoardToolbar.vue';
+import { useFollowUps } from '~/composables/useFollowUps';
 import { useProspectPipeline } from '~/composables/useProspectPipeline';
 import { useProspects } from '~/composables/useProspects';
 import { useSubscription } from '~/composables/useSubscription';
@@ -228,8 +212,11 @@ const {
 } = useProspects();
 const { fetchColumns, createColumn, updateColumn, reorderColumns, deleteColumn } = useProspectPipeline();
 const { isTrialExpired } = useSubscription();
+const { dueCount, isDue } = useFollowUps();
 
 const filterText = ref('');
+const followUpsOnly = ref(false);
+const isFiltering = computed(() => !!filterText.value || followUpsOnly.value);
 const viewMode = ref<'board' | 'map'>('board');
 const showDetail = ref(false);
 const showEdit = ref(false);
@@ -335,24 +322,21 @@ const matchesFilter = (p: ProspectDto, q: string) =>
 	p.phone?.includes(q) ||
 	p.tags?.some(tag => tag.toLowerCase().includes(q));
 
+const matchesFilters = (p: ProspectDto) =>
+	(!filterText.value || matchesFilter(p, filterText.value.toLowerCase())) && (!followUpsOnly.value || isDue(p));
+
 // While filtering, drag is disabled → a fresh filtered copy is safe. Otherwise hand vuedraggable
 // the stable column array it owns.
 const listForColumn = (statusKey: string): ProspectDto[] => {
-	if (!filterText.value) return columnLists[statusKey] || [];
-	const q = filterText.value.toLowerCase();
-	return (store.prospectsByStatus[statusKey] || []).filter(p => matchesFilter(p, q));
+	if (!isFiltering.value) return columnLists[statusKey] || [];
+	return (store.prospectsByStatus[statusKey] || []).filter(matchesFilters);
 };
 
-const filteredProspects = computed(() => {
-	if (!filterText.value) return store.prospects;
-	const q = filterText.value.toLowerCase();
-	return store.prospects.filter(
-		p =>
-			p.name.toLowerCase().includes(q) ||
-			p.email?.toLowerCase().includes(q) ||
-			p.phone?.includes(q) ||
-			p.tags?.some(tag => tag.toLowerCase().includes(q))
-	);
+const filteredProspects = computed(() => (isFiltering.value ? store.prospects.filter(matchesFilters) : store.prospects));
+
+// Following up the last due prospect empties the filter: drop it rather than show an empty board
+watch(dueCount, count => {
+	if (count === 0) followUpsOnly.value = false;
 });
 
 const handleReorder = (payload: { statusKey: string; orderedIds: string[] }) => {

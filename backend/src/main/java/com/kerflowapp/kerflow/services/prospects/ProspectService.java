@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -66,6 +67,7 @@ public class ProspectService {
         if (prospect.getStatusKey() == null) {
             prospect.setStatusKey(request.statusKey() != null ? request.statusKey() : KanbanStatus.NEW.name());
         }
+        prospect.setStatusChangedAt(Instant.now());
         // Append to the end of its column
         prospect.setPosition((int) prospectRepository.countByUserIdAndStatusKey(user.getId(), prospect.getStatusKey()));
         applySocialLinks(prospect, request.socialLinks());
@@ -159,7 +161,7 @@ public class ProspectService {
         if (statusKey == null || statusKey.isBlank()) {
             throw new KerflowException(PROSPECT_INVALID_STATUS);
         }
-        prospect.setStatusKey(statusKey);
+        moveToColumn(prospect, statusKey);
         return prospectRepository.save(prospect);
     }
 
@@ -177,11 +179,22 @@ public class ProspectService {
         for (int i = 0; i < orderedIds.size(); i++) {
             Prospect prospect = prospectRepository.findByIdAndUserId(orderedIds.get(i), user.getId())
                 .orElseThrow(() -> new KerflowException(PROSPECT_NOT_FOUND));
-            prospect.setStatusKey(statusKey);
+            moveToColumn(prospect, statusKey);
             prospect.setPosition(i);
             reordered.add(prospect);
         }
         return prospectRepository.saveAll(reordered);
+    }
+
+    /**
+     * Only a real column change restarts the follow-up countdown: reordering cards inside their
+     * column must not.
+     */
+    private static void moveToColumn(Prospect prospect, String statusKey) {
+        if (!statusKey.equals(prospect.getStatusKey())) {
+            prospect.setStatusKey(statusKey);
+            prospect.setStatusChangedAt(Instant.now());
+        }
     }
 
     public void deleteProspect(User user, UUID prospectId) {
@@ -225,6 +238,7 @@ public class ProspectService {
                     .notes(getValueSafe(values, notesIdx))
                     .status(KanbanStatus.NEW)
                     .statusKey(KanbanStatus.NEW.name())
+                    .statusChangedAt(Instant.now())
                     .source(ProspectSource.CSV)
                     .user(user)
                     .build();

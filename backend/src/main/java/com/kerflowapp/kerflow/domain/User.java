@@ -48,6 +48,9 @@ public class User extends AbstractAuditing {
     private Instant currentPeriodEnd;
     private Instant cancelledAt;
 
+    /** Days without reply before a prospect is flagged for follow-up. Null means the default. */
+    private Integer followUpDelayDays;
+
     @OneToMany(mappedBy = "user")
     private List<Notification> notifications;
 

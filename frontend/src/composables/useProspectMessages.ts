@@ -10,6 +10,9 @@ import {
 	getProspectMessages$,
 	markProspectMessageSent$
 } from '~/api/prospect-messages.api';
+import type { ProspectDto } from '~/api/dtos/prospect.dto';
+import { getProspects$ } from '~/api/prospects.api';
+import { useProspectsStore } from '~/stores/prospects.store';
 
 import { useTrigger } from './useTrigger';
 
@@ -36,6 +39,18 @@ export function useProspectMessages(): {
 	const { trigger: triggerCreate, loading: isCreatingMessage } = useTrigger();
 	const { trigger: triggerMarkSent, loading: isMarkingSent } = useTrigger();
 	const { trigger: triggerDelete, loading: isDeletingMessage } = useTrigger();
+	const { trigger: triggerRefresh } = useTrigger();
+	const store = useProspectsStore();
+
+	// A sent message or a reply moves the follow-up date, which the backend computes: reload the
+	// prospects quietly, without the board's loading state.
+	const refreshFollowUps = () => {
+		triggerRefresh(getProspects$(), {
+			onSuccess: (response: { data: ProspectDto[] }) => {
+				store.setProspects(response.data);
+			}
+		});
+	};
 
 	const fetchMessages = (prospectId: string) => {
 		triggerFetch(getProspectMessages$(prospectId), {
@@ -52,6 +67,7 @@ export function useProspectMessages(): {
 		triggerCreate(createProspectMessage$(prospectId, data), {
 			onSuccess: (response: { data: ProspectMessageDto }) => {
 				messages.value.push(response.data);
+				refreshFollowUps();
 				toast.success(t('success.message-recorded'));
 				onAdded?.();
 			},
@@ -65,6 +81,7 @@ export function useProspectMessages(): {
 		triggerMarkSent(markProspectMessageSent$(prospectId, messageId), {
 			onSuccess: (response: { data: ProspectMessageDto }) => {
 				messages.value = messages.value.map(message => (message.id === messageId ? response.data : message));
+				refreshFollowUps();
 				toast.success(t('success.message-marked-sent'));
 			},
 			onError: () => {
@@ -77,6 +94,7 @@ export function useProspectMessages(): {
 		triggerDelete(deleteProspectMessage$(prospectId, messageId), {
 			onSuccess: () => {
 				messages.value = messages.value.filter(message => message.id !== messageId);
+				refreshFollowUps();
 				toast.success(t('success.message-deleted'));
 			},
 			onError: () => {

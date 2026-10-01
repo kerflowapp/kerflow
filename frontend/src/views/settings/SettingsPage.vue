@@ -48,6 +48,11 @@ const settingsMenuItems = [
 		to: '/settings/profile'
 	},
 	{
+		titleKey: 'settings.prospecting.title',
+		icon: 'mdi-bell-cog-outline',
+		to: '/settings/prospecting'
+	},
+	{
 		titleKey: 'settings.security.title',
 		icon: 'mdi-shield-outline',
 		to: '/settings/security'

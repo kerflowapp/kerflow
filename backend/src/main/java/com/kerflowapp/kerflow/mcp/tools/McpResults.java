@@ -4,6 +4,7 @@ import com.kerflowapp.kerflow.api.prospects.domain.SignalDto;
 import com.kerflowapp.kerflow.api.search.domain.SearchResultDto;
 import com.kerflowapp.kerflow.domain.*;
 import com.kerflowapp.kerflow.domain.enums.MessageChannel;
+import com.kerflowapp.kerflow.services.prospects.FollowUpService;
 import com.kerflowapp.kerflow.services.scoring.ProspectScore;
 
 import java.time.LocalDateTime;
@@ -252,6 +253,35 @@ public final class McpResults {
                 return text;
             }
             return text.substring(0, MAX_REVIEW_LENGTH) + "…";
+        }
+    }
+
+    /**
+     * A prospect waiting for a reply past the user's follow-up delay. daysOverdue is 0 on the
+     * day the follow-up becomes due.
+     */
+    public record FollowUpResult(
+        UUID id,
+        String name,
+        String statusKey,
+        String email,
+        String phone,
+        String waitingSince,
+        long daysWaiting,
+        long daysOverdue
+    ) {
+
+        public static FollowUpResult from(FollowUpService.FollowUp followUp) {
+            Prospect prospect = followUp.prospect();
+            return new FollowUpResult(
+                prospect.getId(),
+                prospect.getName(),
+                prospect.getStatusKey(),
+                prospect.getEmail(),
+                prospect.getPhone(),
+                followUp.waitingSince().toString(),
+                followUp.daysWaiting(),
+                followUp.daysOverdue());
         }
     }
 

@@ -5,8 +5,10 @@ import com.kerflowapp.kerflow.domain.Prospect;
 import com.kerflowapp.kerflow.domain.ProspectMessage;
 import com.kerflowapp.kerflow.domain.User;
 import com.kerflowapp.kerflow.mcp.auth.McpUserContext;
+import com.kerflowapp.kerflow.mcp.tools.McpResults.FollowUpResult;
 import com.kerflowapp.kerflow.mcp.tools.McpResults.MessageResult;
 import com.kerflowapp.kerflow.mcp.tools.McpResults.ProspectDetail;
+import com.kerflowapp.kerflow.services.prospects.FollowUpService;
 import com.kerflowapp.kerflow.services.prospects.ProspectMessageService;
 import com.kerflowapp.kerflow.services.prospects.ProspectService;
 import com.kerflowapp.kerflow.services.scoring.ProspectScoringService;
@@ -30,6 +32,7 @@ public class OutreachTools {
     private final ProspectMessageService prospectMessageService;
     private final McpUserContext mcpUserContext;
     private final ProspectScoringService prospectScoringService;
+    private final FollowUpService followUpService;
 
     @Tool(name = "save_prospect_email", description = """
         Save a cold-outreach or follow-up email you wrote for a prospect as a DRAFT in Kerflow.
@@ -50,6 +53,21 @@ public class OutreachTools {
         ProspectMessage message = prospectMessageService.createOutboundDraft(
             user, UUID.fromString(prospectId), subject, body, GENERATED_BY);
         return MessageResult.from(message);
+    }
+
+    @Tool(name = "list_follow_ups", description = """
+        List the prospects the user should follow up on today, most overdue first: open deals
+        (CONTACTED, IN_DISCUSSION) with no reply since the last message sent (or, when none was
+        logged, since the card entered its column), for longer than the user's follow-up delay
+        (set in Kerflow's settings).
+        waitingSince is when the countdown started; daysOverdue is 0 on the day it becomes due.
+        To write a follow-up, call list_prospect_messages first so it builds on the actual
+        thread, then save_prospect_email.""")
+    public List<FollowUpResult> listFollowUps(ToolContext toolContext) {
+        User user = mcpUserContext.currentUser(toolContext);
+        return followUpService.dueFollowUps(user, Instant.now()).stream()
+            .map(FollowUpResult::from)
+            .toList();
     }
 
     @Tool(name = "record_prospect_reply", description = """

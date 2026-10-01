@@ -17,6 +17,7 @@ public record UserDto(
     String phoneNumber,
     String city,
     String profession,
+    Integer followUpDelayDays,
     List<NotificationDTO> notifications,
     SubscriptionDto subscription
 ) {

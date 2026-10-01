@@ -1,6 +1,7 @@
 package com.kerflowapp.kerflow.services.users;
 
 import com.kerflowapp.kerflow.api.authentication.domain.SignupRequest;
+import com.kerflowapp.kerflow.api.users.domain.UpdatePreferencesRequest;
 import com.kerflowapp.kerflow.api.users.domain.UpdateUserRequest;
 import com.kerflowapp.kerflow.domain.User;
 import com.kerflowapp.kerflow.exceptions.KerflowException;
@@ -217,6 +218,13 @@ public class UserService {
                 throw new KerflowException(USER_NOT_FOUND);
             }
         );
+    }
+
+    public void updatePreferences(User loggedUser, @Valid UpdatePreferencesRequest request) {
+        User user = userRepository.findByLogin(loggedUser.getLogin())
+            .orElseThrow(() -> new KerflowException(USER_NOT_FOUND));
+        user.setFollowUpDelayDays(request.followUpDelayDays());
+        userRepository.save(user);
     }
 
     public void confirmResetPassword(String rawLogin, String password, UUID code) {

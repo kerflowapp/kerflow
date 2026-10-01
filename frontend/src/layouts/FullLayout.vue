@@ -29,7 +29,11 @@
 						:to="isLocked(item) ? undefined : item.to"
 						:value="item.titleKey"
 						@click="isLocked(item) && (showTrialExpiredDialog = true)"
-					/>
+					>
+						<template v-if="item.badge?.()" #append>
+							<v-chip color="error" size="x-small" variant="flat">{{ item.badge() }}</v-chip>
+						</template>
+					</v-list-item>
 				</v-list>
 
 				<template #append>
@@ -135,17 +139,29 @@
 <script setup lang="ts">
 import TrialBanner from '@/components/TrialBanner.vue';
 import TrialExpiredDialog from '@/components/TrialExpiredDialog.vue';
+import { watchImmediate } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import { useDisplay } from 'vuetify';
 
 import { useAuth } from '~/composables/useAuth';
+import { useFollowUps } from '~/composables/useFollowUps';
 import { useLanguage } from '~/composables/useLanguage';
+import { useProspects } from '~/composables/useProspects';
 import { useSubscription } from '~/composables/useSubscription';
+import { useProspectsStore } from '~/stores/prospects.store';
 
 const { user, isLoggedIn, logout } = useAuth();
 const { isTrialExpired } = useSubscription();
 const { mobile } = useDisplay();
 const { currentLocale, localeNames, setLocale } = useLanguage();
+const { fetchProspects } = useProspects();
+const { dueCount } = useFollowUps();
+const prospectsStore = useProspectsStore();
+
+// The follow-up counter needs the prospects on every page, not only on the board
+watchImmediate(isLoggedIn, loggedIn => {
+	if (loggedIn && prospectsStore.prospects.length === 0) fetchProspects();
+});
 
 // Workaround for Vetur false-positives (used in template)
 void currentLocale;
@@ -159,12 +175,13 @@ interface MenuItem {
 	icon: string;
 	to: string;
 	lockedWhenExpired?: boolean;
+	badge?: () => number;
 }
 
 const menuItems: MenuItem[] = [
 	{ titleKey: 'navigation.dashboard', icon: 'mdi-view-dashboard', to: '/dashboard', lockedWhenExpired: true },
 	{ titleKey: 'navigation.search', icon: 'mdi-magnify', to: '/search', lockedWhenExpired: true },
-	{ titleKey: 'navigation.prospects', icon: 'mdi-account-group', to: '/prospects' },
+	{ titleKey: 'navigation.prospects', icon: 'mdi-account-group', to: '/prospects', badge: () => dueCount.value },
 	{ titleKey: 'navigation.settings', icon: 'mdi-cog', to: '/settings' }
 ];
 

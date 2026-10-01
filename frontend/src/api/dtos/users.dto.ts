@@ -18,6 +18,8 @@ export type UserDto = {
 	phoneNumber: string;
 	city: string;
 	profession: string;
+	/** Days without reply before a prospect is flagged for follow-up; the backend applies the default */
+	followUpDelayDays: number;
 	notifications: NotificationDto[];
 	subscription?: SubscriptionDto;
 };

@@ -60,6 +60,10 @@ const MainRoutes = {
 					component: () => import('../views/settings/ProfileSettings.vue')
 				},
 				{
+					path: 'prospecting',
+					component: () => import('../views/settings/ProspectingSettings.vue')
+				},
+				{
 					path: 'security',
 					component: () => import('../views/settings/SecuritySettings.vue')
 				},
