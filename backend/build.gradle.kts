@@ -55,7 +55,7 @@ dependencies {
     implementation("com.resend:resend-java:4.22.0")
 
     // Stripe
-    implementation("com.stripe:stripe-java:33.4.1")
+    implementation("com.stripe:stripe-java:33.4.2")
 
     // HTML scraping
     implementation("org.jsoup:jsoup:1.23.2")
