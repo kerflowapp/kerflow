@@ -28,17 +28,9 @@ RUN npm run build
 
 FROM openresty/openresty:1.25.3.2-3-alpine-fat
 
-RUN apk add --no-cache curl
-
-ENV DOCKERIZE_VERSION=v0.7.0
-RUN curl -fSslL https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz | \
-    tar xzv -C /usr/local/bin/
-
-RUN mkdir -p /app
-
 COPY --from=build-stage /app/dist/ /app/
-RUN ls -l /app
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
-VOLUME ["/data"]
+EXPOSE 8080
 
 CMD ["/usr/local/openresty/bin/openresty", "-g", "daemon off;"]
