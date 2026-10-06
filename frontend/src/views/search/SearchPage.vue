@@ -3,7 +3,7 @@
 		<h2 class="text-h5 font-weight-bold mb-4">{{ t('search.title') }}</h2>
 		<p class="text-body-1 text-grey-darken-1 mb-6">{{ t('search.description') }}</p>
 
-		<SearchBar :is-searching="isSearching" @search="handleSearch" />
+		<SearchBar :initial-query="lastQuery" :is-searching="isSearching" @search="searchPlaces" />
 
 		<v-progress-linear v-if="isSearching" class="mb-4" color="primary" indeterminate />
 
@@ -114,14 +114,14 @@ import { useSearch } from '~/composables/useSearch';
 
 const { t } = useI18n();
 const { smAndDown } = useDisplay();
-const { searchResults, isSearching, hasSearched, searchPlaces } = useSearch();
+const { searchResults, isSearching, hasSearched, lastQuery, searchPlaces } = useSearch();
 const { addFromSearchResult, isCreating } = useProspects();
 const { existingColumns } = useExistingProspects();
 
 const hoveredPlaceId = ref<string | null>(null);
-const searchCenter = ref<{ lat: number; lng: number } | null>(null);
-const searchRadius = ref(20);
-const currentKeywords = ref('');
+const searchCenter = computed(() => (lastQuery.value ? { lat: lastQuery.value.lat, lng: lastQuery.value.lng } : null));
+const searchRadius = computed(() => lastQuery.value?.radius ?? 20);
+const currentKeywords = computed(() => lastQuery.value?.keywords ?? '');
 const mobileView = ref<'list' | 'map'>('list');
 const drawerOpen = ref(false);
 const selectedPlaceId = ref<string | null>(null);
@@ -130,19 +130,6 @@ const selectedResult = computed<SearchResultDto | null>(() => {
 	if (!selectedPlaceId.value) return null;
 	return searchResults.value.find(r => r.placeId === selectedPlaceId.value) ?? null;
 });
-
-const handleSearch = (payload: { keywords: string; city: string; radius: number; lat: number; lng: number }) => {
-	searchCenter.value = { lat: payload.lat, lng: payload.lng };
-	searchRadius.value = payload.radius;
-	currentKeywords.value = payload.keywords;
-	searchPlaces({
-		keywords: payload.keywords,
-		city: payload.city,
-		radius: payload.radius,
-		lat: payload.lat,
-		lng: payload.lng
-	});
-};
 
 const handleAddProspect = (result: SearchResultDto) => {
 	if (existingColumns.value[result.placeId]) return;

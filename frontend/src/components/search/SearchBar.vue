@@ -72,30 +72,30 @@ import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { getDepartmentCodeFromPostcode, getDepartmentName, useNominatim } from '~/composables/useNominatim';
-import type { NominatimResult } from '~/composables/useNominatim';
+import type { CitySuggestion } from '~/composables/useNominatim';
+import type { LastSearchQuery } from '~/stores/search.store';
 
 interface Emits {
-	(e: 'search', payload: { keywords: string; city: string; radius: number; lat: number; lng: number }): void;
+	(e: 'search', query: LastSearchQuery): void;
 }
 
 interface Props {
 	isSearching?: boolean;
+	/** Previous search, used to refill the form when coming back to the page */
+	initialQuery?: LastSearchQuery | null;
 }
 
-withDefaults(defineProps<Props>(), { isSearching: false });
+const props = withDefaults(defineProps<Props>(), { isSearching: false, initialQuery: null });
 const emit = defineEmits<Emits>();
 const { t } = useI18n();
 const { suggestions, isLoading: isCityLoading, searchAddress } = useNominatim();
 
-const keywords = ref('');
+const keywords = ref(props.initialQuery?.keywords ?? '');
 const cityQuery = ref('');
-/** What `citySuggestions` builds: a Nominatim hit plus the label shown in the list. */
-type CitySuggestion = NominatimResult & { displayName: string };
+const selectedCity = ref<CitySuggestion | null>(props.initialQuery?.city ?? null);
+const radius = ref(props.initialQuery?.radius ?? 20);
 
-const selectedCity = ref<CitySuggestion | null>(null);
-const radius = ref(20);
-
-const citySuggestions = computed(() => {
+const citySuggestions = computed<CitySuggestion[]>(() => {
 	return suggestions.value.map(s => {
 		const city = s.address.city || s.address.town || s.address.village || s.address.municipality || s.display_name;
 		const deptCode = s.address.postcode ? getDepartmentCodeFromPostcode(s.address.postcode) : undefined;
@@ -115,15 +115,9 @@ watch(cityQuery, val => {
 
 const onSearch = () => {
 	if (!keywords.value || !selectedCity.value) return;
-	const city =
-		selectedCity.value.address.city ||
-		selectedCity.value.address.town ||
-		selectedCity.value.address.village ||
-		selectedCity.value.address.municipality ||
-		'';
 	emit('search', {
 		keywords: keywords.value,
-		city,
+		city: selectedCity.value,
 		radius: radius.value,
 		lat: parseFloat(selectedCity.value.lat),
 		lng: parseFloat(selectedCity.value.lon)

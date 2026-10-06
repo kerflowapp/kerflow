@@ -6,6 +6,7 @@ import { ref } from 'vue';
 import { getUserInformation$, login$, signup$, updatePassword$, verifyAccount$ } from '~/api/auth.api';
 import { SignupRequest, UpdatePasswordRequest } from '~/api/dtos/auth.dto';
 import type { UserDto } from '~/api/dtos/users.dto';
+import { useSearchStore } from '~/stores/search.store';
 import { removeAuthToken, removeRefreshToken, setAuthToken, setRefreshToken } from '~/utils/tokenStorage';
 
 const LOGGED_IN = 'loggedIn';
@@ -29,6 +30,8 @@ export const useAuthStore = defineStore<'auth', AuthenticationStore>('auth', () 
 		isLoggedIn.value = false;
 		user.value = undefined;
 		localStorage.removeItem(LOGGED_IN);
+		// The next user on this browser must not see the previous one's search
+		useSearchStore().clear();
 		await removeAuthToken();
 		await removeRefreshToken();
 	};

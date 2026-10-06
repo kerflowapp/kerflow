@@ -396,6 +396,9 @@ export interface NominatimResult {
 	};
 }
 
+/** A Nominatim hit plus the label shown in the city autocomplete. */
+export type CitySuggestion = NominatimResult & { displayName: string };
+
 const isValidAddress = (addr: NominatimResult['address']): boolean => {
 	// Check if at least one important field is present
 	const hasStreetInfo = addr.road || addr.house_number;

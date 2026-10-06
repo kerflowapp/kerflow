@@ -1,10 +1,12 @@
+import { storeToRefs } from 'pinia';
 import type { Ref } from 'vue';
-import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { toast } from '~/composables/useToast';
 
-import type { SearchRequest, SearchResponseDto, SearchResultDto } from '~/api/dtos/search.dto';
+import type { SearchResponseDto, SearchResultDto } from '~/api/dtos/search.dto';
 import { searchPlaces$ } from '~/api/search.api';
+import type { LastSearchQuery } from '~/stores/search.store';
+import { useSearchStore } from '~/stores/search.store';
 
 import { useTrigger } from './useTrigger';
 
@@ -13,31 +15,37 @@ export function useSearch(): {
 	isSearching: Ref<boolean>;
 	hasSearched: Ref<boolean>;
 	nextPageToken: Ref<string | null>;
-	searchPlaces: (request: SearchRequest) => void;
+	lastQuery: Ref<LastSearchQuery | null>;
+	searchPlaces: (query: LastSearchQuery) => void;
 	clearResults: () => void;
 } {
 	const { t } = useI18n();
-	const searchResults = ref<SearchResultDto[]>([]);
-	const hasSearched = ref(false);
-	const nextPageToken = ref<string | null>(null);
+	const store = useSearchStore();
+	const { results: searchResults, hasSearched, nextPageToken, lastQuery } = storeToRefs(store);
 	const { trigger: triggerSearch, loading: isSearching } = useTrigger();
 
-	const searchPlaces = (request: SearchRequest) => {
-		triggerSearch(searchPlaces$(request), {
-			onSuccess: (response: { data: SearchResponseDto }) => {
-				searchResults.value = response.data.results;
-				nextPageToken.value = response.data.nextPageToken;
-				hasSearched.value = true;
-			},
-			onError: () => {
-				toast.error(t('errors.search-failed'));
+	const searchPlaces = (query: LastSearchQuery) => {
+		const city =
+			query.city.address.city ||
+			query.city.address.town ||
+			query.city.address.village ||
+			query.city.address.municipality ||
+			'';
+		triggerSearch(
+			searchPlaces$({ keywords: query.keywords, city, radius: query.radius, lat: query.lat, lng: query.lng }),
+			{
+				onSuccess: (response: { data: SearchResponseDto }) => {
+					store.setResults(query, response.data);
+				},
+				onError: () => {
+					toast.error(t('errors.search-failed'));
+				}
 			}
-		});
+		);
 	};
 
 	const clearResults = () => {
-		searchResults.value = [];
-		hasSearched.value = false;
+		store.clear();
 	};
 
 	return {
@@ -45,6 +53,7 @@ export function useSearch(): {
 		isSearching,
 		hasSearched,
 		nextPageToken,
+		lastQuery,
 		searchPlaces,
 		clearResults
 	};
