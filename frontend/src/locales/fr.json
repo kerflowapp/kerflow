@@ -220,6 +220,7 @@
 		"no-results-title": "Aucun résultat",
 		"no-results-description": "Essayez avec d'autres mots-clés ou élargissez le rayon de recherche.",
 		"add-to-prospects": "Ajouter aux prospects",
+		"already-in-column": "Déjà dans « {column} »",
 		"view-list": "Liste",
 		"view-map": "Carte",
 		"detail": {

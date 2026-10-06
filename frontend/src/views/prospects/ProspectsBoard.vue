@@ -210,7 +210,7 @@ const {
 	reorderProspects,
 	removeProspect
 } = useProspects();
-const { fetchColumns, createColumn, updateColumn, reorderColumns, deleteColumn } = useProspectPipeline();
+const { fetchColumns, createColumn, updateColumn, reorderColumns, deleteColumn, columnTitle } = useProspectPipeline();
 const { isTrialExpired } = useSubscription();
 const { dueCount, isDue } = useFollowUps();
 
@@ -272,24 +272,6 @@ const handleEdit = (prospect: ProspectDto) => {
 };
 
 const columns = computed<ProspectPipelineColumnDto[]>(() => store.pipelineColumns);
-
-const columnTitle = (col: ProspectPipelineColumnDto) => {
-	if (col.name) return col.name;
-	switch (col.key) {
-		case 'NEW':
-			return t('kanban.columns.new');
-		case 'CONTACTED':
-			return t('kanban.columns.contacted');
-		case 'IN_DISCUSSION':
-			return t('kanban.columns.in-discussion');
-		case 'WON':
-			return t('kanban.columns.won');
-		case 'LOST':
-			return t('kanban.columns.lost');
-		default:
-			return col.key;
-	}
-};
 
 // Stable per-column arrays owned by vuedraggable (mutated in place during drag). Rebuilt from
 // the store only when NOT dragging, so an optimistic reorder mid-drag never clobbers a

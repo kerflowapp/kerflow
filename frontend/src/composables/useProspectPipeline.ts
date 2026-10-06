@@ -27,6 +27,7 @@ export function useProspectPipeline(): {
 	updateColumn: (id: string, data: UpdateProspectPipelineColumnDto) => void;
 	reorderColumns: (orderedIds: string[]) => void;
 	deleteColumn: (id: string) => void;
+	columnTitle: (col: ProspectPipelineColumnDto) => string;
 } {
 	const { t } = useI18n();
 	const store = useProspectsStore();
@@ -92,5 +93,23 @@ export function useProspectPipeline(): {
 		});
 	};
 
-	return { isFetching, isSaving, fetchColumns, createColumn, updateColumn, reorderColumns, deleteColumn };
+	const columnTitle = (col: ProspectPipelineColumnDto) => {
+		if (col.name) return col.name;
+		switch (col.key) {
+			case 'NEW':
+				return t('kanban.columns.new');
+			case 'CONTACTED':
+				return t('kanban.columns.contacted');
+			case 'IN_DISCUSSION':
+				return t('kanban.columns.in-discussion');
+			case 'WON':
+				return t('kanban.columns.won');
+			case 'LOST':
+				return t('kanban.columns.lost');
+			default:
+				return col.key;
+		}
+	};
+
+	return { isFetching, isSaving, fetchColumns, createColumn, updateColumn, reorderColumns, deleteColumn, columnTitle };
 }

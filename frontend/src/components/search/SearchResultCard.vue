@@ -1,7 +1,7 @@
 <template>
 	<v-card
 		class="search-result-card h-100"
-		:class="{ 'search-result-card--highlighted': highlighted }"
+		:class="{ 'search-result-card--highlighted': highlighted, 'search-result-card--existing': !!existingColumn }"
 		elevation="0"
 		@click="emit('select', result.placeId)"
 		@mouseenter="emit('hover', result.placeId)"
@@ -86,7 +86,11 @@
 
 		<v-card-actions>
 			<v-spacer />
+			<v-chip v-if="existingColumn" prepend-icon="mdi-view-column-outline" size="small" variant="tonal">
+				{{ t('search.already-in-column', { column: existingColumn }) }}
+			</v-chip>
 			<v-btn
+				v-else
 				color="primary"
 				:loading="isAdding"
 				prepend-icon="mdi-plus"
@@ -104,9 +108,22 @@
 .search-result-card {
 	transition:
 		box-shadow 0.15s ease,
-		border-color 0.15s ease;
+		border-color 0.15s ease,
+		opacity 0.15s ease,
+		filter 0.15s ease;
 	border: 2px solid transparent;
 	cursor: pointer;
+}
+
+.search-result-card--existing {
+	opacity: 0.55;
+	filter: grayscale(1);
+}
+
+.search-result-card--existing:hover,
+.search-result-card--existing.search-result-card--highlighted {
+	opacity: 1;
+	filter: none;
 }
 
 .search-result-card--highlighted {
@@ -126,6 +143,8 @@ interface Props {
 	index?: number | null;
 	isAdding?: boolean;
 	highlighted?: boolean;
+	/** Label of the pipeline column holding this business, when it is already a prospect */
+	existingColumn?: string | null;
 }
 
 interface Emits {
@@ -137,7 +156,8 @@ interface Emits {
 withDefaults(defineProps<Props>(), {
 	index: null,
 	isAdding: false,
-	highlighted: false
+	highlighted: false,
+	existingColumn: null
 });
 const emit = defineEmits<Emits>();
 const { t } = useI18n();

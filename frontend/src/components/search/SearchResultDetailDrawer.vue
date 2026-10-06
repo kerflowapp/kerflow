@@ -186,7 +186,10 @@
 			</v-card-text>
 
 			<v-card-actions class="pa-4">
-				<v-btn block color="primary" :loading="isAdding" prepend-icon="mdi-plus" variant="flat" @click="emit('add', result)">
+				<v-chip v-if="existingColumn" class="mx-auto" prepend-icon="mdi-view-column-outline" variant="tonal">
+					{{ t('search.already-in-column', { column: existingColumn }) }}
+				</v-chip>
+				<v-btn v-else block color="primary" :loading="isAdding" prepend-icon="mdi-plus" variant="flat" @click="emit('add', result)">
 					{{ t('search.add-to-prospects') }}
 				</v-btn>
 			</v-card-actions>
@@ -213,13 +216,15 @@ import SignalsList from '~/components/signals/SignalsList.vue';
 interface Props {
 	result: SearchResultDto | null;
 	isAdding?: boolean;
+	/** Label of the pipeline column holding this business, when it is already a prospect */
+	existingColumn?: string | null;
 }
 
 interface Emits {
 	(e: 'add', result: SearchResultDto): void;
 }
 
-const props = withDefaults(defineProps<Props>(), { isAdding: false });
+const props = withDefaults(defineProps<Props>(), { isAdding: false, existingColumn: null });
 const emit = defineEmits<Emits>();
 const { t } = useI18n();
 

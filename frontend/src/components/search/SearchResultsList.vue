@@ -9,6 +9,7 @@
 		<div v-if="results.length > 0" class="results-scroll-list d-flex flex-column ga-3">
 			<div v-for="(result, index) in results" :key="result.placeId" :ref="el => setCardRef(result.placeId, el)">
 				<SearchResultCard
+					:existing-column="existingColumns[result.placeId] ?? null"
 					:highlighted="highlightedId === result.placeId"
 					:index="index"
 					:is-adding="isCreating"
@@ -39,6 +40,8 @@ import SearchResultCard from './SearchResultCard.vue';
 
 interface Props {
 	results: SearchResultDto[];
+	/** Pipeline column label of the results already added as prospects, by place id */
+	existingColumns: Record<string, string>;
 	hasSearched: boolean;
 	isCreating: boolean;
 	highlightedId?: string | null;

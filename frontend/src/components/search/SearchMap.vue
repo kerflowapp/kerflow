@@ -31,7 +31,13 @@
 					:icon-anchor="highlightedId === result.placeId ? [16, 16] : [13, 13]"
 					:icon-size="highlightedId === result.placeId ? [32, 32] : [26, 26]"
 				>
-					<div class="marker-number" :class="{ 'marker-highlighted': highlightedId === result.placeId }">
+					<div
+						class="marker-number"
+						:class="{
+							'marker-highlighted': highlightedId === result.placeId,
+							'marker-existing': !!existingColumns[result.placeId]
+						}"
+					>
 						{{ index + 1 }}
 					</div>
 				</l-icon>
@@ -82,6 +88,11 @@
 	transition: all 0.15s ease;
 }
 
+.marker-existing:not(.marker-highlighted) {
+	filter: grayscale(1);
+	opacity: 0.7;
+}
+
 .marker-highlighted {
 	width: 32px;
 	height: 32px;
@@ -110,6 +121,8 @@ interface Props {
 	center?: { lat: number; lng: number } | null;
 	radius?: number;
 	highlightedId?: string | null;
+	/** Pipeline column label of the results already added as prospects, by place id */
+	existingColumns?: Record<string, string>;
 }
 
 interface Emits {
@@ -120,7 +133,8 @@ interface Emits {
 const props = withDefaults(defineProps<Props>(), {
 	center: null,
 	radius: 20,
-	highlightedId: null
+	highlightedId: null,
+	existingColumns: () => ({})
 });
 
 const emit = defineEmits<Emits>();

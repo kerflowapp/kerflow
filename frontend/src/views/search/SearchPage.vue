@@ -25,6 +25,7 @@
 		<v-row v-if="hasSearched" class="search-content" :class="{ 'is-stacked': smAndDown }" no-gutters>
 			<v-col class="results-panel" :class="{ 'd-none d-md-block': mobileView === 'map' }" cols="12" md="4">
 				<SearchResultsList
+					:existing-columns="existingColumns"
 					:has-searched="hasSearched"
 					:highlighted-id="hoveredPlaceId"
 					:is-creating="isCreating"
@@ -43,6 +44,7 @@
 			>
 				<SearchMap
 					:center="searchCenter"
+					:existing-columns="existingColumns"
 					:highlighted-id="hoveredPlaceId"
 					:radius="searchRadius"
 					:results="searchResults"
@@ -52,7 +54,13 @@
 			</v-col>
 		</v-row>
 
-		<SearchResultDetailDrawer v-model="drawerOpen" :is-adding="isCreating" :result="selectedResult" @add="handleAddProspect" />
+		<SearchResultDetailDrawer
+			v-model="drawerOpen"
+			:existing-column="selectedResult ? (existingColumns[selectedResult.placeId] ?? null) : null"
+			:is-adding="isCreating"
+			:result="selectedResult"
+			@add="handleAddProspect"
+		/>
 	</div>
 </template>
 
@@ -100,6 +108,7 @@ import SearchBar from '~/components/search/SearchBar.vue';
 import SearchMap from '~/components/search/SearchMap.vue';
 import SearchResultDetailDrawer from '~/components/search/SearchResultDetailDrawer.vue';
 import SearchResultsList from '~/components/search/SearchResultsList.vue';
+import { useExistingProspects } from '~/composables/useExistingProspects';
 import { useProspects } from '~/composables/useProspects';
 import { useSearch } from '~/composables/useSearch';
 
@@ -107,6 +116,7 @@ const { t } = useI18n();
 const { smAndDown } = useDisplay();
 const { searchResults, isSearching, hasSearched, searchPlaces } = useSearch();
 const { addFromSearchResult, isCreating } = useProspects();
+const { existingColumns } = useExistingProspects();
 
 const hoveredPlaceId = ref<string | null>(null);
 const searchCenter = ref<{ lat: number; lng: number } | null>(null);
@@ -135,6 +145,7 @@ const handleSearch = (payload: { keywords: string; city: string; radius: number;
 };
 
 const handleAddProspect = (result: SearchResultDto) => {
+	if (existingColumns.value[result.placeId]) return;
 	addFromSearchResult(result, currentKeywords.value);
 };
 

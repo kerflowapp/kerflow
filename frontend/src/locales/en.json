@@ -220,6 +220,7 @@
 		"no-results-title": "No results",
 		"no-results-description": "Try different keywords or increase the search radius.",
 		"add-to-prospects": "Add to prospects",
+		"already-in-column": "Already in “{column}”",
 		"view-list": "List",
 		"view-map": "Map",
 		"detail": {
