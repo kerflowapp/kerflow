@@ -14,10 +14,9 @@
 				:class="isOutbound(message) ? 'justify-end' : 'justify-start'"
 			>
 				<v-card
-					:color="isOutbound(message) ? 'primary' : undefined"
 					elevation="0"
 					rounded="lg"
-					:variant="isOutbound(message) ? 'tonal' : 'outlined'"
+					variant="outlined"
 					width="85%"
 				>
 					<v-card-text class="pa-3">
