@@ -43,7 +43,7 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("io.hypersistence:hypersistence-utils-hibernate-73:3.15.5")
+    implementation("io.hypersistence:hypersistence-utils-hibernate-73:3.16.0")
     implementation("org.postgresql:postgresql")
 
     // Cognito
