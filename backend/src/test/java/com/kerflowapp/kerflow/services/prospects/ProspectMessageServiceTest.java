@@ -166,6 +166,70 @@ class ProspectMessageServiceTest {
     }
 
     @Test
+    void anAgentEditingADraftOnlyChangesWhatItPasses() {
+        ProspectMessage message = draft();
+        message.setSubject("Hello");
+
+        ProspectMessage updated = service.editMessage(user, prospect.getId(), message.getId(),
+            null, null, "Hello, revised", EDITED);
+
+        assertThat(updated.getBody()).isEqualTo("Hello, revised");
+        assertThat(updated.getSubject()).isEqualTo("Hello");
+        assertThat(updated.getDirection()).isEqualTo(MessageDirection.OUTBOUND);
+        assertThat(updated.getStatus()).isEqualTo(MessageStatus.DRAFT);
+        assertThat(updated.getChannel()).isEqualTo(MessageChannel.EMAIL);
+        assertThat(updated.getSentAt()).isNull();
+        assertThat(updated.getGeneratedBy()).isEqualTo("mcp-agent");
+    }
+
+    @Test
+    void anAgentEditingASentMessageKeepsItSent() {
+        ProspectMessage message = sent();
+
+        ProspectMessage updated = service.editMessage(user, prospect.getId(), message.getId(),
+            null, "Fixed subject", null, null);
+
+        assertThat(updated.getSubject()).isEqualTo("Fixed subject");
+        assertThat(updated.getBody()).isEqualTo("Hello");
+        assertThat(updated.getStatus()).isEqualTo(MessageStatus.SENT);
+        assertThat(updated.getSentAt()).isEqualTo(ORIGINAL);
+
+        ProspectMessage redated = service.editMessage(user, prospect.getId(), message.getId(),
+            null, null, null, EDITED);
+
+        assertThat(redated.getSentAt()).isEqualTo(EDITED);
+    }
+
+    @Test
+    void anAgentEditingAReplyKeepsItAReply() {
+        ProspectMessage message = inbound();
+
+        ProspectMessage updated = service.editMessage(user, prospect.getId(), message.getId(),
+            MessageChannel.LINKEDIN, null, "Thanks!", null);
+
+        assertThat(updated.getDirection()).isEqualTo(MessageDirection.INBOUND);
+        assertThat(updated.getStatus()).isNull();
+        assertThat(updated.getChannel()).isEqualTo(MessageChannel.LINKEDIN);
+        assertThat(updated.getBody()).isEqualTo("Thanks!");
+        assertThat(updated.getSubject()).isEqualTo("Re: hello");
+        assertThat(updated.getReceivedAt()).isEqualTo(ORIGINAL);
+    }
+
+    @Test
+    void anAgentEditingAnUnknownMessageGetsNotFound() {
+        UUID unknownMessage = UUID.randomUUID();
+        when(prospectMessageRepository.findByIdAndProspectId(unknownMessage, prospect.getId()))
+            .thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> service.editMessage(user, prospect.getId(), unknownMessage,
+            null, null, "Hello", null))
+            .isInstanceOf(KerflowException.class)
+            .extracting("code")
+            .isEqualTo(KerflowException.ErrorCode.MESSAGE_NOT_FOUND);
+        verify(prospectMessageRepository, never()).save(any());
+    }
+
+    @Test
     void theThreadFollowsTheDatesOfTheExchangesNotTheirLogging() {
         ProspectMessage loggedFirstHappenedLast = ProspectMessage.builder().body("reply")
             .direction(MessageDirection.INBOUND).receivedAt(EDITED).build();

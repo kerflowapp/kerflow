@@ -4,6 +4,7 @@ import com.kerflowapp.kerflow.domain.ProfileSheet;
 import com.kerflowapp.kerflow.domain.Prospect;
 import com.kerflowapp.kerflow.domain.ProspectMessage;
 import com.kerflowapp.kerflow.domain.User;
+import com.kerflowapp.kerflow.domain.enums.MessageChannel;
 import com.kerflowapp.kerflow.mcp.auth.McpUserContext;
 import com.kerflowapp.kerflow.mcp.tools.McpResults.FollowUpResult;
 import com.kerflowapp.kerflow.mcp.tools.McpResults.MessageResult;
@@ -41,7 +42,7 @@ public class OutreachTools {
         Before writing, call get_prospect for context, and list_prospect_messages if
         messageCount > 0: a follow-up must build on the actual thread, never repeat an
         earlier email. Write in the prospect's language (French for French businesses).
-        Creates a new draft each time; it does not overwrite previous ones.""")
+        Creates a new draft each time; to revise an existing draft, use update_prospect_message.""")
     public MessageResult saveProspectEmail(
         @ToolParam(description = "Prospect id (UUID)") String prospectId,
         @ToolParam(description = "Email subject line") String subject,
@@ -86,6 +87,33 @@ public class OutreachTools {
 
         ProspectMessage message = prospectMessageService.recordInbound(
             user, UUID.fromString(prospectId), subject, body, GENERATED_BY);
+        return MessageResult.from(message);
+    }
+
+    @Tool(name = "update_prospect_message", description = """
+        Edit one message of a prospect's thread — a DRAFT, a SENT message or a reply from the
+        prospect. Only the fields you pass change; omitted ones keep their current value.
+        Direction and status never change here: a sent message stays sent, a reply stays a
+        reply, and marking a draft as sent is done by the user in the web app.
+        Use it to revise a draft instead of saving a new one with save_prospect_email.
+        A reply is stored verbatim: only correct it when the user asks you to.
+        Get message ids from list_prospect_messages.""")
+    public MessageResult updateProspectMessage(
+        @ToolParam(description = "Prospect id (UUID)") String prospectId,
+        @ToolParam(description = "Message id (UUID), from list_prospect_messages") String messageId,
+        @ToolParam(description = "New full body, plain text. Omit to keep the current one.", required = false) String body,
+        @ToolParam(description = "New subject line. Omit to keep the current one.", required = false) String subject,
+        @ToolParam(description = "New channel: EMAIL, PHONE, SMS, LINKEDIN, INSTAGRAM, MEETING or OTHER. Omit to keep the current one.", required = false) String channel,
+        @ToolParam(description = "When the message was sent or received, ISO-8601 instant (e.g. 2026-09-15T14:30:00Z). Ignored on drafts. Omit to keep the current date.", required = false) String occurredAt,
+        ToolContext toolContext) {
+
+        User user = mcpUserContext.requireActiveAccess(toolContext);
+
+        ProspectMessage message = prospectMessageService.editMessage(
+            user, UUID.fromString(prospectId), UUID.fromString(messageId),
+            channel == null || channel.isBlank() ? null : MessageChannel.valueOf(channel.trim().toUpperCase()),
+            subject, body,
+            occurredAt == null || occurredAt.isBlank() ? null : Instant.parse(occurredAt.trim()));
         return MessageResult.from(message);
     }
 

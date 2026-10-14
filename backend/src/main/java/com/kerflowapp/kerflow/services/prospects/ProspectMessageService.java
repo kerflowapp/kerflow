@@ -54,11 +54,24 @@ public class ProspectMessageService {
                                          String body, Instant occurredAt) {
         ProspectMessage message = getOwnedMessage(user, prospectId, messageId);
 
-        Instant when = occurredAt != null ? occurredAt
-            : message.getSentAt() != null ? message.getSentAt()
-            : message.getReceivedAt() != null ? message.getReceivedAt()
-            : Instant.now();
-        apply(message, direction, channel, status, subject, body, when);
+        apply(message, direction, channel, status, subject, body, occurredAt != null ? occurredAt : currentDate(message));
+        return prospectMessageRepository.save(message);
+    }
+
+    /**
+     * Partial edit for agents: null keeps the current value. Direction and status never change,
+     * so a sent message stays sent and a reply stays a reply.
+     */
+    public ProspectMessage editMessage(User user, UUID prospectId, UUID messageId, MessageChannel channel,
+                                       String subject, String body, Instant occurredAt) {
+        ProspectMessage message = getOwnedMessage(user, prospectId, messageId);
+
+        apply(message, message.getDirection(),
+            channel != null ? channel : message.getChannel(),
+            message.getStatus(),
+            subject != null ? subject : message.getSubject(),
+            body != null ? body : message.getBody(),
+            occurredAt != null ? occurredAt : currentDate(message));
         return prospectMessageRepository.save(message);
     }
 
@@ -125,6 +138,12 @@ public class ProspectMessageService {
         message.setBody(body);
         message.setSentAt(finalStatus == MessageStatus.SENT ? when : null);
         message.setReceivedAt(outbound ? null : when);
+    }
+
+    private static Instant currentDate(ProspectMessage message) {
+        if (message.getSentAt() != null) return message.getSentAt();
+        if (message.getReceivedAt() != null) return message.getReceivedAt();
+        return Instant.now();
     }
 
     private Prospect getOwnedProspect(User user, UUID prospectId) {
