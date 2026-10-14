@@ -1,6 +1,6 @@
 import type { AxiosObservable } from 'axios-observable';
 
-import type { CreateProspectMessageDto, ProspectMessageDto } from '~/api/dtos/prospect-message.dto';
+import type { CreateProspectMessageDto, ProspectMessageDto, UpdateProspectMessageDto } from '~/api/dtos/prospect-message.dto';
 import { useHttp } from '~/composables/useHttp';
 
 const { axiosInstance } = useHttp();
@@ -11,6 +11,14 @@ export function getProspectMessages$(prospectId: string): AxiosObservable<Prospe
 
 export function createProspectMessage$(prospectId: string, data: CreateProspectMessageDto): AxiosObservable<ProspectMessageDto> {
 	return axiosInstance.post(`/v1/prospects/${prospectId}/messages`, data);
+}
+
+export function updateProspectMessage$(
+	prospectId: string,
+	messageId: string,
+	data: UpdateProspectMessageDto
+): AxiosObservable<ProspectMessageDto> {
+	return axiosInstance.put(`/v1/prospects/${prospectId}/messages/${messageId}`, data);
 }
 
 export function markProspectMessageSent$(prospectId: string, messageId: string): AxiosObservable<ProspectMessageDto> {

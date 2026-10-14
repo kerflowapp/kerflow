@@ -93,7 +93,7 @@ public class OutreachTools {
         Read the full outreach thread of a prospect in chronological order: outbound messages
         (DRAFT = written but not sent yet, SENT = actually sent by the user) and inbound ones
         from the prospect. The thread is not email-only — channel says which support each
-        exchange used (EMAIL, PHONE, SMS, LINKEDIN, MEETING, OTHER), and the user logs calls
+        exchange used (EMAIL, PHONE, SMS, LINKEDIN, INSTAGRAM, MEETING, OTHER), and the user logs calls
         and meetings there too, so it is the real state of the relationship. Call this before
         writing any follow-up or analyzing where the conversation stands. get_prospect's
         messageCount tells you whether a thread exists.""")

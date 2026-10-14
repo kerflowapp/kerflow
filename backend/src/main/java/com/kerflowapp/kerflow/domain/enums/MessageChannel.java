@@ -5,6 +5,7 @@ public enum MessageChannel {
     PHONE,
     SMS,
     LINKEDIN,
+    INSTAGRAM,
     MEETING,
     OTHER
 }

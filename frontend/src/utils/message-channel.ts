@@ -1,12 +1,13 @@
 import type { MessageChannel } from '~/api/dtos/prospect-message.dto';
 
-export const MESSAGE_CHANNELS: MessageChannel[] = ['EMAIL', 'PHONE', 'SMS', 'LINKEDIN', 'MEETING', 'OTHER'];
+export const MESSAGE_CHANNELS: MessageChannel[] = ['EMAIL', 'PHONE', 'SMS', 'LINKEDIN', 'INSTAGRAM', 'MEETING', 'OTHER'];
 
 const CHANNEL_ICONS: Record<MessageChannel, string> = {
 	EMAIL: 'mdi-email-outline',
 	PHONE: 'mdi-phone-outline',
 	SMS: 'mdi-message-text-outline',
 	LINKEDIN: 'mdi-linkedin',
+	INSTAGRAM: 'mdi-instagram',
 	MEETING: 'mdi-calendar-account-outline',
 	OTHER: 'mdi-comment-outline'
 };

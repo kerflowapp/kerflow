@@ -3,16 +3,18 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { toast } from '~/composables/useToast';
 
-import type { CreateProspectMessageDto, ProspectMessageDto } from '~/api/dtos/prospect-message.dto';
+import type { CreateProspectMessageDto, ProspectMessageDto, UpdateProspectMessageDto } from '~/api/dtos/prospect-message.dto';
 import {
 	createProspectMessage$,
 	deleteProspectMessage$,
 	getProspectMessages$,
-	markProspectMessageSent$
+	markProspectMessageSent$,
+	updateProspectMessage$
 } from '~/api/prospect-messages.api';
 import type { ProspectDto } from '~/api/dtos/prospect.dto';
 import { getProspects$ } from '~/api/prospects.api';
 import { useProspectsStore } from '~/stores/prospects.store';
+import { sortByOccurrence } from '~/utils/message-date';
 
 import { useTrigger } from './useTrigger';
 
@@ -24,10 +26,12 @@ export function useProspectMessages(): {
 	messages: Ref<ProspectMessageDto[]>;
 	isFetchingMessages: Ref<boolean>;
 	isCreatingMessage: Ref<boolean>;
+	isUpdatingMessage: Ref<boolean>;
 	isMarkingSent: Ref<boolean>;
 	isDeletingMessage: Ref<boolean>;
 	fetchMessages: (prospectId: string) => void;
 	addMessage: (prospectId: string, data: CreateProspectMessageDto, onAdded?: () => void) => void;
+	updateMessage: (prospectId: string, messageId: string, data: UpdateProspectMessageDto) => void;
 	markSent: (prospectId: string, messageId: string) => void;
 	removeMessage: (prospectId: string, messageId: string) => void;
 	clearMessages: () => void;
@@ -37,6 +41,7 @@ export function useProspectMessages(): {
 
 	const { trigger: triggerFetch, loading: isFetchingMessages } = useTrigger();
 	const { trigger: triggerCreate, loading: isCreatingMessage } = useTrigger();
+	const { trigger: triggerUpdate, loading: isUpdatingMessage } = useTrigger();
 	const { trigger: triggerMarkSent, loading: isMarkingSent } = useTrigger();
 	const { trigger: triggerDelete, loading: isDeletingMessage } = useTrigger();
 	const { trigger: triggerRefresh } = useTrigger();
@@ -66,7 +71,7 @@ export function useProspectMessages(): {
 	const addMessage = (prospectId: string, data: CreateProspectMessageDto, onAdded?: () => void) => {
 		triggerCreate(createProspectMessage$(prospectId, data), {
 			onSuccess: (response: { data: ProspectMessageDto }) => {
-				messages.value.push(response.data);
+				messages.value = sortByOccurrence([...messages.value, response.data]);
 				refreshFollowUps();
 				toast.success(t('success.message-recorded'));
 				onAdded?.();
@@ -77,10 +82,27 @@ export function useProspectMessages(): {
 		});
 	};
 
+	const updateMessage = (prospectId: string, messageId: string, data: UpdateProspectMessageDto) => {
+		triggerUpdate(updateProspectMessage$(prospectId, messageId, data), {
+			onSuccess: (response: { data: ProspectMessageDto }) => {
+				messages.value = sortByOccurrence(
+					messages.value.map(message => (message.id === messageId ? response.data : message))
+				);
+				refreshFollowUps();
+				toast.success(t('success.message-updated'));
+			},
+			onError: () => {
+				toast.error(t('errors.update-message-failed'));
+			}
+		});
+	};
+
 	const markSent = (prospectId: string, messageId: string) => {
 		triggerMarkSent(markProspectMessageSent$(prospectId, messageId), {
 			onSuccess: (response: { data: ProspectMessageDto }) => {
-				messages.value = messages.value.map(message => (message.id === messageId ? response.data : message));
+				messages.value = sortByOccurrence(
+					messages.value.map(message => (message.id === messageId ? response.data : message))
+				);
 				refreshFollowUps();
 				toast.success(t('success.message-marked-sent'));
 			},
@@ -111,10 +133,12 @@ export function useProspectMessages(): {
 		messages,
 		isFetchingMessages,
 		isCreatingMessage,
+		isUpdatingMessage,
 		isMarkingSent,
 		isDeletingMessage,
 		fetchMessages,
 		addMessage,
+		updateMessage,
 		markSent,
 		removeMessage,
 		clearMessages

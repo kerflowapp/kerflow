@@ -1,7 +1,7 @@
 <template>
 	<v-dialog max-width="560" :model-value="modelValue" @update:model-value="close">
 		<v-card elevation="0">
-			<v-card-title class="text-h6">{{ t('messages.dialog.title') }}</v-card-title>
+			<v-card-title class="text-h6">{{ message ? t('messages.dialog.edit-title') : t('messages.dialog.title') }}</v-card-title>
 			<v-card-text>
 				<v-btn-toggle v-model="direction" class="mb-4" density="comfortable" divided mandatory variant="outlined">
 					<v-btn prepend-icon="mdi-arrow-bottom-left" value="INBOUND">
@@ -58,15 +58,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { CreateProspectMessageDto, MessageChannel, MessageDirection } from '~/api/dtos/prospect-message.dto';
-import { MESSAGE_CHANNELS, channelIcon, channelLabelKey } from '~/utils/message-channel';
+import type {
+	CreateProspectMessageDto,
+	MessageChannel,
+	MessageDirection,
+	ProspectMessageDto
+} from '~/api/dtos/prospect-message.dto';
+import { MESSAGE_CHANNELS, channelIcon, channelLabelKey, channelOf } from '~/utils/message-channel';
+import { occurredAtOf } from '~/utils/message-date';
 
 interface Props {
 	modelValue: boolean;
 	loading?: boolean;
+	/** Set to edit an existing message; null or omitted to record a new one. */
+	message?: ProspectMessageDto | null;
 }
 
 interface Emits {
@@ -74,11 +82,15 @@ interface Emits {
 	(e: 'submit', data: CreateProspectMessageDto): void;
 }
 
-withDefaults(defineProps<Props>(), { loading: false });
+const props = withDefaults(defineProps<Props>(), { loading: false, message: null });
 const emit = defineEmits<Emits>();
 const { t } = useI18n();
 
-const today = () => new Date().toISOString().slice(0, 10);
+// Local calendar date: toISOString() would shift it to UTC.
+const toDateInput = (date: Date) =>
+	`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+const today = () => toDateInput(new Date());
 
 const direction = ref<MessageDirection>('INBOUND');
 const channel = ref<MessageChannel>('EMAIL');
@@ -97,6 +109,25 @@ const reset = () => {
 	body.value = '';
 	alreadySent.value = true;
 };
+
+const prefill = (message: ProspectMessageDto) => {
+	const raw = occurredAtOf(message);
+	const parsed = raw ? new Date(raw) : null;
+
+	direction.value = message.direction;
+	channel.value = channelOf(message.channel);
+	date.value = parsed && !Number.isNaN(parsed.getTime()) ? toDateInput(parsed) : today();
+	subject.value = message.subject ?? '';
+	body.value = message.body;
+	alreadySent.value = message.status === 'SENT';
+};
+
+watch(
+	() => props.modelValue,
+	isOpen => {
+		if (isOpen && props.message) prefill(props.message);
+	}
+);
 
 const close = () => {
 	emit('update:modelValue', false);

@@ -4,7 +4,7 @@ export type MessageDirection = 'OUTBOUND' | 'INBOUND';
 export type MessageStatus = 'DRAFT' | 'SENT';
 
 /** Support of the exchange. Null on messages recorded before channels existed → read as EMAIL. */
-export type MessageChannel = 'EMAIL' | 'PHONE' | 'SMS' | 'LINKEDIN' | 'MEETING' | 'OTHER';
+export type MessageChannel = 'EMAIL' | 'PHONE' | 'SMS' | 'LINKEDIN' | 'INSTAGRAM' | 'MEETING' | 'OTHER';
 
 export interface ProspectMessageDto {
 	id: string;
@@ -32,3 +32,6 @@ export interface CreateProspectMessageDto {
 	/** ISO instant of the exchange. Omitted → now */
 	occurredAt?: string;
 }
+
+/** Same fields as a creation; an omitted occurredAt keeps the message's current date. */
+export type UpdateProspectMessageDto = CreateProspectMessageDto;

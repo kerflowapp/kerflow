@@ -402,6 +402,7 @@
 			"phone": "Appel",
 			"sms": "SMS",
 			"linkedin": "LinkedIn",
+			"instagram": "Instagram",
 			"meeting": "Rendez-vous",
 			"other": "Autre"
 		},
@@ -412,6 +413,7 @@
 		"add-exchange": "Ajouter un échange",
 		"dialog": {
 			"title": "Ajouter un échange",
+			"edit-title": "Modifier l'échange",
 			"channel": "Canal",
 			"date": "Date",
 			"subject": "Sujet (optionnel)",
@@ -669,6 +671,7 @@
 		"delete-prospect-failed": "Erreur lors de la suppression du prospect.",
 		"enrich-prospect-failed": "Erreur lors de l'enrichissement du prospect.",
 		"fetch-messages-failed": "Erreur lors du chargement des messages.",
+		"update-message-failed": "Erreur lors de la modification du message.",
 		"create-message-failed": "Erreur lors de l'enregistrement du message.",
 		"mark-sent-failed": "Erreur lors du marquage du message.",
 		"delete-message-failed": "Erreur lors de la suppression du message.",
@@ -684,6 +687,7 @@
 		"prospect-updated": "Prospect mis à jour",
 		"prospect-deleted": "Prospect supprimé",
 		"prospect-enriched": "Prospect enrichi",
+		"message-updated": "Échange modifié",
 		"message-recorded": "Échange enregistré",
 		"message-marked-sent": "Message marqué comme envoyé",
 		"message-deleted": "Message supprimé",

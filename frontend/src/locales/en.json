@@ -402,6 +402,7 @@
 			"phone": "Call",
 			"sms": "SMS",
 			"linkedin": "LinkedIn",
+			"instagram": "Instagram",
 			"meeting": "Meeting",
 			"other": "Other"
 		},
@@ -412,6 +413,7 @@
 		"add-exchange": "Add an exchange",
 		"dialog": {
 			"title": "Add an exchange",
+			"edit-title": "Edit exchange",
 			"channel": "Channel",
 			"date": "Date",
 			"subject": "Subject (optional)",
@@ -669,6 +671,7 @@
 		"delete-prospect-failed": "Failed to delete prospect.",
 		"enrich-prospect-failed": "Failed to enrich prospect.",
 		"fetch-messages-failed": "Failed to load messages.",
+		"update-message-failed": "Failed to update message.",
 		"create-message-failed": "Failed to save message.",
 		"mark-sent-failed": "Failed to mark message as sent.",
 		"delete-message-failed": "Failed to delete message.",
@@ -684,6 +687,7 @@
 		"prospect-updated": "Prospect updated",
 		"prospect-deleted": "Prospect deleted",
 		"prospect-enriched": "Prospect enriched",
+		"message-updated": "Exchange updated",
 		"message-recorded": "Exchange recorded",
 		"message-marked-sent": "Message marked as sent",
 		"message-deleted": "Message deleted",

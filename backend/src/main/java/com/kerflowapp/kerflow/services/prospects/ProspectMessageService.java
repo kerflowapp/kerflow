@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,21 +37,28 @@ public class ProspectMessageService {
                                          String body, Instant occurredAt, String generatedBy) {
         Prospect prospect = getOwnedProspect(user, prospectId);
 
-        boolean outbound = direction == MessageDirection.OUTBOUND;
-        MessageStatus finalStatus = outbound ? (status == null ? MessageStatus.DRAFT : status) : null;
-        Instant when = occurredAt == null ? Instant.now() : occurredAt;
-
         ProspectMessage message = ProspectMessage.builder()
             .prospect(prospect)
-            .direction(outbound ? MessageDirection.OUTBOUND : MessageDirection.INBOUND)
-            .channel(channel == null ? MessageChannel.EMAIL : channel)
-            .status(finalStatus)
-            .subject(subject)
-            .body(body)
             .generatedBy(generatedBy)
-            .sentAt(finalStatus == MessageStatus.SENT ? when : null)
-            .receivedAt(outbound ? null : when)
             .build();
+        apply(message, direction, channel, status, subject, body, occurredAt == null ? Instant.now() : occurredAt);
+        return prospectMessageRepository.save(message);
+    }
+
+    /**
+     * Rewrites every editable field of an existing message, with the same defaults as {@link #recordMessage}.
+     * No date keeps the message's current one. generatedBy is left untouched.
+     */
+    public ProspectMessage updateMessage(User user, UUID prospectId, UUID messageId, MessageDirection direction,
+                                         MessageChannel channel, MessageStatus status, String subject,
+                                         String body, Instant occurredAt) {
+        ProspectMessage message = getOwnedMessage(user, prospectId, messageId);
+
+        Instant when = occurredAt != null ? occurredAt
+            : message.getSentAt() != null ? message.getSentAt()
+            : message.getReceivedAt() != null ? message.getReceivedAt()
+            : Instant.now();
+        apply(message, direction, channel, status, subject, body, when);
         return prospectMessageRepository.save(message);
     }
 
@@ -63,9 +72,22 @@ public class ProspectMessageService {
             null, subject, body, null, generatedBy);
     }
 
+    /**
+     * Thread in the order the exchanges happened, not the order they were logged: a call recorded
+     * today for last week sits last week. Drafts have no date yet and sit where they were written.
+     */
     public List<ProspectMessage> listMessages(User user, UUID prospectId) {
         Prospect prospect = getOwnedProspect(user, prospectId);
-        return prospectMessageRepository.findAllByProspectIdOrderByCreationDateAsc(prospect.getId());
+        return prospectMessageRepository.findAllByProspectIdOrderByCreationDateAsc(prospect.getId()).stream()
+            .sorted(Comparator.comparing(ProspectMessageService::occurredAt))
+            .toList();
+    }
+
+    static Instant occurredAt(ProspectMessage message) {
+        if (message.getSentAt() != null) return message.getSentAt();
+        if (message.getReceivedAt() != null) return message.getReceivedAt();
+        if (message.getCreationDate() != null) return message.getCreationDate().atZone(ZoneId.systemDefault()).toInstant();
+        return Instant.MAX;
     }
 
     public long countMessages(UUID prospectId) {
@@ -86,6 +108,23 @@ public class ProspectMessageService {
     public void deleteMessage(User user, UUID prospectId, UUID messageId) {
         ProspectMessage message = getOwnedMessage(user, prospectId, messageId);
         prospectMessageRepository.delete(message);
+    }
+
+    /**
+     * Status only exists on outbound messages; sentAt and receivedAt follow from direction and status.
+     */
+    private void apply(ProspectMessage message, MessageDirection direction, MessageChannel channel,
+                       MessageStatus status, String subject, String body, Instant when) {
+        boolean outbound = direction == MessageDirection.OUTBOUND;
+        MessageStatus finalStatus = outbound ? (status == null ? MessageStatus.DRAFT : status) : null;
+
+        message.setDirection(outbound ? MessageDirection.OUTBOUND : MessageDirection.INBOUND);
+        message.setChannel(channel == null ? MessageChannel.EMAIL : channel);
+        message.setStatus(finalStatus);
+        message.setSubject(subject);
+        message.setBody(body);
+        message.setSentAt(finalStatus == MessageStatus.SENT ? when : null);
+        message.setReceivedAt(outbound ? null : when);
     }
 
     private Prospect getOwnedProspect(User user, UUID prospectId) {

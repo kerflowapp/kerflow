@@ -132,6 +132,19 @@ public class ProspectsController {
     }
 
     @RequiresSubscription
+    @PutMapping("/{id}/messages/{messageId}")
+    public ResponseEntity<ProspectMessageDto> updateMessage(@CurrentLoggedUser User loggedUser,
+                                                            @PathVariable UUID id,
+                                                            @PathVariable UUID messageId,
+                                                            @RequestBody @Valid UpdateProspectMessageRequest request) {
+
+        ProspectMessage message = prospectMessageService.updateMessage(
+            loggedUser, id, messageId, request.direction(), request.channel(), request.status(),
+            request.subject(), request.body(), request.occurredAt());
+        return ResponseEntity.ok(prospectMessageMapper.toDto(message));
+    }
+
+    @RequiresSubscription
     @PatchMapping("/{id}/messages/{messageId}/sent")
     public ResponseEntity<ProspectMessageDto> markMessageSent(@CurrentLoggedUser User loggedUser,
                                                               @PathVariable UUID id,

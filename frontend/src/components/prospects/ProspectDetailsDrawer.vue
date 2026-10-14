@@ -120,12 +120,14 @@
 							:is-creating="isCreatingMessage"
 							:is-deleting="isDeletingMessage"
 							:is-marking-sent="isMarkingSent"
+							:is-updating="isUpdatingMessage"
 							:loading="isFetchingMessages"
 							:messages="messages"
 							:readonly="readonly"
 							@add-message="handleAddMessage"
 							@delete="handleDeleteMessage"
 							@mark-sent="handleMarkSent"
+							@update-message="handleUpdateMessage"
 						/>
 					</v-list-item>
 
@@ -309,7 +311,7 @@ import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
 import { toast } from '~/composables/useToast';
 
-import type { CreateProspectMessageDto } from '~/api/dtos/prospect-message.dto';
+import type { CreateProspectMessageDto, UpdateProspectMessageDto } from '~/api/dtos/prospect-message.dto';
 import type { ProspectDto } from '~/api/dtos/prospect.dto';
 import BusinessProfileCard from '~/components/business/BusinessProfileCard.vue';
 import ProspectAnalysisCard from '~/components/business/ProspectAnalysisCard.vue';
@@ -351,10 +353,12 @@ const {
 	messages,
 	isFetchingMessages,
 	isCreatingMessage,
+	isUpdatingMessage,
 	isMarkingSent,
 	isDeletingMessage,
 	fetchMessages,
 	addMessage,
+	updateMessage,
 	markSent,
 	removeMessage,
 	clearMessages
@@ -376,6 +380,11 @@ const handleMarkSent = (messageId: string) => {
 const handleAddMessage = (data: CreateProspectMessageDto) => {
 	if (!props.prospect) return;
 	addMessage(props.prospect.id, data);
+};
+
+const handleUpdateMessage = (messageId: string, data: UpdateProspectMessageDto) => {
+	if (!props.prospect) return;
+	updateMessage(props.prospect.id, messageId, data);
 };
 
 const handleDeleteMessage = (messageId: string) => {
