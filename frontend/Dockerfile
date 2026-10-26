@@ -1,4 +1,4 @@
-FROM node:24-alpine AS build-stage
+FROM node:24.22.1-slim AS build-stage
 
 WORKDIR /app
 COPY package*.json ./
