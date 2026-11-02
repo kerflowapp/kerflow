@@ -415,7 +415,7 @@
 			"title": "Add an exchange",
 			"edit-title": "Edit exchange",
 			"channel": "Channel",
-			"date": "Date",
+			"date": "Date and time",
 			"subject": "Subject (optional)",
 			"body": "Content",
 			"already-sent": "Already sent",

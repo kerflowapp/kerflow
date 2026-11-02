@@ -13,7 +13,7 @@
 				</v-btn-toggle>
 
 				<v-row dense>
-					<v-col cols="12" sm="7">
+					<v-col cols="12" sm="6">
 						<v-select
 							v-model="channel"
 							density="comfortable"
@@ -22,8 +22,8 @@
 							:prepend-inner-icon="channelIcon(channel)"
 						/>
 					</v-col>
-					<v-col cols="12" sm="5">
-						<v-text-field v-model="date" density="comfortable" :label="t('messages.dialog.date')" type="date" />
+					<v-col cols="12" sm="6">
+						<v-text-field v-model="date" density="comfortable" :label="t('messages.dialog.date')" type="datetime-local" />
 					</v-col>
 				</v-row>
 
@@ -86,15 +86,17 @@ const props = withDefaults(defineProps<Props>(), { loading: false, message: null
 const emit = defineEmits<Emits>();
 const { t } = useI18n();
 
-// Local calendar date: toISOString() would shift it to UTC.
-const toDateInput = (date: Date) =>
-	`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+const pad = (value: number) => String(value).padStart(2, '0');
 
-const today = () => toDateInput(new Date());
+// Local date and time: toISOString() would shift them to UTC.
+const toDateTimeInput = (date: Date) =>
+	`${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+
+const now = () => toDateTimeInput(new Date());
 
 const direction = ref<MessageDirection>('INBOUND');
 const channel = ref<MessageChannel>('EMAIL');
-const date = ref(today());
+const date = ref(now());
 const subject = ref('');
 const body = ref('');
 const alreadySent = ref(true);
@@ -104,7 +106,7 @@ const channelItems = computed(() => MESSAGE_CHANNELS.map(value => ({ value, titl
 const reset = () => {
 	direction.value = 'INBOUND';
 	channel.value = 'EMAIL';
-	date.value = today();
+	date.value = now();
 	subject.value = '';
 	body.value = '';
 	alreadySent.value = true;
@@ -116,7 +118,7 @@ const prefill = (message: ProspectMessageDto) => {
 
 	direction.value = message.direction;
 	channel.value = channelOf(message.channel);
-	date.value = parsed && !Number.isNaN(parsed.getTime()) ? toDateInput(parsed) : today();
+	date.value = parsed && !Number.isNaN(parsed.getTime()) ? toDateTimeInput(parsed) : now();
 	subject.value = message.subject ?? '';
 	body.value = message.body;
 	alreadySent.value = message.status === 'SENT';
@@ -125,7 +127,13 @@ const prefill = (message: ProspectMessageDto) => {
 watch(
 	() => props.modelValue,
 	isOpen => {
-		if (isOpen && props.message) prefill(props.message);
+		if (!isOpen) return;
+		if (props.message) {
+			prefill(props.message);
+		} else {
+			// The dialog stays mounted: the time set when it last closed is stale by now.
+			date.value = now();
+		}
 	}
 );
 
@@ -134,12 +142,21 @@ const close = () => {
 	reset();
 };
 
+/** Empty field → undefined, the backend then decides. An untouched field keeps the original seconds, hence the thread order. */
+const occurredAtFromInput = () => {
+	if (!date.value) return undefined;
+	const original = props.message ? new Date(occurredAtOf(props.message)) : null;
+	if (original && !Number.isNaN(original.getTime()) && toDateTimeInput(original) === date.value) {
+		return original.toISOString();
+	}
+	return new Date(date.value).toISOString();
+};
+
 const submit = () => {
 	const trimmedBody = body.value.trim();
 	if (!trimmedBody) return;
 
-	// Noon keeps the date the user picked on their side of any timezone shift.
-	const occurredAt = new Date(`${date.value}T12:00:00`).toISOString();
+	const occurredAt = occurredAtFromInput();
 
 	emit('submit', {
 		direction: direction.value,

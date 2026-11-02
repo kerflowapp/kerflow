@@ -184,7 +184,7 @@ const messageDate = (message: ProspectMessageDto) => {
 	const raw = occurredAtOf(message);
 	if (!raw) return '';
 	const date = new Date(raw);
-	return Number.isNaN(date.getTime()) ? '' : date.toLocaleDateString(locale.value);
+	return Number.isNaN(date.getTime()) ? '' : date.toLocaleString(locale.value, { dateStyle: 'short', timeStyle: 'short' });
 };
 
 const isLong = (message: ProspectMessageDto) => message.body.length > LONG_BODY_LENGTH;
