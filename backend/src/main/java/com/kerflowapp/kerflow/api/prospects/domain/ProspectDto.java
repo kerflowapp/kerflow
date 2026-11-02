@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.With;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -47,6 +48,8 @@ public record ProspectDto(
     LocalDateTime creationDate,
     LocalDateTime lastModificationDate,
     /** Since when the prospect is waiting for a reply; null when no follow-up applies. */
-    Instant followUpSince
+    Instant followUpSince,
+    /** Follow-up day set by hand; replaces followUpSince when present. */
+    LocalDate followUpDate
 ) {
 }

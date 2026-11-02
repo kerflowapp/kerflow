@@ -76,6 +76,16 @@ public class ProspectsController {
     }
 
     @RequiresSubscription
+    @PatchMapping("/{id}/follow-up-date")
+    public ResponseEntity<ProspectDto> updateFollowUpDate(@CurrentLoggedUser User loggedUser,
+                                                          @PathVariable UUID id,
+                                                          @RequestBody @Valid UpdateFollowUpDateRequest request) {
+
+        Prospect prospect = prospectService.updateFollowUpDate(loggedUser, id, request.followUpDate());
+        return ResponseEntity.ok(toDto(prospect));
+    }
+
+    @RequiresSubscription
     @PutMapping("/_reorder")
     public ResponseEntity<List<ProspectDto>> reorderProspects(@CurrentLoggedUser User loggedUser,
                                                               @RequestBody @Valid ReorderProspectsRequest request) {

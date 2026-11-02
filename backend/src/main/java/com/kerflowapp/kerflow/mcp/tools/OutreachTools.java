@@ -60,7 +60,9 @@ public class OutreachTools {
         List the prospects the user should follow up on today, most overdue first: open deals
         (CONTACTED, IN_DISCUSSION) with no reply since the last message sent (or, when none was
         logged, since the card entered its column), for longer than the user's follow-up delay
-        (set in Kerflow's settings).
+        (set in Kerflow's settings). Also includes, in any column, prospects whose follow-up day
+        the user set by hand (followUpDate) once that day has come; such a date replaces the
+        automatic rule, so waitingSince is null and daysWaiting is 0 for them.
         waitingSince is when the countdown started; daysOverdue is 0 on the day it becomes due.
         To write a follow-up, call list_prospect_messages first so it builds on the actual
         thread, then save_prospect_email.""")

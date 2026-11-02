@@ -9,6 +9,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -62,6 +63,12 @@ public class Prospect extends AbstractAuditing {
      * no message was sent since. Nullable: legacy rows fall back to their last modification date.
      */
     private Instant statusChangedAt;
+
+    /**
+     * Follow-up day set by hand. When present it replaces the automatic countdown, in any kanban
+     * column, until the user changes or clears it.
+     */
+    private LocalDate followUpDate;
 
     @Enumerated(EnumType.STRING)
     private ProspectSource source;

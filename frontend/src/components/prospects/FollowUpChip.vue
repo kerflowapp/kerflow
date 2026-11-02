@@ -12,7 +12,7 @@
 				{{ label }}
 			</v-chip>
 		</template>
-		<div>{{ t('follow-ups.waiting-tooltip', state.daysWaiting) }}</div>
+		<div v-if="!state.manual">{{ t('follow-ups.waiting-tooltip', state.daysWaiting) }}</div>
 		<div>{{ t('follow-ups.planned-on', { date: formattedDueDate }) }}</div>
 	</v-tooltip>
 </template>
@@ -45,7 +45,7 @@ const state = computed(() => followUpState(props.prospect));
 const label = computed(() => {
 	switch (state.value.status) {
 		case 'due':
-			return t('follow-ups.due', { days: state.value.daysWaiting });
+			return t('follow-ups.due', { days: state.value.manual ? state.value.daysOverdue : state.value.daysWaiting });
 		case 'soon':
 			return t('follow-ups.due-tomorrow');
 		default:

@@ -256,6 +256,7 @@
 				"contact": "Contact",
 				"address": "Adresse",
 				"links": "Liens",
+				"follow-up": "Relance",
 				"notes": "Notes"
 			},
 			"actions": {
@@ -303,6 +304,7 @@
 		"due-tomorrow": "Relance demain",
 		"due-in": "Relance dans {days} j",
 		"planned-on": "Relance prévue le {date}",
+		"manual-date": "Date de relance",
 		"waiting-tooltip": "Sans réponse depuis aujourd'hui | Sans réponse depuis {n} jour | Sans réponse depuis {n} jours"
 	},
 	"score": {

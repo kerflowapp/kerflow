@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -147,6 +148,79 @@ class FollowUpServiceTest {
         assertThat(due).extracting(FollowUpService.FollowUp::prospect).containsExactly(veryLate, justDue);
         assertThat(due).extracting(FollowUpService.FollowUp::daysOverdue).containsExactly(15L, 0L);
         assertThat(due.getFirst().daysWaiting()).isEqualTo(20L);
+    }
+
+    private static LocalDate dayOffset(int days) {
+        return NOW.atZone(ZoneId.systemDefault()).toLocalDate().plusDays(days);
+    }
+
+    private static Prospect prospectWithDate(String statusKey, LocalDate followUpDate) {
+        Prospect prospect = prospect(statusKey, daysAgo(30));
+        prospect.setFollowUpDate(followUpDate);
+        return prospect;
+    }
+
+    @Test
+    void aManualDateReplacesTheAutomaticCountdown() {
+        Prospect prospect = prospectWithDate("CONTACTED", dayOffset(10));
+
+        assertThat(FollowUpService.followUpSince(prospect, dates(prospect, daysAgo(30), null))).isNull();
+    }
+
+    @Test
+    void clearingTheManualDateBringsTheAutomaticCountdownBack() {
+        Prospect prospect = prospectWithDate("CONTACTED", dayOffset(10));
+
+        prospect.setFollowUpDate(null);
+
+        assertThat(FollowUpService.followUpSince(prospect, null)).isEqualTo(daysAgo(30));
+    }
+
+    @Test
+    void aManualDateThatHasComeIsDueInAnyColumn() {
+        for (String key : List.of("NEW", "WON", "LOST", "CUSTOM_abc", "CONTACTED")) {
+            Prospect prospect = prospectWithDate(key, dayOffset(-3));
+            when(prospectRepository.findAllByUserIdOrderByCreationDateDesc(user.getId()))
+                .thenReturn(List.of(prospect));
+
+            List<FollowUpService.FollowUp> due = service.dueFollowUps(user, NOW);
+
+            assertThat(due).hasSize(1);
+            FollowUpService.FollowUp followUp = due.getFirst();
+            assertThat(followUp.prospect()).isEqualTo(prospect);
+            assertThat(followUp.followUpDate()).isEqualTo(dayOffset(-3));
+            assertThat(followUp.waitingSince()).isNull();
+            assertThat(followUp.daysWaiting()).isZero();
+            assertThat(followUp.daysOverdue()).isEqualTo(3L);
+        }
+    }
+
+    @Test
+    void aManualDateIsDueOnItsOwnDayButNotBefore() {
+        Prospect today = prospectWithDate("NEW", dayOffset(0));
+        Prospect tomorrow = prospectWithDate("CONTACTED", dayOffset(1));
+        when(prospectRepository.findAllByUserIdOrderByCreationDateDesc(user.getId()))
+            .thenReturn(List.of(today, tomorrow));
+
+        List<FollowUpService.FollowUp> due = service.dueFollowUps(user, NOW);
+
+        assertThat(due).extracting(FollowUpService.FollowUp::prospect).containsExactly(today);
+        assertThat(due.getFirst().daysOverdue()).isZero();
+    }
+
+    @Test
+    void manualAndAutomaticFollowUpsAreSortedTogether() {
+        user.setFollowUpDelayDays(5);
+        Prospect automatic = prospect("CONTACTED", daysAgo(10));
+        Prospect veryLate = prospectWithDate("WON", dayOffset(-20));
+        Prospect justDue = prospectWithDate("NEW", dayOffset(0));
+        when(prospectRepository.findAllByUserIdOrderByCreationDateDesc(user.getId()))
+            .thenReturn(List.of(justDue, automatic, veryLate));
+
+        List<FollowUpService.FollowUp> due = service.dueFollowUps(user, NOW);
+
+        assertThat(due).extracting(FollowUpService.FollowUp::prospect).containsExactly(veryLate, automatic, justDue);
+        assertThat(due).extracting(FollowUpService.FollowUp::daysOverdue).containsExactly(20L, 5L, 0L);
     }
 
     @Test

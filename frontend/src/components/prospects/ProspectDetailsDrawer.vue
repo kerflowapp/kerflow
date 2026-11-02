@@ -250,6 +250,18 @@
 
 					<v-divider class="my-2" />
 
+					<v-list-subheader>{{ t('prospects.details.sections.follow-up') }}</v-list-subheader>
+					<div class="px-4 py-2">
+						<ProspectFollowUpDateField
+							:disabled="readonly"
+							:loading="isUpdatingFollowUp"
+							:model-value="prospect.followUpDate"
+							@update="emit('update-follow-up-date', prospect!.id, $event)"
+						/>
+					</div>
+
+					<v-divider class="my-2" />
+
 					<v-list-subheader>{{ t('prospects.details.sections.notes') }}</v-list-subheader>
 					<v-list-item>
 						<div class="text-body-2 notes-text">
@@ -315,6 +327,7 @@ import type { CreateProspectMessageDto, UpdateProspectMessageDto } from '~/api/d
 import type { ProspectDto } from '~/api/dtos/prospect.dto';
 import BusinessProfileCard from '~/components/business/BusinessProfileCard.vue';
 import ProspectAnalysisCard from '~/components/business/ProspectAnalysisCard.vue';
+import ProspectFollowUpDateField from '~/components/prospects/ProspectFollowUpDateField.vue';
 import ProspectMessagesCard from '~/components/prospects/ProspectMessagesCard.vue';
 import ProspectSheetCard from '~/components/prospects/ProspectSheetCard.vue';
 import ProspectScoreCard from '~/components/signals/ProspectScoreCard.vue';
@@ -328,6 +341,7 @@ interface Props {
 	prospect: ProspectDto | null;
 	isDeleting?: boolean;
 	isEnriching?: boolean;
+	isUpdatingFollowUp?: boolean;
 	readonly?: boolean;
 }
 
@@ -335,11 +349,13 @@ interface Emits {
 	(e: 'edit'): void;
 	(e: 'delete', id: string): void;
 	(e: 'enrich', id: string): void;
+	(e: 'update-follow-up-date', id: string, followUpDate: string | null): void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
 	isDeleting: false,
 	isEnriching: false,
+	isUpdatingFollowUp: false,
 	readonly: false
 });
 const emit = defineEmits<Emits>();

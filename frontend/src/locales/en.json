@@ -256,6 +256,7 @@
 				"contact": "Contact",
 				"address": "Address",
 				"links": "Links",
+				"follow-up": "Follow-up",
 				"notes": "Notes"
 			},
 			"actions": {
@@ -303,6 +304,7 @@
 		"due-tomorrow": "Follow up tomorrow",
 		"due-in": "Follow up in {days} d",
 		"planned-on": "Follow-up planned on {date}",
+		"manual-date": "Follow-up date",
 		"waiting-tooltip": "No reply since today | No reply for {n} day | No reply for {n} days"
 	},
 	"score": {

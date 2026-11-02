@@ -51,6 +51,7 @@
 			v-model="showDetail"
 			:is-deleting="isDeleting"
 			:is-enriching="isEnriching"
+			:is-updating-follow-up="isUpdatingFollowUp"
 			:prospect="selectedProspect"
 			:readonly="isTrialExpired"
 			@delete="handleDelete"
@@ -59,6 +60,7 @@
 				handleEdit(selectedProspect!);
 			"
 			@enrich="handleEnrich"
+			@update-follow-up-date="handleFollowUpDate"
 		/>
 
 		<ProspectEditDrawer v-model="showEdit" :is-updating="isUpdating" :prospect="selectedProspect" @update="handleUpdate" />
@@ -207,6 +209,8 @@ const {
 	isDeleting,
 	enrichProspect,
 	isEnriching,
+	updateFollowUpDate,
+	isUpdatingFollowUp,
 	reorderProspects,
 	removeProspect
 } = useProspects();
@@ -357,6 +361,16 @@ const handleUpdate = (payload: { id: string; data: UpdateProspectDto }) => {
 		return;
 	}
 	editProspect(payload.id, payload.data);
+};
+
+const handleFollowUpDate = (id: string, followUpDate: string | null) => {
+	if (isTrialExpired.value) {
+		showTrialExpired.value = true;
+		return;
+	}
+	updateFollowUpDate(id, followUpDate, prospect => {
+		selectedProspect.value = prospect;
+	});
 };
 
 const handleDelete = (id: string) => {

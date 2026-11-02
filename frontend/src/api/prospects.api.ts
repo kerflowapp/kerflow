@@ -30,6 +30,10 @@ export function updateProspectStatus$(id: string, statusKey: string): AxiosObser
 	return axiosInstance.patch(`/v1/prospects/${id}/status`, { statusKey });
 }
 
+export function updateProspectFollowUpDate$(id: string, followUpDate: string | null): AxiosObservable<ProspectDto> {
+	return axiosInstance.patch(`/v1/prospects/${id}/follow-up-date`, { followUpDate });
+}
+
 export function reorderProspects$(data: ReorderProspectsDto): AxiosObservable<ProspectDto[]> {
 	return axiosInstance.put('/v1/prospects/_reorder', data);
 }

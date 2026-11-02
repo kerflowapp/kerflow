@@ -12,6 +12,7 @@ import {
 	getProspects$,
 	reorderProspects$,
 	updateProspect$,
+	updateProspectFollowUpDate$,
 	updateProspectStatus$
 } from '~/api/prospects.api';
 import { useProspectsStore } from '~/stores/prospects.store';
@@ -24,11 +25,13 @@ export function useProspects(): {
 	isUpdating: Ref<boolean>;
 	isDeleting: Ref<boolean>;
 	isEnriching: Ref<boolean>;
+	isUpdatingFollowUp: Ref<boolean>;
 	fetchProspects: () => void;
 	addProspect: (data: CreateProspectDto) => void;
 	addFromSearchResult: (result: SearchResultDto, searchKeywords?: string) => void;
 	editProspect: (id: string, data: UpdateProspectDto) => void;
 	enrichProspect: (id: string, onEnriched?: (prospect: ProspectDto) => void) => void;
+	updateFollowUpDate: (id: string, followUpDate: string | null, onUpdated?: (prospect: ProspectDto) => void) => void;
 	moveProspect: (id: string, statusKey: string) => void;
 	reorderProspects: (statusKey: string, orderedIds: string[]) => void;
 	removeProspect: (id: string) => void;
@@ -40,6 +43,7 @@ export function useProspects(): {
 	const { trigger: triggerUpdate, loading: isUpdating } = useTrigger();
 	const { trigger: triggerDelete, loading: isDeleting } = useTrigger();
 	const { trigger: triggerEnrich, loading: isEnriching } = useTrigger();
+	const { trigger: triggerFollowUp, loading: isUpdatingFollowUp } = useTrigger();
 	const { trigger: triggerReorder } = useTrigger();
 
 	const fetchProspects = () => {
@@ -118,6 +122,19 @@ export function useProspects(): {
 		});
 	};
 
+	const updateFollowUpDate = (id: string, followUpDate: string | null, onUpdated?: (prospect: ProspectDto) => void) => {
+		triggerFollowUp(updateProspectFollowUpDate$(id, followUpDate), {
+			onSuccess: (response: { data: ProspectDto }) => {
+				store.updateProspect(response.data);
+				onUpdated?.(response.data);
+				toast.success(t('success.prospect-updated'));
+			},
+			onError: () => {
+				toast.error(t('errors.update-prospect-failed'));
+			}
+		});
+	};
+
 	const moveProspect = (id: string, statusKey: string) => {
 		store.moveProspect(id, statusKey);
 		triggerUpdate(updateProspectStatus$(id, statusKey), {
@@ -162,11 +179,13 @@ export function useProspects(): {
 		isUpdating,
 		isDeleting,
 		isEnriching,
+		isUpdatingFollowUp,
 		fetchProspects,
 		addProspect,
 		addFromSearchResult,
 		editProspect,
 		enrichProspect,
+		updateFollowUpDate,
 		moveProspect,
 		reorderProspects,
 		removeProspect

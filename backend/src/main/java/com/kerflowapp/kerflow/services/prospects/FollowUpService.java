@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -20,6 +21,9 @@ import java.util.stream.Collectors;
  * Decides which prospects are waiting for a reply, and since when. The countdown starts at the
  * last message sent or, when none was logged, at the moment the card entered its column; any reply
  * received after that stops it. Only open deals (CONTACTED, IN_DISCUSSION) are concerned.
+ *
+ * <p>A follow-up day set by hand ({@link Prospect#getFollowUpDate()}) replaces all of this: it
+ * applies in any column, and neither messages nor column moves affect it.
  */
 @Service
 @RequiredArgsConstructor
@@ -35,7 +39,13 @@ public class FollowUpService {
     private final ProspectRepository prospectRepository;
     private final ProspectMessageRepository prospectMessageRepository;
 
-    public record FollowUp(Prospect prospect, Instant waitingSince, long daysWaiting, long daysOverdue) {
+    /**
+     * @param waitingSince null when the follow-up day was set by hand
+     * @param followUpDate null when the follow-up comes from the automatic countdown
+     * @param daysWaiting  0 when the follow-up day was set by hand
+     */
+    public record FollowUp(Prospect prospect, Instant waitingSince, LocalDate followUpDate, long daysWaiting,
+                           long daysOverdue) {
     }
 
     public static int delayDays(User user) {
@@ -44,12 +54,13 @@ public class FollowUpService {
     }
 
     /**
-     * The date from which the prospect is waiting for a reply, or null when no follow-up applies.
+     * The date from which the prospect is waiting for a reply, or null when the automatic countdown
+     * does not apply.
      *
      * @param dates the prospect's thread dates, null when it has no message
      */
     public static Instant followUpSince(Prospect prospect, ProspectContactDates dates) {
-        if (!ELIGIBLE_STATUS_KEYS.contains(statusKey(prospect))) {
+        if (prospect.getFollowUpDate() != null || !ELIGIBLE_STATUS_KEYS.contains(statusKey(prospect))) {
             return null;
         }
         Instant lastSent = dates == null ? null : dates.lastSentAt();
@@ -94,11 +105,14 @@ public class FollowUpService {
         int delay = delayDays(user);
 
         return prospects.stream()
-            .filter(p -> sinceById.containsKey(p.getId()))
+            .filter(p -> p.getFollowUpDate() != null || sinceById.containsKey(p.getId()))
             .map(p -> {
+                if (p.getFollowUpDate() != null) {
+                    return new FollowUp(p, null, p.getFollowUpDate(), 0, daysSince(p.getFollowUpDate(), now));
+                }
                 Instant since = sinceById.get(p.getId());
                 long daysWaiting = daysBetween(since, now);
-                return new FollowUp(p, since, daysWaiting, daysWaiting - delay);
+                return new FollowUp(p, since, null, daysWaiting, daysWaiting - delay);
             })
             .filter(f -> f.daysOverdue() >= 0)
             .sorted(Comparator.comparingLong(FollowUp::daysOverdue).reversed())
@@ -109,6 +123,10 @@ public class FollowUpService {
     static long daysBetween(Instant from, Instant to) {
         ZoneId zone = ZoneId.systemDefault();
         return ChronoUnit.DAYS.between(from.atZone(zone).toLocalDate(), to.atZone(zone).toLocalDate());
+    }
+
+    private static long daysSince(LocalDate day, Instant now) {
+        return ChronoUnit.DAYS.between(day, now.atZone(ZoneId.systemDefault()).toLocalDate());
     }
 
     private static String statusKey(Prospect prospect) {

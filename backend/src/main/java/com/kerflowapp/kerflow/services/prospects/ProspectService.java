@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -162,6 +163,15 @@ public class ProspectService {
             throw new KerflowException(PROSPECT_INVALID_STATUS);
         }
         moveToColumn(prospect, statusKey);
+        return prospectRepository.save(prospect);
+    }
+
+    /** Sets the follow-up day by hand, or clears it when null. */
+    public Prospect updateFollowUpDate(User user, UUID prospectId, LocalDate followUpDate) {
+        Prospect prospect = prospectRepository.findByIdAndUserId(prospectId, user.getId())
+            .orElseThrow(() -> new KerflowException(PROSPECT_NOT_FOUND));
+
+        prospect.setFollowUpDate(followUpDate);
         return prospectRepository.save(prospect);
     }
 

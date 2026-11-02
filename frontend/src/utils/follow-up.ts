@@ -1,4 +1,4 @@
-import { addDays } from 'date-fns';
+import { addDays, differenceInCalendarDays, parseISO } from 'date-fns';
 
 import type { ProspectDto } from '~/api/dtos/prospect.dto';
 import { daysSince } from '~/utils/dateUtils';
@@ -12,6 +12,9 @@ export type FollowUpStatus = 'none' | 'upcoming' | 'soon' | 'due';
 
 export type FollowUpState = {
 	status: FollowUpStatus;
+	/** The day was set by hand rather than computed from the wait for a reply */
+	manual: boolean;
+	/** 0 when the day was set by hand */
 	daysWaiting: number;
 	/** 0 on the day the follow-up becomes due, negative before */
 	daysOverdue: number;
@@ -19,17 +22,26 @@ export type FollowUpState = {
 	dueDate: Date | null;
 };
 
-const NONE: FollowUpState = { status: 'none', daysWaiting: 0, daysOverdue: 0, dueDate: null };
+const NONE: FollowUpState = { status: 'none', manual: false, daysWaiting: 0, daysOverdue: 0, dueDate: null };
+
+const statusOf = (daysOverdue: number): FollowUpStatus =>
+	daysOverdue >= 0 ? 'due' : daysOverdue === -1 ? 'soon' : 'upcoming';
 
 /**
- * The backend decides whether a prospect is waiting for a reply (followUpSince); this only
- * compares that date with the user's delay. "soon" means due tomorrow, "upcoming" later on.
+ * A day set by hand (followUpDate) wins, in any column. Otherwise the backend decides whether a
+ * prospect is waiting for a reply (followUpSince) and this only compares that date with the user's
+ * delay. "soon" means due tomorrow, "upcoming" later on.
  */
 export const followUpStateOf = (prospect: ProspectDto, delayDays: number, now: Date = new Date()): FollowUpState => {
+	if (prospect.followUpDate) {
+		// parseISO reads a date-only string as local time; new Date() would read it as UTC and shift the day
+		const dueDate = parseISO(prospect.followUpDate);
+		const daysOverdue = differenceInCalendarDays(now, dueDate);
+		return { status: statusOf(daysOverdue), manual: true, daysWaiting: 0, daysOverdue, dueDate };
+	}
 	if (!prospect.followUpSince) return NONE;
 	const daysWaiting = daysSince(prospect.followUpSince, now);
 	const daysOverdue = daysWaiting - delayDays;
 	const dueDate = addDays(new Date(prospect.followUpSince), delayDays);
-	const status: FollowUpStatus = daysOverdue >= 0 ? 'due' : daysOverdue === -1 ? 'soon' : 'upcoming';
-	return { status, daysWaiting, daysOverdue, dueDate };
+	return { status: statusOf(daysOverdue), manual: false, daysWaiting, daysOverdue, dueDate };
 };

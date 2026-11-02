@@ -148,6 +148,8 @@ export interface ProspectDto {
 	updatedAt: string;
 	/** Since when the prospect is waiting for a reply; null when no follow-up applies (closed deal, reply received…) */
 	followUpSince?: string | null;
+	/** Follow-up day set by hand (yyyy-MM-dd); replaces followUpSince when present */
+	followUpDate?: string | null;
 }
 
 export interface CreateProspectDto {

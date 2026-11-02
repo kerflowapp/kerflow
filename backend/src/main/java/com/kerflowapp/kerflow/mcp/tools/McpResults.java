@@ -257,8 +257,9 @@ public final class McpResults {
     }
 
     /**
-     * A prospect waiting for a reply past the user's follow-up delay. daysOverdue is 0 on the
-     * day the follow-up becomes due.
+     * A prospect waiting for a reply past the user's follow-up delay, or whose follow-up day set by
+     * hand has come. daysOverdue is 0 on the day the follow-up becomes due. When followUpDate is
+     * set, waitingSince is null and daysWaiting is 0.
      */
     public record FollowUpResult(
         UUID id,
@@ -267,6 +268,7 @@ public final class McpResults {
         String email,
         String phone,
         String waitingSince,
+        String followUpDate,
         long daysWaiting,
         long daysOverdue
     ) {
@@ -279,7 +281,8 @@ public final class McpResults {
                 prospect.getStatusKey(),
                 prospect.getEmail(),
                 prospect.getPhone(),
-                followUp.waitingSince().toString(),
+                followUp.waitingSince() == null ? null : followUp.waitingSince().toString(),
+                followUp.followUpDate() == null ? null : followUp.followUpDate().toString(),
                 followUp.daysWaiting(),
                 followUp.daysOverdue());
         }
