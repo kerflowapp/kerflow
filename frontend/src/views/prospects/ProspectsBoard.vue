@@ -3,10 +3,28 @@
 		<ProspectsBoardToolbar
 			v-model:filter-text="filterText"
 			v-model:follow-ups-only="followUpsOnly"
+			v-model:show-filters="showFilters"
+			:active-filter-count="activeCount"
 			:due-count="dueCount"
 			@add="openAddDialog"
 			@import-csv="openCsvImport"
 			@manage-columns="openManageColumns"
+		/>
+
+		<ProspectsFilters
+			v-if="showFilters"
+			v-model:categories="categories"
+			v-model:departments="departments"
+			v-model:min-stars="minStars"
+			v-model:sources="sources"
+			v-model:tags="tags"
+			:active-count="activeCount"
+			:category-options="categoryOptions"
+			:department-options="departmentOptions"
+			:source-options="sourceOptions"
+			:star-options="starOptions"
+			:tag-options="tagOptions"
+			@reset="resetFilters"
 		/>
 
 		<v-progress-linear v-if="isFetching" class="mb-4" color="primary" indeterminate />
@@ -184,7 +202,9 @@ import { useI18n } from 'vue-i18n';
 import type { ProspectDto, ProspectPipelineColumnDto, UpdateProspectDto } from '~/api/dtos/prospect.dto';
 import { ProspectSource } from '~/api/dtos/prospect.dto';
 import ProspectsBoardToolbar from '~/components/prospects/ProspectsBoardToolbar.vue';
+import ProspectsFilters from '~/components/prospects/ProspectsFilters.vue';
 import { useFollowUps } from '~/composables/useFollowUps';
+import { useProspectFilters } from '~/composables/useProspectFilters';
 import { useProspectPipeline } from '~/composables/useProspectPipeline';
 import { useProspects } from '~/composables/useProspects';
 import { useSubscription } from '~/composables/useSubscription';
@@ -216,11 +236,27 @@ const {
 } = useProspects();
 const { fetchColumns, createColumn, updateColumn, reorderColumns, deleteColumn, columnTitle } = useProspectPipeline();
 const { isTrialExpired } = useSubscription();
-const { dueCount, isDue } = useFollowUps();
-
-const filterText = ref('');
-const followUpsOnly = ref(false);
-const isFiltering = computed(() => !!filterText.value || followUpsOnly.value);
+const { dueCount } = useFollowUps();
+const {
+	text: filterText,
+	followUpsOnly,
+	departments,
+	minStars,
+	categories,
+	tags,
+	sources,
+	departmentOptions,
+	categoryOptions,
+	tagOptions,
+	sourceOptions,
+	starOptions,
+	activeCount,
+	isFiltering,
+	matches: matchesFilters,
+	reset: resetFilters
+} = useProspectFilters();
+// Open on load when the URL already carries filters, so they are never active out of sight
+const showFilters = ref(activeCount.value > 0);
 const viewMode = ref<'board' | 'map'>('board');
 const showDetail = ref(false);
 const showEdit = ref(false);
@@ -302,15 +338,6 @@ watch(
 	{ deep: true, immediate: true }
 );
 
-const matchesFilter = (p: ProspectDto, q: string) =>
-	p.name.toLowerCase().includes(q) ||
-	p.email?.toLowerCase().includes(q) ||
-	p.phone?.includes(q) ||
-	p.tags?.some(tag => tag.toLowerCase().includes(q));
-
-const matchesFilters = (p: ProspectDto) =>
-	(!filterText.value || matchesFilter(p, filterText.value.toLowerCase())) && (!followUpsOnly.value || isDue(p));
-
 // While filtering, drag is disabled → a fresh filtered copy is safe. Otherwise hand vuedraggable
 // the stable column array it owns.
 const listForColumn = (statusKey: string): ProspectDto[] => {
@@ -319,11 +346,6 @@ const listForColumn = (statusKey: string): ProspectDto[] => {
 };
 
 const filteredProspects = computed(() => (isFiltering.value ? store.prospects.filter(matchesFilters) : store.prospects));
-
-// Following up the last due prospect empties the filter: drop it rather than show an empty board
-watch(dueCount, count => {
-	if (count === 0) followUpsOnly.value = false;
-});
 
 const handleReorder = (payload: { statusKey: string; orderedIds: string[] }) => {
 	if (isTrialExpired.value) {

@@ -244,6 +244,22 @@
 			"map": "Carte"
 		},
 		"filter-placeholder": "Filtrer par nom, email, téléphone ou tag...",
+		"filters": {
+			"button": "Filtres",
+			"button-count": "Filtres ({count})",
+			"reset": "Réinitialiser",
+			"department": "Département",
+			"min-stars": "Score minimum",
+			"stars": "{n} étoile et + | {n} étoiles et +",
+			"category": "Activité",
+			"tags": "Tags",
+			"source": "Source",
+			"sources": {
+				"SEARCH": "Recherche",
+				"CSV": "Import CSV",
+				"MANUAL": "Ajout manuel"
+			}
+		},
 		"edit": "Modifier",
 		"delete": "Supprimer",
 		"edit-prospect": "Modifier le prospect",

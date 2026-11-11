@@ -244,6 +244,22 @@
 			"map": "Map"
 		},
 		"filter-placeholder": "Filter by name, email, phone or tag...",
+		"filters": {
+			"button": "Filters",
+			"button-count": "Filters ({count})",
+			"reset": "Reset",
+			"department": "Department",
+			"min-stars": "Minimum score",
+			"stars": "{n} star & up | {n} stars & up",
+			"category": "Activity",
+			"tags": "Tags",
+			"source": "Source",
+			"sources": {
+				"SEARCH": "Search",
+				"CSV": "CSV import",
+				"MANUAL": "Manual entry"
+			}
+		},
 		"edit": "Edit",
 		"delete": "Delete",
 		"edit-prospect": "Edit prospect",

@@ -60,18 +60,21 @@ export interface SizeEstimateDto {
 	estimatedAt: string;
 }
 
-export type BusinessCategory =
-	| 'TAXI_VTC'
-	| 'AMBULANCE'
-	| 'ROAD_FREIGHT'
-	| 'PASSENGER_TRANSPORT'
-	| 'VEHICLE_RENTAL'
-	| 'AUTO_SERVICES'
-	| 'DRIVING_SCHOOL'
-	| 'CONSTRUCTION'
-	| 'LANDSCAPING'
-	| 'CLEANING'
-	| 'OTHER';
+export const BUSINESS_CATEGORIES = [
+	'TAXI_VTC',
+	'AMBULANCE',
+	'ROAD_FREIGHT',
+	'PASSENGER_TRANSPORT',
+	'VEHICLE_RENTAL',
+	'AUTO_SERVICES',
+	'DRIVING_SCHOOL',
+	'CONSTRUCTION',
+	'LANDSCAPING',
+	'CLEANING',
+	'OTHER'
+] as const;
+
+export type BusinessCategory = (typeof BUSINESS_CATEGORIES)[number];
 
 /** Where the category comes from — the source is the confidence */
 export type BusinessCategorySource = 'NAF' | 'GOOGLE_TYPES';

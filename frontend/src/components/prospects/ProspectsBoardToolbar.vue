@@ -36,6 +36,14 @@
 			>
 				{{ t('follow-ups.filter', { count: dueCount }) }}
 			</v-chip>
+			<v-chip
+				:color="activeFilterCount ? 'primary' : undefined"
+				prepend-icon="mdi-filter-variant"
+				:variant="showFilters ? 'tonal' : 'outlined'"
+				@click="showFilters = !showFilters"
+			>
+				{{ activeFilterCount ? t('prospects.filters.button-count', { count: activeFilterCount }) : t('prospects.filters.button') }}
+			</v-chip>
 		</div>
 	</div>
 </template>
@@ -45,6 +53,7 @@ import { useI18n } from 'vue-i18n';
 
 interface Props {
 	dueCount: number;
+	activeFilterCount: number;
 }
 
 interface Emits {
@@ -57,5 +66,6 @@ defineProps<Props>();
 const emit = defineEmits<Emits>();
 const filterText = defineModel<string>('filterText', { default: '' });
 const followUpsOnly = defineModel<boolean>('followUpsOnly', { default: false });
+const showFilters = defineModel<boolean>('showFilters', { default: false });
 const { t } = useI18n();
 </script>
