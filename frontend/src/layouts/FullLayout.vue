@@ -105,7 +105,7 @@
 			/>
 
 			<v-main class="main bg-background">
-				<v-container class="app-container">
+				<v-container class="app-container" fluid>
 					<trial-banner />
 					<trial-expired-dialog v-model="showTrialExpiredDialog" />
 					<router-view></router-view>
