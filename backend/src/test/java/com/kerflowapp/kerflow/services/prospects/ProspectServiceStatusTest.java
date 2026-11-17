@@ -1,5 +1,6 @@
 package com.kerflowapp.kerflow.services.prospects;
 
+import com.kerflowapp.kerflow.api.prospects.domain.CreateProspectRequest;
 import com.kerflowapp.kerflow.domain.Prospect;
 import com.kerflowapp.kerflow.domain.User;
 import com.kerflowapp.kerflow.mappers.ProspectMapper;
@@ -23,6 +24,7 @@ class ProspectServiceStatusTest {
     private static final Instant MOVED_AT = Instant.parse("2026-09-01T10:00:00Z");
 
     private ProspectRepository prospectRepository;
+    private ProspectMapper prospectMapper;
     private ProspectService service;
     private User user;
     private Prospect prospect;
@@ -30,8 +32,9 @@ class ProspectServiceStatusTest {
     @BeforeEach
     void setUp() {
         prospectRepository = mock(ProspectRepository.class);
+        prospectMapper = mock(ProspectMapper.class);
         service = new ProspectService(prospectRepository, mock(ProspectMessageRepository.class),
-            mock(ProspectMapper.class), mock(EnrichmentEngine.class));
+            prospectMapper, mock(EnrichmentEngine.class));
 
         user = new User();
         user.setId(UUID.randomUUID());
@@ -72,5 +75,19 @@ class ProspectServiceStatusTest {
         service.reorder(user, "IN_DISCUSSION", List.of(prospect.getId()));
 
         assertThat(prospect.getStatusChangedAt()).isAfter(MOVED_AT);
+    }
+
+    @Test
+    void creatingAProspectPlacesItAtTheEndOfTheRequestedColumn() {
+        CreateProspectRequest request = new CreateProspectRequest("Boulangerie", null, null, null, null, null, null,
+            null, null, null, null, "IN_DISCUSSION", null, null, null, null, null, null, null, null, null, null);
+        when(prospectMapper.toEntity(request)).thenReturn(new Prospect());
+        when(prospectRepository.countByUserIdAndStatusKey(user.getId(), "IN_DISCUSSION")).thenReturn(3L);
+
+        Prospect created = service.createProspect(user, request);
+
+        assertThat(created.getStatusKey()).isEqualTo("IN_DISCUSSION");
+        assertThat(created.getPosition()).isEqualTo(3);
+        assertThat(created.getStatusChangedAt()).isNotNull();
     }
 }

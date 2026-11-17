@@ -298,10 +298,12 @@
 			"facebook": "Facebook",
 			"linkedin": "LinkedIn",
 			"notes": "Notes",
-			"tags": "Tags"
+			"tags": "Tags",
+			"column": "Colonne"
 		}
 	},
 	"kanban": {
+		"add-in-column": "Ajouter un prospect dans cette colonne",
 		"empty-column": "Aucun prospect dans cette colonne",
 		"manage-columns": "Gérer les colonnes",
 		"column-name": "Nom de la colonne",

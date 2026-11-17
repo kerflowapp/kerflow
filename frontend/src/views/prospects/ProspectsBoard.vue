@@ -6,7 +6,7 @@
 			v-model:show-filters="showFilters"
 			:active-filter-count="activeCount"
 			:due-count="dueCount"
-			@add="openAddDialog"
+			@add="openAddDialog()"
 			@import-csv="openCsvImport"
 			@manage-columns="openManageColumns"
 		/>
@@ -52,6 +52,7 @@
 					:readonly="isTrialExpired"
 					:status-key="column.key"
 					:title="columnTitle(column)"
+					@add="openAddDialog"
 					@delete="handleDelete"
 					@drag-end="isDragging = false"
 					@drag-start="isDragging = true"
@@ -87,51 +88,13 @@
 
 		<TrialExpiredDialog v-model="showTrialExpired" />
 
-		<!-- Manual add dialog -->
-		<v-dialog v-model="showAddDialog" max-width="500">
-			<v-card elevation="0">
-				<v-card-title>{{ t('prospects.add-manually') }}</v-card-title>
-				<v-card-text>
-					<v-form ref="addFormRef" @submit.prevent="handleManualAdd">
-						<v-text-field
-							v-model="newProspect.name"
-							class="mb-2"
-							density="comfortable"
-							:label="t('prospects.fields.name')"
-							:rules="requiredRule"
-							variant="outlined"
-						/>
-						<v-text-field
-							v-model="newProspect.phone"
-							class="mb-2"
-							density="comfortable"
-							:label="t('prospects.fields.phone')"
-							variant="outlined"
-						/>
-						<v-text-field
-							v-model="newProspect.email"
-							class="mb-2"
-							density="comfortable"
-							:label="t('prospects.fields.email')"
-							variant="outlined"
-						/>
-						<v-text-field
-							v-model="newProspect.website"
-							density="comfortable"
-							:label="t('prospects.fields.website')"
-							variant="outlined"
-						/>
-					</v-form>
-				</v-card-text>
-				<v-card-actions>
-					<v-spacer />
-					<v-btn variant="text" @click="showAddDialog = false">{{ t('common.cancel') }}</v-btn>
-					<v-btn color="primary" :loading="isCreating" variant="flat" @click="handleManualAdd">
-						{{ t('common.add') }}
-					</v-btn>
-				</v-card-actions>
-			</v-card>
-		</v-dialog>
+		<ProspectAddDialog
+			v-model="showAddDialog"
+			:columns="columns"
+			:initial-status-key="addStatusKey"
+			:is-creating="isCreating"
+			@submit="handleManualAdd"
+		/>
 
 		<!-- Manage columns -->
 		<v-dialog v-model="showManageColumns" max-width="720">
@@ -199,8 +162,7 @@
 import { computed, defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { ProspectDto, ProspectPipelineColumnDto, UpdateProspectDto } from '~/api/dtos/prospect.dto';
-import { ProspectSource } from '~/api/dtos/prospect.dto';
+import type { CreateProspectDto, ProspectDto, ProspectPipelineColumnDto, UpdateProspectDto } from '~/api/dtos/prospect.dto';
 import ProspectsBoardToolbar from '~/components/prospects/ProspectsBoardToolbar.vue';
 import ProspectsFilters from '~/components/prospects/ProspectsFilters.vue';
 import { useFollowUps } from '~/composables/useFollowUps';
@@ -214,6 +176,7 @@ const CsvImportDialog = defineAsyncComponent(() => import('~/components/prospect
 const TrialExpiredDialog = defineAsyncComponent(() => import('~/components/TrialExpiredDialog.vue'));
 const KanbanColumn = defineAsyncComponent(() => import('~/components/prospects/KanbanColumn.vue'));
 const ProspectDetailsDrawer = defineAsyncComponent(() => import('~/components/prospects/ProspectDetailsDrawer.vue'));
+const ProspectAddDialog = defineAsyncComponent(() => import('~/components/prospects/ProspectAddDialog.vue'));
 const ProspectEditDrawer = defineAsyncComponent(() => import('~/components/prospects/ProspectEditDrawer.vue'));
 const ProspectsMap = defineAsyncComponent(() => import('~/components/prospects/ProspectsMap.vue'));
 
@@ -269,14 +232,7 @@ const highlightedProspectId = ref<string | null>(null);
 const newColumnName = ref('');
 const editedNames = reactive<Record<string, string>>({});
 
-const newProspect = reactive({
-	name: '',
-	phone: '',
-	email: '',
-	website: ''
-});
-
-const requiredRule = [(v: string) => !!v || t('validation.required')];
+const addStatusKey = ref('NEW');
 
 const openCsvImport = () => {
 	if (isTrialExpired.value) {
@@ -286,11 +242,12 @@ const openCsvImport = () => {
 	showCsvImport.value = true;
 };
 
-const openAddDialog = () => {
+const openAddDialog = (statusKey = 'NEW') => {
 	if (isTrialExpired.value) {
 		showTrialExpired.value = true;
 		return;
 	}
+	addStatusKey.value = statusKey;
 	showAddDialog.value = true;
 };
 
@@ -405,21 +362,9 @@ const handleDelete = (id: string) => {
 	showDetail.value = false;
 };
 
-const handleManualAdd = () => {
-	if (!newProspect.name) return;
-	addProspect({
-		name: newProspect.name,
-		phone: newProspect.phone,
-		email: newProspect.email,
-		website: newProspect.website,
-		source: ProspectSource.MANUAL,
-		statusKey: 'NEW'
-	});
+const handleManualAdd = (data: CreateProspectDto) => {
+	addProspect(data);
 	showAddDialog.value = false;
-	newProspect.name = '';
-	newProspect.phone = '';
-	newProspect.email = '';
-	newProspect.website = '';
 };
 
 onMounted(() => {

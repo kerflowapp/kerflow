@@ -5,7 +5,21 @@
 				<v-icon class="mr-2" :color="color" size="18">{{ icon }}</v-icon>
 				<span class="text-subtitle-2 font-weight-bold">{{ title }}</span>
 			</div>
-			<v-chip :color="color" size="x-small" variant="tonal">{{ prospects.length }}</v-chip>
+			<div class="d-flex align-center ga-1">
+				<v-chip :color="color" size="x-small" variant="tonal">{{ prospects.length }}</v-chip>
+				<v-btn
+					v-if="!readonly"
+					:aria-label="t('kanban.add-in-column')"
+					density="comfortable"
+					icon
+					size="x-small"
+					variant="text"
+					@click="emit('add', statusKey)"
+				>
+					<v-icon icon="mdi-plus" />
+					<v-tooltip activator="parent" location="top">{{ t('kanban.add-in-column') }}</v-tooltip>
+				</v-btn>
+			</div>
 		</div>
 
 		<draggable
@@ -84,6 +98,7 @@ interface Props {
 
 interface Emits {
 	(e: 'reorder', payload: { statusKey: string; orderedIds: string[] }): void;
+	(e: 'add', statusKey: string): void;
 	(e: 'drag-start'): void;
 	(e: 'drag-end'): void;
 	(e: 'edit', prospect: ProspectDto): void;
