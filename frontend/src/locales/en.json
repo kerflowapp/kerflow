@@ -262,6 +262,7 @@
 		},
 		"edit": "Edit",
 		"delete": "Delete",
+		"move-to": "Move to",
 		"edit-prospect": "Edit prospect",
 		"prospect-details": "Prospect details",
 		"details": {

@@ -45,6 +45,7 @@ export function useProspects(): {
 	const { trigger: triggerEnrich, loading: isEnriching } = useTrigger();
 	const { trigger: triggerFollowUp, loading: isUpdatingFollowUp } = useTrigger();
 	const { trigger: triggerReorder } = useTrigger();
+	const { trigger: triggerMove } = useTrigger();
 
 	const fetchProspects = () => {
 		triggerFetch(getProspects$(), {
@@ -137,7 +138,7 @@ export function useProspects(): {
 
 	const moveProspect = (id: string, statusKey: string) => {
 		store.moveProspect(id, statusKey);
-		triggerUpdate(updateProspectStatus$(id, statusKey), {
+		triggerMove(updateProspectStatus$(id, statusKey), {
 			onSuccess: (response: { data: ProspectDto }) => {
 				store.updateProspect(response.data);
 			},

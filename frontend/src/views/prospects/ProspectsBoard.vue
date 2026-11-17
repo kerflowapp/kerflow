@@ -46,6 +46,7 @@
 			<div v-for="column in columns" :key="column.key" class="kanban-col">
 				<KanbanColumn
 					:color="column.color || 'primary'"
+					:columns="moveTargets"
 					:drag-disabled="isFiltering"
 					:icon="column.icon || 'mdi-view-column'"
 					:prospects="listForColumn(column.key)"
@@ -57,6 +58,7 @@
 					@drag-end="isDragging = false"
 					@drag-start="isDragging = true"
 					@edit="handleEdit"
+					@move="handleMove"
 					@reorder="handleReorder"
 					@select="
 						showDetail = true;
@@ -163,6 +165,7 @@ import { computed, defineAsyncComponent, onMounted, reactive, ref, watch } from 
 import { useI18n } from 'vue-i18n';
 
 import type { CreateProspectDto, ProspectDto, ProspectPipelineColumnDto, UpdateProspectDto } from '~/api/dtos/prospect.dto';
+import type { KanbanMoveTarget } from '~/components/prospects/KanbanCard.vue';
 import ProspectsBoardToolbar from '~/components/prospects/ProspectsBoardToolbar.vue';
 import ProspectsFilters from '~/components/prospects/ProspectsFilters.vue';
 import { useFollowUps } from '~/composables/useFollowUps';
@@ -194,6 +197,7 @@ const {
 	isEnriching,
 	updateFollowUpDate,
 	isUpdatingFollowUp,
+	moveProspect,
 	reorderProspects,
 	removeProspect
 } = useProspects();
@@ -270,6 +274,15 @@ const handleEdit = (prospect: ProspectDto) => {
 
 const columns = computed<ProspectPipelineColumnDto[]>(() => store.pipelineColumns);
 
+const moveTargets = computed<KanbanMoveTarget[]>(() =>
+	columns.value.map(c => ({
+		key: c.key,
+		title: columnTitle(c),
+		icon: c.icon || 'mdi-view-column',
+		color: c.color || 'primary'
+	}))
+);
+
 // Stable per-column arrays owned by vuedraggable (mutated in place during drag). Rebuilt from
 // the store only when NOT dragging, so an optimistic reorder mid-drag never clobbers a
 // cross-column move in flight.
@@ -310,6 +323,14 @@ const handleReorder = (payload: { statusKey: string; orderedIds: string[] }) => 
 		return;
 	}
 	reorderProspects(payload.statusKey, payload.orderedIds);
+};
+
+const handleMove = (id: string, statusKey: string) => {
+	if (isTrialExpired.value) {
+		showTrialExpired.value = true;
+		return;
+	}
+	moveProspect(id, statusKey);
 };
 
 const handleSelect = (prospect: ProspectDto) => {

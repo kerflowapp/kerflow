@@ -39,10 +39,12 @@
 			<template #item="{ element }">
 				<div>
 					<KanbanCard
+						:columns="columns"
 						:prospect="element"
 						:readonly="readonly"
 						@delete="emit('delete', element.id)"
 						@edit="emit('edit', element)"
+						@move="(id: string, key: string) => emit('move', id, key)"
 						@select="emit('select', element)"
 					/>
 				</div>
@@ -83,6 +85,7 @@ import { useI18n } from 'vue-i18n';
 import draggable from 'vuedraggable';
 
 import type { ProspectDto } from '~/api/dtos/prospect.dto';
+import type { KanbanMoveTarget } from '~/components/prospects/KanbanCard.vue';
 
 const KanbanCard = defineAsyncComponent(() => import('./KanbanCard.vue'));
 
@@ -94,6 +97,7 @@ interface Props {
 	icon: string;
 	readonly?: boolean;
 	dragDisabled?: boolean;
+	columns?: KanbanMoveTarget[];
 }
 
 interface Emits {
@@ -104,6 +108,7 @@ interface Emits {
 	(e: 'edit', prospect: ProspectDto): void;
 	(e: 'delete', id: string): void;
 	(e: 'select', prospect: ProspectDto): void;
+	(e: 'move', id: string, statusKey: string): void;
 }
 
 const props = defineProps<Props>();

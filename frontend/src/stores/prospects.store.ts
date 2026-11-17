@@ -67,6 +67,8 @@ export const useProspectsStore = defineStore('prospects-store', () => {
 		const prospect = prospects.value.find(p => p.id === id);
 		if (prospect) {
 			prospect.statusKey = statusKey;
+			// Null sorts last: the card lands at the bottom of its new column, as the backend does
+			prospect.position = null;
 		}
 	}
 

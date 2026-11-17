@@ -12,6 +12,20 @@
 						<v-list density="compact">
 							<v-list-item prepend-icon="mdi-pencil" :title="t('prospects.edit')" @click="emit('edit', prospect)" />
 							<v-list-item prepend-icon="mdi-delete" :title="t('prospects.delete')" @click="emit('delete', prospect.id)" />
+							<template v-if="moveTargets.length">
+								<v-divider class="my-1" />
+								<v-list-subheader>{{ t('prospects.move-to') }}</v-list-subheader>
+								<v-list-item
+									v-for="target in moveTargets"
+									:key="target.key"
+									:title="target.title"
+									@click="emit('move', prospect.id, target.key)"
+								>
+									<template #prepend>
+										<v-icon :color="target.color" :icon="target.icon" />
+									</template>
+								</v-list-item>
+							</template>
 						</v-list>
 					</v-menu>
 				</div>
@@ -68,23 +82,35 @@
 </style>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { ProspectDto } from '~/api/dtos/prospect.dto';
 import FollowUpChip from '~/components/prospects/FollowUpChip.vue';
 
+export interface KanbanMoveTarget {
+	key: string;
+	title: string;
+	icon: string;
+	color: string;
+}
+
 interface Props {
 	prospect: ProspectDto;
 	readonly?: boolean;
+	columns?: KanbanMoveTarget[];
 }
 
 interface Emits {
 	(e: 'edit', prospect: ProspectDto): void;
 	(e: 'delete', id: string): void;
 	(e: 'select', prospect: ProspectDto): void;
+	(e: 'move', id: string, statusKey: string): void;
 }
 
-defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), { columns: () => [] });
 const emit = defineEmits<Emits>();
 const { t } = useI18n();
+
+const moveTargets = computed(() => props.columns.filter(c => c.key !== props.prospect.statusKey));
 </script>
