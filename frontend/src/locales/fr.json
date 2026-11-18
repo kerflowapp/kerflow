@@ -281,12 +281,15 @@
 				"open-website": "Ouvrir le site",
 				"copy-contact": "Copier les infos",
 				"open-maps": "Ouvrir dans Maps",
-				"delete": "Supprimer"
+				"delete": "Supprimer",
+				"open-link": "Ouvrir le lien"
 			},
 			"delete": {
 				"title": "Supprimer le prospect",
 				"description": "Cette action est définitive. Voulez-vous vraiment supprimer ce prospect ?"
-			}
+			},
+			"click-to-edit": "Cliquer pour modifier",
+			"add-tag": "Ajouter un tag"
 		},
 		"fields": {
 			"name": "Nom",

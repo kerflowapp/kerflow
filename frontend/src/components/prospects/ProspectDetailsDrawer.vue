@@ -1,15 +1,23 @@
 <template>
 	<v-navigation-drawer v-model="modelValue" location="right" temporary :width="computedWidth">
 		<v-card v-if="prospect" class="h-100 d-flex flex-column" elevation="0">
-			<v-card-title class="d-flex align-start pa-4">
-				<div class="flex-grow-1 pr-2" style="min-width: 0">
-					<div class="text-h6 font-weight-bold text-truncate">{{ prospect.name }}</div>
-					<div v-if="prospect.email" class="text-caption text-medium-emphasis text-truncate">
+			<v-card-title class="d-flex align-start pa-2">
+				<div class="flex-grow-1" style="min-width: 0">
+					<InlineEditableField
+						class="text-h6 font-weight-bold"
+						:empty-text="t('prospects.details.empty')"
+						:label="t('prospects.fields.name')"
+						:loading="isUpdating"
+						:model-value="prospect.name"
+						:readonly="readonly"
+						required
+						@save="emitUpdate({ name: $event })"
+					/>
+					<div v-if="prospect.email" class="px-4 text-caption text-medium-emphasis text-truncate">
 						{{ prospect.email }}
 					</div>
 				</div>
-				<div class="d-flex align-center ga-1 flex-shrink-0">
-					<v-btn v-if="!readonly" icon="mdi-pencil-outline" size="small" variant="text" @click="emit('edit')" />
+				<div class="d-flex align-center ga-1 flex-shrink-0 pt-2">
 					<v-btn
 						v-if="!readonly"
 						color="error"
@@ -22,12 +30,13 @@
 				</div>
 			</v-card-title>
 
-			<div v-if="prospect.tags?.length" class="px-4 pb-3">
-				<div class="d-flex flex-wrap ga-2">
-					<v-chip v-for="tag in prospect.tags" :key="tag" color="primary" size="small" variant="tonal">
-						{{ tag }}
-					</v-chip>
-				</div>
+			<div class="px-4 pb-3">
+				<ProspectTagsField
+					:loading="isUpdating"
+					:model-value="prospect.tags ?? []"
+					:readonly="readonly"
+					@save="emitUpdate({ tags: $event })"
+				/>
 			</div>
 
 			<v-divider />
@@ -133,123 +142,6 @@
 
 					<v-divider class="my-2" />
 
-					<v-list-subheader>{{ t('prospects.details.sections.contact') }}</v-list-subheader>
-
-					<v-list-item prepend-icon="mdi-phone-outline" :title="prospect.phone || t('prospects.details.empty')">
-						<template #append>
-							<v-btn
-								v-if="prospect.phone"
-								icon="mdi-content-copy"
-								size="small"
-								variant="text"
-								@click.stop="copyText(prospect.phone)"
-							/>
-						</template>
-					</v-list-item>
-
-					<v-list-item prepend-icon="mdi-email-outline" :title="prospect.email || t('prospects.details.empty')">
-						<template #append>
-							<v-btn
-								v-if="prospect.email"
-								icon="mdi-content-copy"
-								size="small"
-								variant="text"
-								@click.stop="copyText(prospect.email)"
-							/>
-						</template>
-					</v-list-item>
-
-					<v-divider class="my-2" />
-
-					<v-list-subheader>{{ t('prospects.details.sections.address') }}</v-list-subheader>
-
-					<v-list-item prepend-icon="mdi-map-marker-outline" :title="prospect.address || t('prospects.details.empty')">
-						<template #append>
-							<v-btn v-if="prospect.address" icon="mdi-map" size="small" variant="text" @click.stop="openMaps" />
-							<v-btn
-								v-if="prospect.address"
-								icon="mdi-content-copy"
-								size="small"
-								variant="text"
-								@click.stop="copyText(prospect.address)"
-							/>
-						</template>
-					</v-list-item>
-
-					<v-divider class="my-2" />
-
-					<v-list-subheader>{{ t('prospects.details.sections.links') }}</v-list-subheader>
-
-					<v-list-item
-						:disabled="!prospect.website"
-						prepend-icon="mdi-web"
-						:title="prospect.website || t('prospects.details.empty')"
-						@click="prospect.website ? openWebsite() : undefined"
-					>
-						<template #append>
-							<v-btn
-								v-if="prospect.website"
-								icon="mdi-content-copy"
-								size="small"
-								variant="text"
-								@click.stop="copyText(prospect.website)"
-							/>
-						</template>
-					</v-list-item>
-
-					<v-list-item
-						:disabled="!prospect.socialLinks?.instagram"
-						prepend-icon="mdi-instagram"
-						:title="prospect.socialLinks?.instagram || t('prospects.details.empty')"
-						@click="prospect.socialLinks?.instagram ? openUrl(prospect.socialLinks.instagram) : undefined"
-					>
-						<template #append>
-							<v-btn
-								v-if="prospect.socialLinks?.instagram"
-								icon="mdi-content-copy"
-								size="small"
-								variant="text"
-								@click.stop="copyText(prospect.socialLinks.instagram)"
-							/>
-						</template>
-					</v-list-item>
-
-					<v-list-item
-						:disabled="!prospect.socialLinks?.facebook"
-						prepend-icon="mdi-facebook"
-						:title="prospect.socialLinks?.facebook || t('prospects.details.empty')"
-						@click="prospect.socialLinks?.facebook ? openUrl(prospect.socialLinks.facebook) : undefined"
-					>
-						<template #append>
-							<v-btn
-								v-if="prospect.socialLinks?.facebook"
-								icon="mdi-content-copy"
-								size="small"
-								variant="text"
-								@click.stop="copyText(prospect.socialLinks.facebook)"
-							/>
-						</template>
-					</v-list-item>
-
-					<v-list-item
-						:disabled="!prospect.socialLinks?.linkedin"
-						prepend-icon="mdi-linkedin"
-						:title="prospect.socialLinks?.linkedin || t('prospects.details.empty')"
-						@click="prospect.socialLinks?.linkedin ? openUrl(prospect.socialLinks.linkedin) : undefined"
-					>
-						<template #append>
-							<v-btn
-								v-if="prospect.socialLinks?.linkedin"
-								icon="mdi-content-copy"
-								size="small"
-								variant="text"
-								@click.stop="copyText(prospect.socialLinks.linkedin)"
-							/>
-						</template>
-					</v-list-item>
-
-					<v-divider class="my-2" />
-
 					<v-list-subheader>{{ t('prospects.details.sections.follow-up') }}</v-list-subheader>
 					<div class="px-4 py-2">
 						<ProspectFollowUpDateField
@@ -262,12 +154,12 @@
 
 					<v-divider class="my-2" />
 
-					<v-list-subheader>{{ t('prospects.details.sections.notes') }}</v-list-subheader>
-					<v-list-item>
-						<div class="text-body-2 notes-text">
-							{{ prospect.notes || t('prospects.details.no-notes') }}
-						</div>
-					</v-list-item>
+					<ProspectContactSection
+						:loading="isUpdating"
+						:prospect="prospect"
+						:readonly="readonly"
+						@update="emitUpdate"
+					/>
 				</v-list>
 			</v-card-text>
 		</v-card>
@@ -289,11 +181,6 @@
 </template>
 
 <style scoped>
-.notes-text {
-	white-space: pre-wrap;
-	line-height: 1.5;
-}
-
 .detail-map-container {
 	height: 180px;
 	border-radius: 12px;
@@ -321,15 +208,17 @@ import { LIcon, LMap, LMarker, LTileLayer } from '@vue-leaflet/vue-leaflet';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
-import { toast } from '~/composables/useToast';
 
 import type { CreateProspectMessageDto, UpdateProspectMessageDto } from '~/api/dtos/prospect-message.dto';
-import type { ProspectDto } from '~/api/dtos/prospect.dto';
+import type { ProspectDto, UpdateProspectDto } from '~/api/dtos/prospect.dto';
 import BusinessProfileCard from '~/components/business/BusinessProfileCard.vue';
 import ProspectAnalysisCard from '~/components/business/ProspectAnalysisCard.vue';
+import InlineEditableField from '~/components/prospects/InlineEditableField.vue';
+import ProspectContactSection from '~/components/prospects/ProspectContactSection.vue';
 import ProspectFollowUpDateField from '~/components/prospects/ProspectFollowUpDateField.vue';
 import ProspectMessagesCard from '~/components/prospects/ProspectMessagesCard.vue';
 import ProspectSheetCard from '~/components/prospects/ProspectSheetCard.vue';
+import ProspectTagsField from '~/components/prospects/ProspectTagsField.vue';
 import ProspectScoreCard from '~/components/signals/ProspectScoreCard.vue';
 import SignalsList from '~/components/signals/SignalsList.vue';
 import SizeEstimateCard from '~/components/signals/SizeEstimateCard.vue';
@@ -342,11 +231,12 @@ interface Props {
 	isDeleting?: boolean;
 	isEnriching?: boolean;
 	isUpdatingFollowUp?: boolean;
+	isUpdating?: boolean;
 	readonly?: boolean;
 }
 
 interface Emits {
-	(e: 'edit'): void;
+	(e: 'update', id: string, data: UpdateProspectDto): void;
 	(e: 'delete', id: string): void;
 	(e: 'enrich', id: string): void;
 	(e: 'update-follow-up-date', id: string, followUpDate: string | null): void;
@@ -356,6 +246,7 @@ const props = withDefaults(defineProps<Props>(), {
 	isDeleting: false,
 	isEnriching: false,
 	isUpdatingFollowUp: false,
+	isUpdating: false,
 	readonly: false
 });
 const emit = defineEmits<Emits>();
@@ -417,38 +308,9 @@ const hasCoordinates = computed(() => typeof props.prospect?.lat === 'number' &&
 
 const mapCenter = computed<[number, number]>(() => [(props.prospect?.lat as number) ?? 0, (props.prospect?.lng as number) ?? 0]);
 
-const normalizeUrl = (raw: string) => {
-	const trimmed = raw.trim();
-	if (!trimmed) return null;
-	if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed;
-	return `https://${trimmed}`;
-};
-
-const openUrl = (raw: string) => {
-	const url = normalizeUrl(raw);
-	if (!url) return;
-	window.open(url, '_blank', 'noopener,noreferrer');
-};
-
-const openWebsite = () => {
-	if (!props.prospect?.website) return;
-	openUrl(props.prospect.website);
-};
-
-const openMaps = () => {
-	const address = props.prospect?.address?.trim();
-	if (!address) return;
-	const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
-	window.open(url, '_blank', 'noopener,noreferrer');
-};
-
-const copyText = async (value: string) => {
-	try {
-		await navigator.clipboard.writeText(value);
-		toast.success(t('prospects.details.copy-success'));
-	} catch {
-		toast.error(t('errors.clipboard-failed'));
-	}
+const emitUpdate = (data: UpdateProspectDto) => {
+	if (!props.prospect) return;
+	emit('update', props.prospect.id, data);
 };
 
 const handleDelete = () => {

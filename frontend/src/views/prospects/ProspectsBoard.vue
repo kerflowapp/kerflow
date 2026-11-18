@@ -72,19 +72,15 @@
 			v-model="showDetail"
 			:is-deleting="isDeleting"
 			:is-enriching="isEnriching"
+			:is-updating="isUpdating"
 			:is-updating-follow-up="isUpdatingFollowUp"
 			:prospect="selectedProspect"
 			:readonly="isTrialExpired"
 			@delete="handleDelete"
-			@edit="
-				showDetail = false;
-				handleEdit(selectedProspect!);
-			"
 			@enrich="handleEnrich"
+			@update="handleUpdate"
 			@update-follow-up-date="handleFollowUpDate"
 		/>
-
-		<ProspectEditDrawer v-model="showEdit" :is-updating="isUpdating" :prospect="selectedProspect" @update="handleUpdate" />
 
 		<CsvImportDialog v-model="showCsvImport" />
 
@@ -180,7 +176,6 @@ const TrialExpiredDialog = defineAsyncComponent(() => import('~/components/Trial
 const KanbanColumn = defineAsyncComponent(() => import('~/components/prospects/KanbanColumn.vue'));
 const ProspectDetailsDrawer = defineAsyncComponent(() => import('~/components/prospects/ProspectDetailsDrawer.vue'));
 const ProspectAddDialog = defineAsyncComponent(() => import('~/components/prospects/ProspectAddDialog.vue'));
-const ProspectEditDrawer = defineAsyncComponent(() => import('~/components/prospects/ProspectEditDrawer.vue'));
 const ProspectsMap = defineAsyncComponent(() => import('~/components/prospects/ProspectsMap.vue'));
 
 const { t } = useI18n();
@@ -226,7 +221,6 @@ const {
 const showFilters = ref(activeCount.value > 0);
 const viewMode = ref<'board' | 'map'>('board');
 const showDetail = ref(false);
-const showEdit = ref(false);
 const showCsvImport = ref(false);
 const showAddDialog = ref(false);
 const showManageColumns = ref(false);
@@ -263,13 +257,10 @@ const openManageColumns = () => {
 	showManageColumns.value = true;
 };
 
+// Fields are edited in place in the details drawer, which stays read-only once the trial has expired
 const handleEdit = (prospect: ProspectDto) => {
-	if (isTrialExpired.value) {
-		showTrialExpired.value = true;
-		return;
-	}
 	selectedProspect.value = prospect;
-	showEdit.value = true;
+	showDetail.value = true;
 };
 
 const columns = computed<ProspectPipelineColumnDto[]>(() => store.pipelineColumns);
@@ -336,7 +327,6 @@ const handleMove = (id: string, statusKey: string) => {
 const handleSelect = (prospect: ProspectDto) => {
 	selectedProspect.value = prospect;
 	showDetail.value = true;
-	showEdit.value = false;
 };
 
 const handleSelectById = (id: string) => {
@@ -355,12 +345,14 @@ const handleEnrich = (id: string) => {
 	});
 };
 
-const handleUpdate = (payload: { id: string; data: UpdateProspectDto }) => {
+const handleUpdate = (id: string, data: UpdateProspectDto) => {
 	if (isTrialExpired.value) {
 		showTrialExpired.value = true;
 		return;
 	}
-	editProspect(payload.id, payload.data);
+	editProspect(id, data, prospect => {
+		selectedProspect.value = prospect;
+	});
 };
 
 const handleFollowUpDate = (id: string, followUpDate: string | null) => {
@@ -379,7 +371,6 @@ const handleDelete = (id: string) => {
 		return;
 	}
 	removeProspect(id);
-	showEdit.value = false;
 	showDetail.value = false;
 };
 

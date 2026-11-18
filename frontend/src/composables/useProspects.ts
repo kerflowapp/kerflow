@@ -29,7 +29,7 @@ export function useProspects(): {
 	fetchProspects: () => void;
 	addProspect: (data: CreateProspectDto) => void;
 	addFromSearchResult: (result: SearchResultDto, searchKeywords?: string) => void;
-	editProspect: (id: string, data: UpdateProspectDto) => void;
+	editProspect: (id: string, data: UpdateProspectDto, onUpdated?: (prospect: ProspectDto) => void) => void;
 	enrichProspect: (id: string, onEnriched?: (prospect: ProspectDto) => void) => void;
 	updateFollowUpDate: (id: string, followUpDate: string | null, onUpdated?: (prospect: ProspectDto) => void) => void;
 	moveProspect: (id: string, statusKey: string) => void;
@@ -98,10 +98,11 @@ export function useProspects(): {
 		addProspect(data);
 	};
 
-	const editProspect = (id: string, data: UpdateProspectDto) => {
+	const editProspect = (id: string, data: UpdateProspectDto, onUpdated?: (prospect: ProspectDto) => void) => {
 		triggerUpdate(updateProspect$(id, data), {
 			onSuccess: (response: { data: ProspectDto }) => {
 				store.updateProspect(response.data);
+				onUpdated?.(response.data);
 				toast.success(t('success.prospect-updated'));
 			},
 			onError: () => {

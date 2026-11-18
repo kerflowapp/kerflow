@@ -281,12 +281,15 @@
 				"open-website": "Open website",
 				"copy-contact": "Copy info",
 				"open-maps": "Open in Maps",
-				"delete": "Delete"
+				"delete": "Delete",
+				"open-link": "Open link"
 			},
 			"delete": {
 				"title": "Delete prospect",
 				"description": "This action can’t be undone. Do you really want to delete this prospect?"
-			}
+			},
+			"click-to-edit": "Click to edit",
+			"add-tag": "Add a tag"
 		},
 		"fields": {
 			"name": "Name",
