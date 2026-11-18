@@ -12,6 +12,12 @@ export enum ProspectSource {
 	MANUAL = 'MANUAL'
 }
 
+/** Where a newly created prospect lands in its kanban column */
+export enum ProspectPlacement {
+	TOP = 'TOP',
+	BOTTOM = 'BOTTOM'
+}
+
 export interface SocialLinks {
 	instagram?: string;
 	facebook?: string;
@@ -176,6 +182,7 @@ export interface CreateProspectDto {
 	googleEditorialSummary?: string | null;
 	source: ProspectSource;
 	searchQuery?: string;
+	placement?: ProspectPlacement;
 }
 
 export interface UpdateProspectDto {

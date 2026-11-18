@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n';
 import { toast } from '~/composables/useToast';
 
 import type { CreateProspectDto, ProspectDto, UpdateProspectDto } from '~/api/dtos/prospect.dto';
-import { ProspectSource } from '~/api/dtos/prospect.dto';
+import { ProspectPlacement, ProspectSource } from '~/api/dtos/prospect.dto';
 import type { SearchResultDto } from '~/api/dtos/search.dto';
 import {
 	createProspect$,
@@ -61,7 +61,7 @@ export function useProspects(): {
 	const addProspect = (data: CreateProspectDto) => {
 		triggerCreate(createProspect$(data), {
 			onSuccess: (response: { data: ProspectDto }) => {
-				store.addProspect(response.data);
+				store.addProspect(response.data, data.placement === ProspectPlacement.TOP);
 				toast.success(t('success.prospect-created'));
 			},
 			onError: () => {

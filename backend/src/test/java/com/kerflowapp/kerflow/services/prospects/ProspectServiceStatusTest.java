@@ -3,6 +3,7 @@ package com.kerflowapp.kerflow.services.prospects;
 import com.kerflowapp.kerflow.api.prospects.domain.CreateProspectRequest;
 import com.kerflowapp.kerflow.domain.Prospect;
 import com.kerflowapp.kerflow.domain.User;
+import com.kerflowapp.kerflow.domain.enums.ProspectPlacement;
 import com.kerflowapp.kerflow.mappers.ProspectMapper;
 import com.kerflowapp.kerflow.repositories.ProspectMessageRepository;
 import com.kerflowapp.kerflow.repositories.ProspectRepository;
@@ -80,7 +81,7 @@ class ProspectServiceStatusTest {
     @Test
     void creatingAProspectPlacesItAtTheEndOfTheRequestedColumn() {
         CreateProspectRequest request = new CreateProspectRequest("Boulangerie", null, null, null, null, null, null,
-            null, null, null, null, "IN_DISCUSSION", null, null, null, null, null, null, null, null, null, null);
+            null, null, null, null, "IN_DISCUSSION", null, null, null, null, null, null, null, null, null, null, null);
         when(prospectMapper.toEntity(request)).thenReturn(new Prospect());
         when(prospectRepository.countByUserIdAndStatusKey(user.getId(), "IN_DISCUSSION")).thenReturn(3L);
 
@@ -89,5 +90,32 @@ class ProspectServiceStatusTest {
         assertThat(created.getStatusKey()).isEqualTo("IN_DISCUSSION");
         assertThat(created.getPosition()).isEqualTo(3);
         assertThat(created.getStatusChangedAt()).isNotNull();
+    }
+
+    @Test
+    void creatingAProspectAtTheTopPlacesItBeforeTheFirstCard() {
+        CreateProspectRequest request = topOf("IN_DISCUSSION");
+        when(prospectMapper.toEntity(request)).thenReturn(new Prospect());
+        when(prospectRepository.findMinPosition(user.getId(), "IN_DISCUSSION")).thenReturn(2);
+
+        Prospect created = service.createProspect(user, request);
+
+        assertThat(created.getPosition()).isEqualTo(1);
+    }
+
+    @Test
+    void creatingAProspectAtTheTopOfAnEmptyColumnStartsAtZero() {
+        CreateProspectRequest request = topOf("IN_DISCUSSION");
+        when(prospectMapper.toEntity(request)).thenReturn(new Prospect());
+        when(prospectRepository.findMinPosition(user.getId(), "IN_DISCUSSION")).thenReturn(null);
+
+        Prospect created = service.createProspect(user, request);
+
+        assertThat(created.getPosition()).isEqualTo(0);
+    }
+
+    private static CreateProspectRequest topOf(String statusKey) {
+        return new CreateProspectRequest("Boulangerie", null, null, null, null, null, null, null, null, null, null,
+            statusKey, null, null, null, null, null, null, null, null, null, null, ProspectPlacement.TOP);
     }
 }

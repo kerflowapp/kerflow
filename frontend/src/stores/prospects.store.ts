@@ -52,8 +52,10 @@ export const useProspectsStore = defineStore('prospects-store', () => {
 		pipelineColumns.value = pipelineColumns.value.filter(c => c.id !== id);
 	}
 
-	function addProspect(prospect: ProspectDto) {
-		prospects.value.push(prospect);
+	// The list is ordered by position, so the head of the list is the head of every column
+	function addProspect(prospect: ProspectDto, atTop = false) {
+		if (atTop) prospects.value.unshift(prospect);
+		else prospects.value.push(prospect);
 	}
 
 	function updateProspect(updated: ProspectDto) {

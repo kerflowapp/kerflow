@@ -303,7 +303,12 @@
 			"linkedin": "LinkedIn",
 			"notes": "Notes",
 			"tags": "Tags",
-			"column": "Colonne"
+			"column": "Colonne",
+			"placement": "Position"
+		},
+		"placement": {
+			"top": "En haut",
+			"bottom": "En bas"
 		}
 	},
 	"kanban": {

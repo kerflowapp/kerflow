@@ -22,6 +22,23 @@
 						:label="t('prospects.fields.column')"
 						variant="outlined"
 					/>
+					<div class="text-caption text-medium-emphasis mb-1">{{ t('prospects.fields.placement') }}</div>
+					<v-btn-toggle
+						v-model="form.placement"
+						class="mb-4"
+						color="primary"
+						density="compact"
+						divided
+						mandatory
+						variant="outlined"
+					>
+						<v-btn prepend-icon="mdi-arrow-collapse-up" :value="ProspectPlacement.TOP">
+							{{ t('prospects.placement.top') }}
+						</v-btn>
+						<v-btn prepend-icon="mdi-arrow-collapse-down" :value="ProspectPlacement.BOTTOM">
+							{{ t('prospects.placement.bottom') }}
+						</v-btn>
+					</v-btn-toggle>
 					<v-text-field
 						v-model="form.phone"
 						class="mb-2"
@@ -61,7 +78,7 @@ import { useI18n } from 'vue-i18n';
 import type { VForm } from 'vuetify/components';
 
 import type { CreateProspectDto, ProspectPipelineColumnDto } from '~/api/dtos/prospect.dto';
-import { ProspectSource } from '~/api/dtos/prospect.dto';
+import { ProspectPlacement, ProspectSource } from '~/api/dtos/prospect.dto';
 import { useProspectPipeline } from '~/composables/useProspectPipeline';
 
 interface Props {
@@ -87,7 +104,8 @@ const form = reactive({
 	phone: '',
 	email: '',
 	website: '',
-	statusKey: props.initialStatusKey
+	statusKey: props.initialStatusKey,
+	placement: ProspectPlacement.TOP
 });
 
 const requiredRule = [(v: string) => !!v || t('validation.required')];
@@ -102,6 +120,7 @@ watch(
 		form.email = '';
 		form.website = '';
 		form.statusKey = props.initialStatusKey;
+		form.placement = ProspectPlacement.TOP;
 		formRef.value?.resetValidation();
 	}
 );
@@ -116,7 +135,8 @@ const handleSubmit = async () => {
 		email: form.email,
 		website: form.website,
 		source: ProspectSource.MANUAL,
-		statusKey: form.statusKey
+		statusKey: form.statusKey,
+		placement: form.placement
 	});
 };
 </script>

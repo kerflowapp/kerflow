@@ -5,6 +5,7 @@ import com.kerflowapp.kerflow.api.prospects.domain.SocialLinksDto;
 import com.kerflowapp.kerflow.api.prospects.domain.UpdateProspectRequest;
 import com.kerflowapp.kerflow.domain.*;
 import com.kerflowapp.kerflow.domain.enums.KanbanStatus;
+import com.kerflowapp.kerflow.domain.enums.ProspectPlacement;
 import com.kerflowapp.kerflow.domain.enums.ProspectSource;
 import com.kerflowapp.kerflow.exceptions.KerflowException;
 import com.kerflowapp.kerflow.mappers.ProspectMapper;
@@ -69,11 +70,23 @@ public class ProspectService {
             prospect.setStatusKey(request.statusKey() != null ? request.statusKey() : KanbanStatus.NEW.name());
         }
         prospect.setStatusChangedAt(Instant.now());
-        // Append to the end of its column
-        prospect.setPosition((int) prospectRepository.countByUserIdAndStatusKey(user.getId(), prospect.getStatusKey()));
+        prospect.setPosition(initialPosition(user, prospect.getStatusKey(), request.placement()));
         applySocialLinks(prospect, request.socialLinks());
         runEnrichment(prospect, EnrichmentMode.CREATION);
         return prospectRepository.save(prospect);
+    }
+
+    /**
+     * Bottom (the default) appends after the last card. Top goes one before the first card instead
+     * of shifting the whole column: a negative position still sorts first, and the next reorder of
+     * the column renormalizes positions to 0..n.
+     */
+    private int initialPosition(User user, String statusKey, ProspectPlacement placement) {
+        if (placement == ProspectPlacement.TOP) {
+            Integer min = prospectRepository.findMinPosition(user.getId(), statusKey);
+            return min == null ? 0 : min - 1;
+        }
+        return (int) prospectRepository.countByUserIdAndStatusKey(user.getId(), statusKey);
     }
 
     /**

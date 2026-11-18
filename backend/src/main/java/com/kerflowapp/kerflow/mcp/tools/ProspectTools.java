@@ -99,7 +99,7 @@ public class ProspectTools {
             null, null, null, null, null, null, null,
             googlePlaceId != null ? ProspectSource.SEARCH : ProspectSource.MANUAL,
             notes, tags, null, googlePlaceId, searchQuery,
-            types, rating, reviewCount, editorialSummary);
+            types, rating, reviewCount, editorialSummary, null);
 
         return toDetail(prospectService.createProspect(user, request));
     }

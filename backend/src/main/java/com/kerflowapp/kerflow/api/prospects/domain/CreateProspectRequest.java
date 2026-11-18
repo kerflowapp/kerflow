@@ -1,5 +1,6 @@
 package com.kerflowapp.kerflow.api.prospects.domain;
 
+import com.kerflowapp.kerflow.domain.enums.ProspectPlacement;
 import com.kerflowapp.kerflow.domain.enums.ProspectSource;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotEmpty;
@@ -50,6 +51,8 @@ public record CreateProspectRequest(
     @Nullable
     Integer googleUserRatingsTotal,
     @Nullable
-    String googleEditorialSummary
+    String googleEditorialSummary,
+    @Nullable
+    ProspectPlacement placement
 ) {
 }
